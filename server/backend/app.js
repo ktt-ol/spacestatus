@@ -60,10 +60,11 @@ function init(lastDbState) {
   }
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.static(__dirname + '/../frontend'));
 
   // this must before the other use
   LoggerFactory.addExpressLogger(app, config.app.logIp);
+
+  app.use(express.static(__dirname + '/../frontend'));
 
   api.init(app, data, config, srv);
 
