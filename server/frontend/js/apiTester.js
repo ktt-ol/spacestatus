@@ -39,8 +39,8 @@ var APIS = [
 ];
 
 
-function MainCtrl($scope, $http) {
-  $scope.baseUrl = 'http://localhost:7996/api';
+function MainCtrl($scope, $http, $window) {
+  $scope.baseUrl = $window.location.origin + '/api';
   $scope.psk = location.search.length > 1 ? location.search.substr(1) : '';
   $scope.apiCalls = APIS;
   $scope.selectedApi = APIS[0];
