@@ -35,13 +35,25 @@ module.exports = {
   addExpressLogger: function (expressApp, logIp) {
     this._ensureInitiliazedLogger();
 
-    var formatStr = (logIp ? ':remote-addr - ' : '') +
+    // if logIp is enabled, we patch the req.ip into a header field
+
+    var formatStr = (logIp ? ':req[_ip_] - ' : '') +
       '":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"';
     var accessLogger = this._log4js.getLogger(this._prefix + 'express_access');
-    expressApp.use(this._log4js.connectLogger(accessLogger, {
+    var logFn = this._log4js.connectLogger(accessLogger, {
       level: this._log4js.levels.INFO,
       format: formatStr
-    }));
+    });
+
+    if (logFn) {
+      // create the custom header for log4js
+      expressApp.use(function (req, res, next) {
+        req.headers._ip_ = req.ip;
+        logFn(req, res, next);
+      });
+    } else {
+      expressApp.use(logFn);
+    }
   },
 
   logger: function () {
