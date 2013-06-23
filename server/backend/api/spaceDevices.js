@@ -23,10 +23,6 @@ module.exports = function (app, data, config, srv) {
   app.namespace('/spaceDevices', function () {
 
     app.get('/', function (req, res) {
-      if (!apiUtils.handlePsk(req, res, config.app.psk)) {
-        return;
-      }
-
       apiUtils.sendJson(res, 200, data.state.get().spaceDevices);
     });
 
