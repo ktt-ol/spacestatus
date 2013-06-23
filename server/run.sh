@@ -19,7 +19,7 @@ TIME_BETWEEN_EMAILS=600 # 10 minutes
 
 LAST_EMAIL_SEND=0
 # switch the app into production mode
-NODE_ENV=production
+export NODE_ENV=production
 
 cd `dirname $0`
 
