@@ -14,7 +14,6 @@
   "maxerr": 50,
   "quotmark": "single",
   "browser": true,
-  "latedef": true,
   "newcap": true,
   "globals": {
     "angular": false
