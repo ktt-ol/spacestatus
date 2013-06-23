@@ -49,13 +49,8 @@ function init(lastDbState) {
 
   }
 
-  process.on('SIGINT', function () {
-    LOG.info('Shutdown...');
-    data.state.shutdown();
-    data.state.save(function (err) {
-      process.exit(0);
-    });
-  });
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 
   // all the web foo
   app = express();
@@ -85,4 +80,12 @@ function init(lastDbState) {
 
   app.listen(config.app.port);
   LOG.info('Status server listening on port %d in %s mode', config.app.port, app.settings.env);
+}
+
+function shutdown() {
+  LOG.info('Shutdown...');
+  data.state.shutdown();
+  data.state.save(function (err) {
+    process.exit(0);
+  });
 }
