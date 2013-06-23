@@ -1,0 +1,26 @@
+{
+  "appenders": [
+    {
+      "type": "file",
+      "filename": "logs/express_access.log",
+      "maxLogSize": 5000000,
+      "backups": 3,
+      "category": "express_access"
+    },
+    {
+      "type": "console",
+      "category": "DEV_express_access"
+    },
+    {
+      "type": "file",
+      "filename": "logs/app.log",
+      "maxLogSize": 5000000,
+      "backups": 3,
+      "category": "app"
+    },
+    {
+      "type": "console",
+      "category": "DEV_app"
+    }
+  ]
+}

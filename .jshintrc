@@ -1,0 +1,22 @@
+{
+  "node": true,
+  "forin": true,
+  "noarg": true,
+  "noempty": true,
+  "eqeqeq": true,
+  "bitwise": true,
+  "strict": true,
+  "undef": true,
+  "unused": "vars",
+  "curly": true,
+  "devel": true,
+  "indent": 2,
+  "maxerr": 50,
+  "quotmark": "single",
+  "browser": true,
+  "latedef": true,
+  "newcap": true,
+  "globals": {
+    "angular": false
+  }
+}

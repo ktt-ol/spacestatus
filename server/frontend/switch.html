@@ -1,0 +1,23 @@
+
+<html>
+<body>
+<form action="/switch" method="post" id="form">
+  <input id="state" type="hidden" name="state" value="" />
+  <input id="pw" type="password" name="psk" value="" placeholder="Enter the password" />
+
+  <button type="button" onclick="send('on');">AUF!</button>
+  <button type="button" onclick="send('off')">ZU!</button>
+</form>
+<script>
+  function send(value) {
+    document.getElementById('state').value = value;
+    document.getElementById('form').submit();
+  }
+  window.onload=function() {
+    if (window.location.search !== '') {
+      document.getElementById('pw').value = window.location.search;
+    }
+  }
+</script>
+</body>
+</html>

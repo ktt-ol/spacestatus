@@ -1,0 +1,7 @@
+server/conf/config.js
+.DS_Store
+.idea/
+node_modules/
+spacegate_script/dataToSend
+server/state.json
+server/logs/*

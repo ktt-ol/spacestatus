@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <meta charset=utf-8/>
+  <title>API Testing</title>
+  <style>
+    .form-horizontal .control-label {
+      width: 350px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body ng-app ng-controller="MainCtrl">
+
+<div class="container">
+  <h1>API Testing</h1>
+
+  <h2>Build request</h2>
+
+  <form class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label">Base Url</label>
+
+      <div class="controls">
+        <input type="text" ng-model="baseUrl"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Password (for changes)</label>
+
+      <div class="controls">
+        <input type="password" ng-model="psk"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">API</label>
+
+      <div class="controls">
+        <select ng-model="selectedApi" ng-options="(i.method + ' ' + i.name) for i in apiCalls">
+        </select>
+      </div>
+    </div>
+    <ul class="fields unstyled">
+      <li ng-repeat="(key, value) in selectedApi.properties">
+        <div class="control-group">
+          <label class="control-label" for="{{key}}"><b>{{key}}</b> (required: {{value.required}})
+            <span ng-show="value.enum">
+              Values: {{value.enum.join(', ')}}
+            </span>
+          </label>
+
+          <div class="controls">
+            <div ng-switch on="value.type">
+              <input ng-switch-when="boolean" id="{{key}}" type="checkbox" ng-model="propValues[selectedApi.name][key]"/>
+              <input ng-switch-when="integer" id="{{key}}" type="number" ng-model="propValues[selectedApi.name][key]"/>
+              <input ng-switch-when="array" id="{{key}}" ng-model="propValues[selectedApi.name][key]" ng-list="," />
+              <input ng-switch-default id="{{key}}" type="text" ng-model="propValues[selectedApi.name][key]"/>
+            </div>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+
+    <ul class="fields unstyled">
+      <li ng-repeat="param in selectedApi.urlParams">
+        <div class="control-group">
+          <label class="control-label" for="{{param}}"><b>{{param}}</b></label>
+
+          <div class="controls">
+            <input id="{{param}}" type="text" ng-model="urlValues[selectedApi.name][param]"/>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+
+    <button class="btn btn-primary" ng-click="makeRequest()">Send request</button>
+
+  </form>
+
+  <b>Data</b>
+  <legend>Request
+    <small><a href="#1">1</a></small>
+  </legend>
+  <pre>{{request}}</pre>
+
+  <legend>Response</legend>
+  <pre>{{response}}</pre>
+
+  <h2>Remarks</h2>
+
+  <p><a name="1">[1]</a> Don't forget to add the following headers:
+  <ul class="unstyled">
+    <li><code>Content-type: application/json</code> if you send data with a PUT/POST</li>
+    <li><code>Authorization: yourpassword</code> if you change something</li>
+  </ul>
+  </p>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="js/apiTester.js"></script>
+</body>
+</html>
