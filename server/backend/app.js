@@ -55,12 +55,15 @@ function init(lastDbState) {
   // all the web foo
   app = express();
   app.disable('x-powered-by');
+  if (config.app.behindProxy) {
+    app.enable('trust proxy');
+  }
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.static(__dirname + '/../frontend'));
 
   // this must before the other use
-  LoggerFactory.addExpressLogger(app);
+  LoggerFactory.addExpressLogger(app, config.app.logIp);
 
   api.init(app, data, config, srv);
 

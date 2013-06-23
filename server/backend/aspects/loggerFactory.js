@@ -24,22 +24,23 @@ module.exports = {
     }
   },
 
-  addUncaughtExceptionLogger: function() {
+  addUncaughtExceptionLogger: function () {
     var self = this;
-    process.on('uncaughtException', function(err) {
+    process.on('uncaughtException', function (err) {
       self.logger().error(err);
       process.exit(1);
     });
   },
 
-  addExpressLogger: function (expressApp) {
+  addExpressLogger: function (expressApp, logIp) {
     this._ensureInitiliazedLogger();
 
+    var formatStr = (logIp ? ':remote-addr - ' : '') +
+      '":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"';
     var accessLogger = this._log4js.getLogger(this._prefix + 'express_access');
     expressApp.use(this._log4js.connectLogger(accessLogger, {
       level: this._log4js.levels.INFO,
-      // we don't want to log IP addresse, so :remote-addr is suppressed
-      format: '":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"'
+      format: formatStr
     }));
   },
 
