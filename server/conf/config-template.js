@@ -62,7 +62,7 @@ module.exports = {
     port: 7996,
     'listenersmininterval': 200, // Update listener counts on stream at most every X milliseconds
     'streamkeepaliveinterval': 60 * 60 * 1000, // Send a keepalive event this often
-    // save the current state to Redis this often (in addition to on shutdown)
+    // save the current state this often (in addition to on shutdown)
     'saveinterval': 5 * 60 * 1000
   }
 };
