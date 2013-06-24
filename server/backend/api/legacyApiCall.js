@@ -6,11 +6,12 @@
 
 module.exports = function (app, data, config, srv) {
 
-  function log() {
+  app.get('/status-stream', function (req, res, next) {
+    req.url = '/api/statusStream';
+    next();
+  });
 
-  }
-
-  app.get('/status(.json)?$', function(req, res, next) {
+  app.get('/status(.json)?$', function (req, res, next) {
     req.url = '/api/spaceInfo';
     next();
   });
@@ -33,7 +34,7 @@ module.exports = function (app, data, config, srv) {
     };
 
     // patching the response
-    res.json = function(statusCode, jsonData) {
+    res.json = function (statusCode, jsonData) {
       if (statusCode === 200) {
         this.send(0);
       } else {
