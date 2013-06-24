@@ -116,15 +116,17 @@ Twitter.prototype.sendTwitterForSpaceStatus = function (newState) {
       if (err) {
         LOG.error('Invalid twitter credentials:', err);
       }
-    });
-    if (self._config.mocking) {
-      LOG.info('MOCKING: sending tweet `' + tweet + '´');
-    } else {
-      session.updateStatus(tweet);
-    }
 
-    self._state.lastStateTwittered = newState;
-    self._state.lastTweetSendAt = Date.now();
+      if (self._config.mocking) {
+        LOG.info('MOCKING: sending tweet `' + tweet + '´');
+      } else {
+        session.updateStatus(tweet);
+      }
+
+      self._state.lastStateTwittered = newState;
+      self._state.lastTweetSendAt = Date.now();
+    });
+
 
   }, this._config.twitterdelay);
 };
