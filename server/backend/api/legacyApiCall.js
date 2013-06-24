@@ -8,6 +8,7 @@ module.exports = function (app, data, config, srv) {
 
   app.get('/status-stream', function (req, res, next) {
     req.url = '/api/statusStream';
+    req.query.spaceOpen = '1';
     next();
   });
 
