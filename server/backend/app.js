@@ -18,6 +18,7 @@ var LOG = LoggerFactory.logger();
 
 var app;
 
+LOG.info('spacestatus is starting');
 
 // quick config check
 if (!config.app.psk || config.app.psk === '') {
