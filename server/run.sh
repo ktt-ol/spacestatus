@@ -62,7 +62,7 @@ do
     fi
   fi
   
-  echo "RESTART!" >>$1
+  echo "RESTART at $(date)" >>$1
   
   #Sleep 10 seconds before restart
   sleep 10
