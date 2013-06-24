@@ -28,7 +28,10 @@ module.exports = {
     var self = this;
     process.on('uncaughtException', function (err) {
       self.logger().error(err);
-      process.exit(1);
+      // I had some problems with missing errors after an error, maybe this help
+      setTimeout(function () {
+        process.exit(1);
+      }, 500);
     });
   },
 
