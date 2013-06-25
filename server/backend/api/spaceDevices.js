@@ -17,6 +17,8 @@ module.exports = function (app, data, config, srv) {
   var dirtyState = false;
   var deviceMap = createDeviceMap(config.spaceDevices.list);
 
+  console.log(deviceMap);
+
   resetAfterTimeout();
   scheduleDbUpdate();
 
@@ -134,32 +136,39 @@ module.exports = function (app, data, config, srv) {
     // - every device with mode=ignore is ignored and not count anywhere
     // - every unknown device (= not in the config) counts as one device
     // - a person counts as one person, even it is online with several devices
-    // - All devices that belongs to a person are still count as only one device
+    // - All devices that belongs to a person are not count as device
     // - every person with mode=visible is shown in the online list by name
 
     var counter = 0;
     var people = {};
     devices.forEach(function (deviceId) {
+      deviceId = deviceId.toLowerCase();
+
+      // console.log('-----' + deviceId);
       var entry = deviceMap[deviceId];
+
       // is the device unknown?
       if (!entry) {
         counter++;
+        // console.log('exit 1');
         return;
       }
 
       // count the device?
       if (entry.mode === 'ignore') {
+        // console.log('exit 2');
         return;
       }
 
       // if the device owner is already known, then it is also already count
       if (people[entry.name]) {
+        // console.log('exit 3: ' + entry.name);
         return;
       }
 
       // add the owner and count the device
       people[entry.name] = entry.mode;
-      counter++;
+      // console.log('exit 4: ' + entry.name);
     });
     // count the people and remove the hidden people from the list
     var peopleCount = 0;
@@ -188,6 +197,7 @@ module.exports = function (app, data, config, srv) {
       var nameBlock = devicesConfigList[i];
       for (var ii = 0; ii < nameBlock.devices.length; ii++) {
         var deviceId = nameBlock.devices[ii];
+        deviceId = deviceId.toLowerCase();
         map[deviceId] = {
           name: nameBlock.name,
           mode: nameBlock.mode
