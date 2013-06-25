@@ -32,7 +32,7 @@ The first parameter of the script is a log file for the console output of the ap
 
 ## Credits
 - Main author: Holger Cremer (HolgerCremer@gmail.com)
-- Old statu app from Eike Frost 
+- Old status app from Eike Frost 
 - Backend structure idea from André König (andre.koenig@gmail.com)
 
 
