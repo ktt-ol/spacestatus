@@ -123,9 +123,7 @@ Twitter.prototype.sendTwitterForSpaceStatus = function (newState) {
       session.updateStatus(tweet, function (err, data) {
         if (err) {
           LOG.error('Error sending tweet: ', err);
-          return;
         }
-        LOG.debug('tweet sent ', data);
       });
     }
 
