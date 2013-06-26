@@ -17,8 +17,6 @@ module.exports = function (app, data, config, srv) {
   var dirtyState = false;
   var deviceMap = createDeviceMap(config.spaceDevices.list);
 
-  console.log(deviceMap);
-
   resetAfterTimeout();
   scheduleDbUpdate();
 
@@ -125,7 +123,7 @@ module.exports = function (app, data, config, srv) {
       clearTimeout(resetTimeoutHandle);
     }
 
-    setTimeout(function () {
+    resetTimeoutHandle = setTimeout(function () {
       LOG.debug('Clear space devices.');
       updateSpaceDevices(0, 0, []);
     }, config.spaceDevices.clearEntriesAfter);
