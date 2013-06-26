@@ -81,7 +81,6 @@ module.exports = function (app, data, config, srv) {
   // updates the current state and sets the dirtyState if necessary
   function updateSpaceDevices(deviceCount, peopleCount, people) {
     var spaceDevices = data.state.get().spaceDevices;
-    spaceDevices.timestamp = Math.round(Date.now() / 1000);
 
     var dataChanged = spaceDevices.deviceCount !== deviceCount ||
       spaceDevices.peopleCount !== peopleCount || !isArrayEquals(spaceDevices.people, people);
@@ -94,6 +93,7 @@ module.exports = function (app, data, config, srv) {
     spaceDevices.deviceCount = deviceCount;
     spaceDevices.peopleCount = peopleCount;
     spaceDevices.people = people;
+    spaceDevices.timestamp = Math.round(Date.now() / 1000);
 
     srv.events.emit(srv.events.EVENT.SPACE_DEVICES, spaceDevices);
 
