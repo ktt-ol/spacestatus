@@ -85,7 +85,7 @@ function onDomReady() {
   source.addEventListener('spaceDevices', function (e) {
     var data = $.parseJSON(e.data);
 
-    var text = data.peopleCount + '/' + data.deviceCount;
+    var text = data.peopleCount + ' + ' + data.deviceCount;
     var title = data.people.length > 0 ? data.people.join(', ') : 'No public people';
     $('#pis').text(text).attr('title', title);
     timestamps.spaceDevices = data.timestamp;
