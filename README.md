@@ -39,6 +39,7 @@ The first parameter of the script is a log file for the console output of the ap
 ## Dev
 
 ### ToDos
+- [ ] Calculate a proper Rain value by using the delta Value of the last X Minutes. (A delta of 1 means 0,3 mm rain.)
 - [x] better 'public' folder position,
 - [x] Legacy API for space switch
 - [ ] Documentation for REST api
@@ -47,7 +48,7 @@ The first parameter of the script is a log file for the console output of the ap
 - [x] finish the xmpp module
 - [x] run test with `npm test`
 - [x] spacegate script
-- [ ] update README (authors, etc.)
+- [x] update README (authors, etc.)
 
 
 ### Unit testing
