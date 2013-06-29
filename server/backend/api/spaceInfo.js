@@ -29,7 +29,7 @@ module.exports = function (app, data, config, srv) {
           'open': 'http://status.kreativitaet-trifft-technik.de/img/open.png',
           'closed': 'http://status.kreativitaet-trifft-technik.de/img/closed.png'
         },
-        'url': 'http://www.kreativitaet-trifft-technik.de/',
+        'url': 'http://mainframe.io/',
         'address': 'Raiffeisenstrasse 27, 26122 Oldenburg, Germany',
         'contact': {
           'irc': 'irc://freenode/#hsol',
