@@ -5,18 +5,21 @@
   var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
   var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&freifunk=1&weather=1';
 
+  var CHECK_INTERVAL = 5 * 60 * 1000;
+
   var app = angular.module('status', []);
 
   app.controller('StatusCtrl', [
-    '$scope', 'SSE', '$timeout',
-    function ($scope, SSE, $timeout) {
+    '$scope', '$log', '$timeout', 'SSE',
+    function ($scope, $log, $timeout, SSE) {
+      var lastkeepalive;
       var timestamps = {
         openStatus: 0,
         spaceDevices: 0,
         freifunk: 0,
         weather: 0
       };
-
+      $scope.connectionError = false;
       $scope.openStatus = {
         lastUpdate: '?',
         style: '',
@@ -46,15 +49,23 @@
         P: '?'
       };
 
-      SSE.getEventSource().then(function () {
+      function init() {
+        $log.info('init EventSource');
         var source = new EventSource(ENDPOINT);
 
         source.onopen = function () {
-          //$('.status .listeners').css('background-color', '#4ddb4d');
+          $scope.$apply(function () {
+            $log.log('EventSource is open');
+            $scope.connectionError = false;
+            lastkeepalive = new Date().getTime();
+          });
         };
 
         source.onerror = function (err) {
-          // $('.status .listeners').css('background-color', '#ff5c33');
+          $scope.$apply(function () {
+            $scope.connectionError = true;
+            $log.error('EventSource error.', err);
+          });
         };
 
         source.addEventListener('spaceOpen', function (e) {
@@ -119,7 +130,27 @@
           });
         });
 
-      }); // END SSE
+        source.addEventListener('keepalive', function (e) {
+          lastkeepalive = new Date().getTime();
+        }, false);
+
+        // check whether we have seen a keepalive event within the last 70 minutes or are disconnected; reconnect if necessary
+        function checkConnection() {
+          $log.log('Checking connection...');
+          var now = new Date().getTime();
+          if ((now - lastkeepalive > 65 * 60 * 1000) || source.readyState === 2) {
+            source.close();
+            setTimeout(init, 3000);
+            return;
+          }
+          $timeout(checkConnection, CHECK_INTERVAL, false);
+        }
+
+        $timeout(checkConnection, CHECK_INTERVAL, false);
+      } // end init
+
+      SSE.getEventSource().then(init);
+
 
       function updateLastUpdates() {
         function makeTime(field) {

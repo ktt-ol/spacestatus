@@ -37,10 +37,14 @@
                 href="https://twitter.com/#!/KtT_OL">@KtT_OL</a><br/>
             <a href="xmpp://mainframe@jabber.ccc.de">mainframe@jabber.ccc.de</a>
         </div>
-        <div class="span8" ng-controller="StatusCtrl">
+        <div class="span8 ng-cloak" ng-controller="StatusCtrl" >
             <!--Body content-->
 
             <h2>Status</h2>
+            <div class="alert" ng-show="connectionError">
+                Ich habe die Verbindung zum Server verloren. :( <br />
+                Aber ich versuche es gleich noch einmal!
+            </div>
 
             <table class="table table-condensed">
                 <thead>
