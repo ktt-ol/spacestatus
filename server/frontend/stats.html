@@ -1,79 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>MainFrame Stats</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<style type="text/css">
-body {
-	padding-top: 50px;
-}
-
-.container {
-	width: 95%;
-}
-h1 {
-	margin-top:25px;
-}
-</style>
+    <meta charset="utf-8">
+    <title>MainFrame Stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/pages.css"/>
 </head>
-<body>
+<body id="openStats">
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="#">MainFrame Stats</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><a href="#graph">Open Time</a></li>
-						<li><a href="#stats">Stats</a></li>
-					</ul>
-					<p class="navbar-text pull-right"><a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a></p>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
+<div id="headMenu" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <a class="brand" href="//www.kreativitaet-trifft-technik.de/mainframe">MainFrame</a>
 
-	<div class="container">
-	
+        <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li><a href="index.html">Status</a></li>
+                <li class="active"><a href="stats.html">Öffnungsstatistiken</a></li>
+            </ul>
+            <p id="inprintLink" class="navbar-text pull-right"><a href="//www.kreativitaet-trifft-technik.de/impressum"
+                                                                  class="navbar-link">Impressum</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="pageContent" class="container">
+
     <div id="globalError" class="alert alert-error hidden" style="display:none"></div>
 
-		<section id="graph">
-			<h1>Graph</h1>
-			Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
-			2012 zurück gucken!
-			<div id="chartdiv" style="width: 100%; height: 550px"></div>
-		</section>
+    <section id="graph">
+        <h2>Graph!</h2>
+        Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
+        2012 zurück gucken!
+        <div id="chartdiv" style="width: 100%; height: 550px"></div>
+    </section>
 
-		<section id="stats">
-		<h1>Stats</h1>
-		<p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p> 
-		Anzeigen für die letzte 
-		<select id="weeklyStatsDropdown">
-		  <option value="1">Woche</option>
-		</select>
-			<table id="weeklyStatsTable" class="table table-hover">
-				<thead>
-					<tr>
-						<th>Wochentag</th>
-						<th>Zeitdauer (h)</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</section>
+    <section id="stats">
+        <h2>Letzte Woche</h2>
 
-		<!-- <section id="xxx"> -->
-		<!-- <h1>xxx</h1> -->
-		<!-- </section> -->
-	</div>
+        <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
+        Anzeigen für die letzte
+        <select id="weeklyStatsDropdown">
+            <option value="1">Woche</option>
+        </select>
+        <table id="weeklyStatsTable" class="table table-hover">
+            <thead>
+            <tr>
+                <th>Wochentag</th>
+                <th>Zeitdauer (h)</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
 
-	<script src="lib/jquery/jquery-1.8.3.min.js"></script>
-	<script src="lib/bootstrap/bootstrap.min.js"></script>
-	<script src="lib/amcharts/amcharts.js"></script>
-	<script src="js/statsPage.js"></script>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        KtT Spacestatus - <a href="//github.com/ktt-ol/spacestatus">//github.com/ktt-ol/spacestatus</a>
+    </div>
+</footer>
+
+<script src="lib/jquery/jquery-1.8.3.min.js"></script>
+<script src="lib/bootstrap/bootstrap.min.js"></script>
+<script src="lib/amcharts/amcharts.js"></script>
+<script src="js/statsPage.js"></script>
 </body>
 </html>

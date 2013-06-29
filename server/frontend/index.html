@@ -1,165 +1,162 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-  <head>
-    <title>Spaceschalter</title>
-    <script type="text/javascript">
-    </script>    
-    <style type="text/css">
-      table.status {
-        background-color: rgb(90%,95%,100%);
-        border-collapse: collapse;
-      }
-      table.status td.square {
-        width: 7em;
-        height: 7em;
-        text-align: center;
-      }
-      table.status td.mainstatus {
-        background: yellow;
-      }
-      table.status td.pis {
-        background: yellow;
-      }
-      table.status td.ff {
-        background: #ccff33;
-      }
-      table.status td.weatherin {
-        background: #75a3ff;
-      }
-      table.status td.weatherout {
-        background: #00ccff;
-      }
-      table.status td.weatherwind {
-        background: #708de6;
-      }
-      table.status td.weatherrest {
-        background: #c6c6ff;
-      }
-     
-      span.pis { font-size: 200%; font-weight: bold; }
-      span.ff { font-size: 400%; font-weight: bold; }
-      span.mainstatus { font-size: 200%; font-weight: bold; }
-      span.weather { font-size: 200%; font-weight: bold; }
-      span.weatherwind { font-size: 100%; font-weight: bold; }
-      
-      table.status td.detail {
-       text-align: center;
-      } 
- 
-      body {
-        font-family: Arial, Helvetica, Sans-Serif;
-      }
-      
-      div.patch {
-        float: left; 
-        padding-right: 0.3em;
-      }
-    </style> 
-  </head>
+<!DOCTYPE html>
+<html ng-app="status">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/pages.css"/>
+    <meta charset=utf-8/>
+    <title>Space Status</title>
+</head>
+<body id="status">
 
-  <body>
-   <div class="patch">
-    <table class="status">
-     <tr><td colspan="4" class="detail"><a href="http://mainframe.io">Mainframe</a>-Status</td></tr>
-     <tr onclick="location.href='stats.html';" style="cursor:pointer;" title="Statistiken">
-      <td class="square mainstatus" >
-       <span class="mainstatus">?</span>
-      </td>
-     </tr>
-     <tr>
-      <td class="detail">
-       <span class="lastupdate">Unbekannt</span>
-      </td>
-     </tr>
-    </table>
-   </div>
-   <div class="patch">
-    <table class="status">
-     <tr><td colspan="4" class="detail">Leute im Space*</td></tr>
-     <tr>
-      <td class="square pis">
-       <span id="pis" class="pis">?</span>
-      </td>
-     </tr>
-     <tr>
-      <td class="detail">
-       <span class="lastupdatespaceDevices">Unbekannt</span>
-      </td>
-     </tr>
-    </table>
-   </div>
-   <div class="patch">
-   <table class="status">
-    <tr><td colspan="4" class="detail"><a href="http://netmon.freifunk-ol.de/routerlist.php">Freifunk</a></td></tr>
-    <tr>
-      <td class="square ff">
-       <span class="ff">0</span>
-      </td>
-     </tr>
-     <tr>
-      <td class="detail">
-       <span class="lastupdateff">Unbekannt</span>
-      </td>
-     </tr>
-    </table>
-   </div>
+<div id="headMenu" class="navbar  navbar-fixed-top">
+    <div class="navbar-inner">
+        <a class="brand" href="//mainframe.io">MainFrame</a>
 
-   <div class="patch">
-    <table class="status">
-     <tr><td colspan="4" class="detail">Wetter</td></tr>
-     <tr>
-      <td class="square weatherin">
-       Drinnen<br />
-       <span class="weather">
-        <span class="Tin"></span><br />
-        <span class="Hin"></span>
-       </span>
-      </td>
-      <td class="square weatherout">
-       Draussen<br />
-       <span class="weather">
-        <span class="Tout"></span><br />
-        <span class="Hout"></span>
-       </span>
-      </td>
-      <td class="square weatherwind">
-       Wind<br /><br />
-       <span class="weatherwind">
-        <span class="Wd"></span> @ <span class="Ws"></span><br />
-        B&ouml;en: <span class="Wg"></span>
-       </span>
-      </td>
-      <td class="square weatherrest">
-       Luftdruck<br />
-       <span class="weatherwind">
-        <span class="P"></span><br />
-       </span>
-       Regen<br />
-       <span class="weatherwind">  
-        <span class="R"></span>
-       </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="detail" colspan="4">
-       <span class="lastupdateweather">Unbekannt</span>
-      </td>
-     </tr>
-    </table>
-   </div>
+        <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li class="active"><a href="index.html">Status</a></li>
+                <li><a href="stats.html">Öffnungsstatistiken</a></li>
+            </ul>
+            <p id="inprintLink" class="navbar-text pull-right">
+                <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+            </p>
+        </div>
+    </div>
+</div>
 
-   <div style="float: right; text-align: right;">
-    <a href="//ktt-ol.de"><img src="img/logo.png" alt="Kreativität trifft Technik" /></a><br /><br />
-    <a href="stats.html">Statistiken</a> <a href="//www.kreativitaet-trifft-technik.de/impressum">Impressum</a><br />
-    <a href="/status.json">status.json</a> (<a href="https://hackerspaces.nl/spaceapi/">Status API</a>)<br />
-    <a href="https://twitter.com/#!/HackspaceOL">@HackspaceOL</a> <a href="https://twitter.com/#!/KtT_OL">@KtT_OL</a><br />
-    <a href="xmpp://beta-space@jabber.ccc.de">beta-space@jabber.ccc.de</a>
-  </div>
 
-   <div style="clear:both; padding-top: 10px; font-size: 0.8em">* People + Devices (People: Leute von denen die Geräte bekannt sind. Devices: Alle restlichen, unbekannte Geräte.). Tipp: Der Mouseover zeigt dir auch Namen der Mitglieder.</div>
-  
-	 <script src="lib/jquery/jquery-1.8.3.min.js"></script>
-	 <script src="js/index.js"></script>
-   </body>
+<div id="pageContent" class="container-fluid">
+
+    <div class="row-fluid">
+        <div class="span3">
+            <!--Sidebar content-->
+            <a href="//mainframe.io" id="mainframeLogo"><img src="img/logo.png" alt="Mainframe"/></a><br/><br/>
+            <a href="/status.json">status.json</a> (<a href="https://hackerspaces.nl/spaceapi/">Status API</a>)<br/>
+            <a href="https://twitter.com/#!/HackspaceOL">@HackspaceOL</a> <a
+                href="https://twitter.com/#!/KtT_OL">@KtT_OL</a><br/>
+            <a href="xmpp://mainframe@jabber.ccc.de">mainframe@jabber.ccc.de</a>
+        </div>
+        <div class="span8" ng-controller="StatusCtrl">
+            <!--Body content-->
+
+            <h2>Status</h2>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Mainframe Status [ <a href="//mainframe.io">Homepage</a> ]</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{openStatus.lastUpdate}}</td>
+                </tr>
+                <tr ng-class="openStatus.style">
+                    <td>Status</td>
+                    <td>{{openStatus.status}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2"><a href="stats.html">Langfristige Statistiken</a></td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Leute im Space</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{spaceDevices.lastUpdate}}</td>
+                </tr>
+                <tr ng-class="spaceDevices.style">
+                    <td>Personen</td>
+                    <td>{{ spaceDevices.people }}</td>
+                </tr>
+                <tr>
+                    <td>Geräte</td>
+                    <td>{{ spaceDevices.devices }}</td>
+                </tr>
+                <tr>
+                    <td>Wer</td>
+                    <td>{{ spaceDevices.who }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Freifunk [ <a href="http://netmon.freifunk-ol.de/routerlist.php">RouterList</a> ]</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{ freifunk.lastUpdate }}</td>
+                </tr>
+                <tr>
+                    <td>Verbindungen</td>
+                    <td>{{ freifunk.client_count }}</td>
+                </tr>
+                </tbody>
+            </table>
+            -->
+
+            <!--
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Wetter</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{ weather.lastUpdate }}</td>
+                </tr>
+                <tr>
+                    <td>Drinnen</td>
+                    <td>{{ weather.Tin }}° {{ weather.Hin }}%</td>
+                </tr>
+                <tr>
+                    <td>Draußen</td>
+                    <td>{{ weather.Tout }}° {{ weather.Hout }}%</td>
+                </tr>
+                <tr>
+                    <td>Wind</td>
+                    <td>{{ weather.Wd }} @ {{ weather.Ws }} m/s // Böen: {{ weather.Wg }} m/s</td>
+                </tr>
+                <tr>
+                    <td>Luftdruck</td>
+                    <td>{{ weather.P }} hPa</td>
+                </tr>
+                <tr>
+                    <td>Regen</td>
+                    <td>{{ weather.R }}</td>
+                </tr>
+                </tbody>
+            </table>
+            -->
+        </div>
+
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        KtT Spacestatus - <a href="//github.com/ktt-ol/spacestatus">//github.com/ktt-ol/spacestatus</a>
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="js/index.js"></script>
+</body>
 </html>
-

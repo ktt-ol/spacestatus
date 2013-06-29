@@ -1,0 +1,37 @@
+body {
+  padding-top: 50px;
+}
+
+#headMenu .brand {
+  margin-left: 25px;
+}
+
+#inprintLink {
+  margin-right: 30px;
+}
+
+.container {
+  width: 95%;
+}
+
+section {
+  margin-bottom: 45px;
+}
+
+footer {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+  background-color: #fff;
+}
+
+/* page specific styles */
+
+#status #mainframeLogo img {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#status td:first-child {
+  width: 312px;
+}
