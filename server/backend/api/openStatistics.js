@@ -12,7 +12,7 @@ var MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 var START_YEAR = 2012;
 
 
-module.exports = function (app, data, config, events) {
+module.exports = function (app, data, config, srv) {
 
   app.namespace('/openStatistics', function () {
     app.get('/', function (req, res) {

@@ -7,7 +7,7 @@ module.exports = function () {
 
   var exportObj = {
     EVENT: {
-      SPACE_OPEN: 'space_open',
+      SPACE_OPEN: 'spaceOpen',
       SPACE_DEVICES: 'spaceDevices',
       FREIFUNK: 'freifunk',
       WEATHER: 'weather'
@@ -52,7 +52,7 @@ module.exports = function () {
       LOG.debug('Event: ' + eventName);
 
       this._validateEventName(eventName);
-      this._events.emit(eventName, data);
+      this._events.emit(eventName, eventName, data);
     }
   };
 

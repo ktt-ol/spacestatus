@@ -28,6 +28,7 @@ module.exports = function (app, data, config, srv) {
 
       // to get the eventName as first parameter, you have to use 'bind' with this callback function
       function callback(eventName, message) {
+
         writeEvent(res, eventName, messageCount++, JSON.stringify(message));
         sendKeepAlive();
       }
@@ -38,29 +39,21 @@ module.exports = function (app, data, config, srv) {
       var events = srv.events;
 
       var listenerAdded = false;
-      if (req.param('spaceOpen') === '1') {
-        writeEvent(res, 'spaceOpen', messageCount++, JSON.stringify(data.state.get().status));
-        events.on(events.EVENT.SPACE_OPEN, callback.bind(this, 'spaceOpen'));
-        listenerAdded = true;
-      }
 
-      if (req.param('spaceDevices') === '1') {
-        writeEvent(res, 'spaceDevices', messageCount++, JSON.stringify(data.state.get().spaceDevices));
-        events.on(events.EVENT.SPACE_DEVICES, callback.bind(this, 'spaceDevices'));
-        listenerAdded = true;
-      }
-
-      if (req.param('freifunk') === '1') {
-        writeEvent(res, 'freifunk', messageCount++, JSON.stringify(data.state.get().freifunk));
-        events.on(events.EVENT.FREIFUNK, callback.bind(this, 'freifunk'));
-        listenerAdded = true;
-      }
-
-      if (req.param('weather') === '1') {
-        writeEvent(res, 'weather', messageCount++, JSON.stringify(data.state.get().weather));
-        events.on(events.EVENT.WEATHER, callback.bind(this, 'weather'));
-        listenerAdded = true;
-      }
+      [
+        [events.EVENT.SPACE_OPEN, 'status'],
+        [events.EVENT.SPACE_DEVICES, 'spaceDevices'],
+        [events.EVENT.FREIFUNK, 'freifunk'],
+        [events.EVENT.WEATHER, 'weather']
+      ].forEach(function (event) {
+          var eventName = event[0];
+          var stateName = event[1];
+          if (req.param(eventName) === '1') {
+            writeEvent(res, eventName, messageCount++, JSON.stringify(data.state.get()[stateName]));
+            events.on(eventName, callback);
+            listenerAdded = true;
+          }
+        });
 
       if (!listenerAdded) {
         clearInterval(keepAliveIntervalHandle);
