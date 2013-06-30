@@ -3,25 +3,24 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="css/pages.css"/>
     <meta charset=utf-8/>
     <title>Space Status</title>
 </head>
 <body id="status">
 
-<div id="headMenu" class="navbar  navbar-fixed-top">
+<div id="headMenu" class="navbar navbar-static-top">
     <div class="navbar-inner">
         <a class="brand" href="//mainframe.io">MainFrame</a>
 
-        <div class="nav-collapse collapse">
-            <ul class="nav">
-                <li class="active"><a href="index.html">Status</a></li>
-                <li><a href="stats.html">Öffnungsstatistiken</a></li>
-            </ul>
-            <p id="inprintLink" class="navbar-text pull-right">
-                <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
-            </p>
-        </div>
+        <ul class="nav">
+            <li class="active"><a href="index.html">Status</a></li>
+            <li><a href="stats.html">Öffnungsstatistiken</a></li>
+        </ul>
+        <p id="inprintLink" class="navbar-text pull-right">
+            <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+        </p>
     </div>
 </div>
 
@@ -37,12 +36,13 @@
                 href="https://twitter.com/#!/KtT_OL">@KtT_OL</a><br/>
             <a href="xmpp://mainframe@jabber.ccc.de">mainframe@jabber.ccc.de</a>
         </div>
-        <div class="span8 ng-cloak" ng-controller="StatusCtrl" >
+        <div class="span8 ng-cloak" ng-controller="StatusCtrl">
             <!--Body content-->
 
             <h2>Status</h2>
+
             <div class="alert" ng-show="connectionError">
-                Ich habe die Verbindung zum Server verloren. :( <br />
+                Ich habe die Verbindung zum Server verloren. :( <br/>
                 Aber ich versuche es gleich noch einmal!
             </div>
 
