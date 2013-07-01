@@ -5,3 +5,5 @@ node_modules/
 spacegate_script/dataToSend
 server/state.json
 server/logs/*
+server/conf/devices.js
+syncDevicesToServer.sh
