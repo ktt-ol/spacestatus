@@ -80,17 +80,19 @@
                     <td>Letzte Änderung</td>
                     <td>{{spaceDevices.lastUpdate}}</td>
                 </tr>
-                <tr ng-class="spaceDevices.style">
-                    <td>Personen</td>
-                    <td>{{ spaceDevices.people }}</td>
-                </tr>
+                <!--ng-class="spaceDevices.whoStyle"-->
                 <tr>
-                    <td>Geräte</td>
-                    <td>{{ spaceDevices.devices }}</td>
-                </tr>
-                <tr>
-                    <td>Wer</td>
+                    <td>Wer ist da</td>
                     <td>{{ spaceDevices.who }}</td>
+                </tr>
+                <!--ng-class="spaceDevices. style"-->
+                <tr>
+                    <td>+ anonyme Personen</td>
+                    <td>{{ spaceDevices.anonPeople }}</td>
+                </tr>
+                <tr>
+                    <td>+ unbekannte Geräte</td>
+                    <td>{{ spaceDevices.devices }}</td>
                 </tr>
                 </tbody>
             </table>

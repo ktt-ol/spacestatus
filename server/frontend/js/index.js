@@ -29,7 +29,7 @@
         lastUpdate: '?',
         style: '',
         devices: '?',
-        people: '?',
+        anonPeople: '?',
         who: '?'
       };
       $scope.freifunk = {
@@ -95,7 +95,7 @@
             var data = angular.fromJson(e.data);
 
             timestamps.spaceDevices = data.timestamp;
-            $scope.spaceDevices.people = data.peopleCount;
+            $scope.spaceDevices.anonPeople = data.peopleCount - data.people.length;
             $scope.spaceDevices.devices = data.deviceCount;
             var who = data.people.length > 0 ? data.people.join(', ') : 'Keiner sichtbar';
             $scope.spaceDevices.who = who;
