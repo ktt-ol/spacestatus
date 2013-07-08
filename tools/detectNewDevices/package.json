@@ -1,0 +1,11 @@
+{
+  "name": "SpaceStatus.detectNewDevices",
+  "version": "0.1.0",
+  "author": "Holger Cremer (HolgerCremer@gmail.com)",
+  "license": "BSD",
+  "private": true,
+  "dependencies": {
+    "lazy-lines": "~0.1.1"
+  },
+  "engine": "node >= 1.0"
+}
