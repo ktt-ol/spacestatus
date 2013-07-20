@@ -21,47 +21,38 @@ var Twitter = proxyquire('./../server/backend/service/twitter.js', {
 
 var config = {
   enabled: true,
-  twitterinterval: 1,
   twitterdelay: 10000
+};
+
+var stateMock = {
+  reset: function () {
+    this.twitter.lastStateTwittered = null;
+    this.twitter.lastTweetSendAt = 0;
+    this.twitter.enabled = true;
+  },
+  twitter: {},
+  get: function () {
+    return {
+      twitter: stateMock.twitter
+    };
+  }
 };
 
 describe('Tests for the twitter action, ', function () {
   beforeEach(function () {
     testHelper.mockSetTimeout();
+    stateMock.reset();
   });
 
   afterEach(function () {
     testHelper.restoreSetTimeout();
   });
 
-  it('should doesn´t change on external changes', function () {
-    var extConfig = {
-      enabled: 0,
-      foo: 'bar'
-    };
-    var extState = {
-      foo: 'bar'
-    };
-    var t = new Twitter(extConfig, extState);
-    // check for default value
-    expect(t._config.enabled).toBe(false);
-    expect(t._config.twitterdelay).toBe(1000);
-    expect(t._state.lastTweetSendAt).toBe(0);
-    // check for same values as external
-    expect(t._config.foo).toBe('bar');
-    expect(t._state.foo).toBe('bar');
-
-    // mode external changes and check again
-    extConfig.foo = 'not bar anymore';
-    extState.foo = 'also not bar anymore';
-    expect(t._config.foo).toBe('bar');
-    expect(t._state.foo).toBe('bar');
-  });
 
   it('should enable and disable', function () {
-    var t = new Twitter({});
+    var t = new Twitter({}, stateMock);
     expect(t.isEnabled()).toBe(false);
-    t = new Twitter(config);
+    t = new Twitter(config, stateMock);
     expect(t.isEnabled()).toBe(true);
 
     t.disable();
@@ -72,27 +63,27 @@ describe('Tests for the twitter action, ', function () {
   });
 
   it('should fail on all the wrong status', function () {
-    var t = new Twitter(config);
+    var t = new Twitter(config, stateMock);
     expect(t.sendTwitterForSpaceStatus).toThrow();
     expect(t.sendTwitterForSpaceStatus.bind(t, true)).toThrow();
     expect(t.sendTwitterForSpaceStatus.bind(t, 'blah')).toThrow();
   });
 
   it('should tweet the correct status', function () {
-    var t = new Twitter(config);
+    var t = new Twitter(config, stateMock);
 
     updateStatusMockFn = function (tweet) {
       expect(tweet).toContain('geöffnet');
     };
     expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
 
-    t = new Twitter(config);
+    t = new Twitter(config, stateMock);
     updateStatusMockFn = function (tweet) {
       expect(tweet).toContain('geschlossen');
     };
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
 
-    t = new Twitter(config);
+    t = new Twitter(config, stateMock);
     updateStatusMockFn = function (tweet) {
       expect(tweet).toContain('schließt gleich');
     };
@@ -100,7 +91,7 @@ describe('Tests for the twitter action, ', function () {
   });
 
   it('should not tweet if disabled', function () {
-    var t = new Twitter(config);
+    var t = new Twitter(config, stateMock);
     t.disable();
     expect(t.isEnabled()).toBe(false);
 
@@ -116,29 +107,28 @@ describe('Tests for the twitter action, ', function () {
       callCounter++;
     };
 
+    stateMock.twitter.lastStateTwittered = 'off';
     var t = new Twitter({
       enabled: true,
       twitterdelay: 10000
-    }, {
-      lastStateTwittered: 'off',
-      lastTweetSendAt: 0
-    });
+    },stateMock);
+
     // test init state
-    expect(t._state.lastTweetSendAt).toBe(0);
+    expect(stateMock.twitter.lastTweetSendAt).toBe(0);
 
     // status change should work
     expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
     expect(callCounter).toBe(1);
-    var lastTime = t._state.lastTweetSendAt;
+    var lastTime = stateMock.twitter.lastTweetSendAt;
     expect(lastTime - 1).toBeLessThan(Date.now());
 
     // should not work
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
     expect(callCounter).toBe(1);
-    expect(t._state.lastTweetSendAt).toBe(lastTime);
+    expect(stateMock.twitter.lastTweetSendAt).toBe(lastTime);
 
     // should work, after internal state manipulation
-    t._state.lastTweetSendAt -= 10000 + 1;
+    stateMock.twitter.lastTweetSendAt -= 10000 + 1;
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
     expect(callCounter).toBe(2);
   });
@@ -149,19 +139,17 @@ describe('Tests for the twitter action, ', function () {
       callCounter++;
     };
 
+    stateMock.twitter.lastStateTwittered = 'off';
     var t = new Twitter({
       enabled: true,
       twitterdelay: 1
-    }, {
-      lastStateTwittered: 'off',
-      lastTweetSendAt: 0
-    });
+    }, stateMock);
 
     // should not work
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
     expect(callCounter).toBe(0);
     // modify the internal time, because we are too fast for date.now
-    t._state.lastTweetSendAt -= 2;
+    stateMock.twitter.lastTweetSendAt -= 2;
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
     expect(callCounter).toBe(0);
 
@@ -169,9 +157,51 @@ describe('Tests for the twitter action, ', function () {
     expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
     expect(callCounter).toBe(1);
     // modify the internal time, because we are too fast for date.now
-    t._state.lastTweetSendAt -= 2;
+    stateMock.twitter.lastTweetSendAt -= 2;
     expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
     expect(callCounter).toBe(2);
+  });
+
+  it('should work with saved state', function () {
+    var t = new Twitter({
+      enabled: true,
+      twitterdelay: 10000
+    }, stateMock);
+
+    var callCounter = 0;
+    updateStatusMockFn = function (tweet) {
+      callCounter++;
+    };
+
+    expect(t.isEnabled()).toBe(true);
+    expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
+    expect(callCounter).toBe(1);
+
+    expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
+    expect(callCounter).toBe(1);
+
+    // simulating the program restart by creating a new twitter instance
+    t = new Twitter({
+      enabled: true,
+      twitterdelay: 10000
+    }, stateMock);
+    expect(t.isEnabled()).toBe(true);
+    expect(t.sendTwitterForSpaceStatus.bind(t, 'on')).not.toThrow();
+    // should still be 1 !
+    expect(callCounter).toBe(1);
+
+    // disable twitter and testing the new instances
+    t.disable();
+
+    // simulating the program restart by creating a new twitter instance
+    t = new Twitter({
+      enabled: true,
+      twitterdelay: 10000
+    }, stateMock);
+    expect(t.isEnabled()).toBe(false);
+    expect(t.sendTwitterForSpaceStatus.bind(t, 'off')).not.toThrow();
+    expect(callCounter).toBe(1);
+
   });
 
 });

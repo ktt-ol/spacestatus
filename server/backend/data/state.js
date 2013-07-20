@@ -54,6 +54,12 @@ StateHandler.DEFAULT_STATE = {
     'Wd': 0, // Wind direction
     'R': 0
     // Rain clicks
+  },
+
+  'twitter': {
+    'enabled': true,
+    'lastStateTwittered': null,
+    'lastTweetSendAt': 0
   }
 };
 

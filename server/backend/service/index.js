@@ -9,7 +9,7 @@ module.exports = {
     var Xmpp = require('./xmpp.js');
     var Events = require('./events.js');
 
-    srv.twitter = new Twitter(config.twitter);
+    srv.twitter = new Twitter(config.twitter, data.state);
     srv.xmpp = new Xmpp(config.xmpp, data.state);
     srv.events = new Events();
 
