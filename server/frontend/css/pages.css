@@ -27,10 +27,14 @@ footer {
 
 /* page specific styles */
 
-#status #mainframeLogo img {
+#status #mainframeLogo img,
+#status #fabolabLogo img {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+/*#status #fabolabLogo img {*/
+  /*margin-bottom: 20px;*/
+/*}*/
 
 #status td:first-child {
   width: 312px;
