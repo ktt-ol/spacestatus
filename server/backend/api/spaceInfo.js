@@ -1,6 +1,8 @@
 /*
- Mostly static information about the Hackspace. The open state and the weather data is used as dynamic part.
- For external site.
+ This page outputs information for the Space Api ( http://spaceapi.net/ ).
+ Mostly static information, however the open state and the sensor properties are dynamic.
+
+ http://spaceapi.net/specs/0.13
  */
 
 'use strict';
@@ -17,97 +19,125 @@ module.exports = function (app, data, config, srv) {
       var openStatusPublic = {
         'on': 'Open!',
         'off': 'Closed!',
-        'closing': 'Closing...'
+        'closing': 'We are closing...'
       };
+
+      // https://github.com/slopjong/OpenSpaceLint/issues/80
+      // [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ]
+      var windDirectionTranslation = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 ];
 
 
       var currentStatus = {
-        'api': '0.12',
+        'api': '0.13',
         'space': 'Mainframe',
-        'logo': 'http://status.kreativitaet-trifft-technik.de/img/logo.png',
-        'icon': {
-          'open': 'http://status.kreativitaet-trifft-technik.de/img/open.png',
-          'closed': 'http://status.kreativitaet-trifft-technik.de/img/closed.png'
-        },
+        'logo': 'http://status.mainframe.io/img/logo.png',
         'url': 'http://mainframe.io/',
-        'address': 'Raiffeisenstrasse 27, 26122 Oldenburg, Germany',
+        'location': {
+          'address': 'Raiffeisenstrasse 27, 26122 Oldenburg, Germany',
+          'lat': 53.14495,
+          'lon': 8.21516
+        },
         'contact': {
           'irc': 'irc://freenode/#hsol',
           'twitter': '@HackspaceOL',
           'email': 'vorstand@kreativitaet-trifft-technik.de',
-          'ml': 'diskussion@kreativitaet-trifft-technik.de'
+          'ml': 'diskussion@kreativitaet-trifft-technik.de',
+          'issue_mail': 'hc@kreativitaet-trifft-technik.de'
         },
-        'lat': 53.14495,
-        'lon': 8.21516,
-        'open': state.status.state === 'on',
-        'status': openStatusPublic[state.status.state],
-        'lastchange': state.status.timestamp,
+        'issue_report_channels': [ 'issue_mail'],
+        'state': {
+          'open': state.status.state === 'on',
+          'lastchange': state.status.timestamp,
+          'message': openStatusPublic[state.status.state],
+          'icon': {
+            'open': 'http://status.mainframe.io/img/open.png',
+            'closed': 'http://status.mainframe.io/img/closed.png'
+          }
+        },
         'sensors': {
+          'people_now_present': [
+            {
+              'value': state.spaceDevices.peopleCount,
+              'names': state.spaceDevices.people
+            }
+          ],
+          'network_connections': [
+            {
+              'value': state.spaceDevices.deviceCount,
+              'location': 'Inside'
+            }
+          ],
           'temperature': [
             {
-              'name': 'inside',
+              'location': 'Inside',
               'value': state.weather.Tin / 10,
-              'unit': 'C'
+              'unit': '°C'
             },
             {
-              'name': 'outside',
+              'location': 'Outside',
               'value': state.weather.Tout / 10,
-              'unit': 'C'
+              'unit': '°C'
             }
           ],
 
           'humidity': [
             {
-              'name': 'inside',
-              'value': state.weather.Hin / 100
+              'location': 'Inside',
+              'value': state.weather.Hin / 100,
+              'unit': '%'
             },
             {
-              'name': 'outside',
-              'value': state.weather.Hout / 100
+              'location': 'Outside',
+              'value': state.weather.Hout / 100,
+              'unit': '%'
             }
           ],
 
           'barometer': [
             {
-              'name': 'outside',
+              'location': 'Outside',
               'value': state.weather.P / 10,
-              'unit': 'hPa'
+              'unit': 'hPA'
             }
           ],
 
           'wind': [
             {
-              'name': 'outside',
-              'speed': state.weather.Ws / 10,
-              'gust': state.weather.Wg / 10,
-              'unit': 'm/s',
-              'direction': [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ][state.weather.Wd]
-            }
-          ],
-
-          'wifi': [
-            {
-              'name': 'freifunk',
-              'connections': state.freifunk.client_count
+              'location': 'Outside',
+              'properties': {
+                'speed': {
+                  'value': state.weather.Ws / 10,
+                  'unit': 'm/s'
+                },
+                'gust': {
+                  'value': state.weather.Ws / 10,
+                  'unit': 'm/s'
+                },
+                'direction': {
+                  'value': windDirectionTranslation[state.weather.Wd],
+                  'unit': '\u00b0'
+                },
+                'elevation': {
+                  // 7.701 m + the buildings roof (ca. 20m)
+                  'value': 27,
+                  'unit': 'm'
+                }
+              }
             }
           ]
         },
-        'feeds': [
-          {
-            'name': 'blog',
+        'feeds': {
+          'blog': {
             'type': 'application/rss+xml',
             'url': 'http://www.kreativitaet-trifft-technik.de/news.xml'
           },
-          {
-            'name': 'calendar',
+          'calendar': {
             'type': 'application/calendar',
             'url': 'http://www.kreativitaet-trifft-technik.de/calendar/ical/2013-05/calendar.ics'
-          },
-          {
-            'name': 'status',
-            'type': 'text/html',
-            'url': 'http://status.kreativitaet-trifft-technik.de/'
           }
+        },
+        'projects': [
+          'https://github.com/ktt-ol/'
         ]
       };
 
