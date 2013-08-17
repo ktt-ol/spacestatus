@@ -84,8 +84,7 @@ module.exports = function (app, data, config, srv) {
 
     var dataChanged = spaceDevices.deviceCount !== result.deviceCount ||
       spaceDevices.unknownDevicesCount !== result.unknownDevicesCount ||
-      spaceDevices.peopleCount !== result.peopleCount ||
-      !isArrayEquals(spaceDevices.people, result.people);
+      spaceDevices.peopleCount !== result.peopleCount || !isArrayEquals(spaceDevices.people, result.people);
 
     if (!dataChanged) {
       LOG.debug('spaceDevices didn´t change.');
@@ -128,7 +127,12 @@ module.exports = function (app, data, config, srv) {
 
     resetTimeoutHandle = setTimeout(function () {
       LOG.debug('Clear space devices.');
-      updateSpaceDevices(0, 0, []);
+      updateSpaceDevices({
+        deviceCount: 0,
+        unknownDevicesCount: 0,
+        peopleCount: 0,
+        people: []
+      });
     }, config.spaceDevices.clearEntriesAfter);
   }
 
