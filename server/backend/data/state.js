@@ -30,8 +30,9 @@ StateHandler.DEFAULT_STATE = {
   },
 
   'spaceDevices': {
-    'deviceCount': 0, // the pure number of devices
-    'peopleCount': 0, // the same as deviceCount, but reduced by some devices if we know the owners
+    'deviceCount': 0, // the pure number of devices (not reduced in any way)
+    'peopleCount': 0, // the number of known people in the space
+    'unknownDevicesCount': 0, // the unkown number of devices
     'people': [], // a list of people currently in the space (detected by their devices and their permission is required)
     'timestamp': 0 // last update
   },

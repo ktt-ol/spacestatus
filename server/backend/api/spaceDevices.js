@@ -40,8 +40,8 @@ module.exports = function (app, data, config, srv) {
           return;
         }
 
-        var data = countOnlineSpaceDevices(req.body.devices);
-        updateSpaceDevices(data.deviceCount, data.peopleCount, data.people);
+        var result = countOnlineSpaceDevices(req.body.devices);
+        updateSpaceDevices(result);
         resetAfterTimeout();
 
         apiUtils.sendJson(res, 200, { status: 'ok' });
@@ -62,7 +62,7 @@ module.exports = function (app, data, config, srv) {
       }
 
       var spaceDevices = data.state.get().spaceDevices;
-      data.db.updateDevicesAndPeople(spaceDevices.deviceCount, spaceDevices.peopleCount, function (err) {
+      data.db.updateDevicesAndPeople(spaceDevices.unknownDevicesCount, spaceDevices.peopleCount, function (err) {
         if (err) {
           LOG.warn('DB error during saving new space devices state.');
           setTimeout(updateDb, config.spaceDevices.dbUpdateTime);
@@ -79,20 +79,23 @@ module.exports = function (app, data, config, srv) {
 
 
   // updates the current state and sets the dirtyState if necessary
-  function updateSpaceDevices(deviceCount, peopleCount, people) {
+  function updateSpaceDevices(result) {
     var spaceDevices = data.state.get().spaceDevices;
 
-    var dataChanged = spaceDevices.deviceCount !== deviceCount ||
-      spaceDevices.peopleCount !== peopleCount || !isArrayEquals(spaceDevices.people, people);
+    var dataChanged = spaceDevices.deviceCount !== result.deviceCount ||
+      spaceDevices.unknownDevicesCount !== result.unknownDevicesCount ||
+      spaceDevices.peopleCount !== result.peopleCount ||
+      !isArrayEquals(spaceDevices.people, result.people);
 
     if (!dataChanged) {
       LOG.debug('spaceDevices didn´t change.');
       return;
     }
 
-    spaceDevices.deviceCount = deviceCount;
-    spaceDevices.peopleCount = peopleCount;
-    spaceDevices.people = people;
+    spaceDevices.deviceCount = result.deviceCount;
+    spaceDevices.peopleCount = result.peopleCount;
+    spaceDevices.unknownDevicesCount = result.unknownDevicesCount;
+    spaceDevices.people = result.people;
     spaceDevices.timestamp = Math.round(Date.now() / 1000);
 
     srv.events.emit(srv.events.EVENT.SPACE_DEVICES, spaceDevices);
@@ -131,15 +134,18 @@ module.exports = function (app, data, config, srv) {
 
   function countOnlineSpaceDevices(devices) {
     // The rules:
-    // - every device with mode=ignore is ignored and not count anywhere
+    // - every device is count for deviceCount
+    // - every device with mode=ignore is ignored and not count anywhere except deviceCount
     // - every unknown device (= not in the config) counts as one device
     // - a person counts as one person, even it is online with several devices
     // - All devices that belongs to a person are not count as device
     // - every person with mode=visible is shown in the online list by name
 
-    var counter = 0;
+    var rawDevicesCounter = 0;
+    var unknownCounter = 0;
     var people = {};
     devices.forEach(function (deviceId) {
+      rawDevicesCounter++;
       deviceId = deviceId.toLowerCase();
 
       // console.log('-----' + deviceId);
@@ -147,7 +153,7 @@ module.exports = function (app, data, config, srv) {
 
       // is the device unknown?
       if (!entry) {
-        counter++;
+        unknownCounter++;
         // console.log('exit 1');
         return;
       }
@@ -181,7 +187,8 @@ module.exports = function (app, data, config, srv) {
     }
 
     return {
-      deviceCount: counter,
+      deviceCount: rawDevicesCounter,
+      unknownDevicesCount: unknownCounter,
       peopleCount: peopleCount,
       people: publicList
     };
