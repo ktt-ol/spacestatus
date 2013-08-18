@@ -11,6 +11,17 @@ var apiUtils = require(('./apiUtils.js'));
 
 module.exports = function (app, data, config, srv) {
 
+  function getPeopleSensor(state) {
+    var value = {
+      'value': state.spaceDevices.peopleCount
+    };
+    if (state.spaceDevices.people.length > 0) {
+      value.names = state.spaceDevices.people;
+    }
+
+    return [ value ];
+  }
+
   app.namespace('/spaceInfo', function () {
 
     app.get('/', function (req, res) {
@@ -55,12 +66,7 @@ module.exports = function (app, data, config, srv) {
           }
         },
         'sensors': {
-          'people_now_present': [
-            {
-              'value': state.spaceDevices.peopleCount,
-              'names': state.spaceDevices.people
-            }
-          ],
+          'people_now_present': getPeopleSensor(state),
           'network_connections': [
             {
               'value': state.spaceDevices.deviceCount,
