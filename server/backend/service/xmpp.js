@@ -51,8 +51,14 @@ module.exports = function (xmppConfig, state) {
                 JSON.stringify(state.get()) +
                 '\nIf you want to have a nice format, send me a patch.';
               reply(msg);
+            } else if (body.getText() == 'who') {
+              var msg = JSON.stringify(state.get().spaceDevices.people);
+              reply(msg);
             } else {
-              reply('I´m a very, very stupid bot. Send ´?´ to get the current status.');
+              var msg = 'Available commands:\n' +
+                '?   - Dump internal status object in JSON notation\n' +
+                'who - Dump list of people detected in space';
+              reply(msg);
             }
           }
         }
