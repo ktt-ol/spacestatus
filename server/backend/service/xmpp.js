@@ -46,16 +46,17 @@ module.exports = function (xmppConfig, state) {
         if (stanza.attrs.type === 'chat') {
           var body = stanza.getChild('body');
           if (body !== undefined) {
+            var msg;
             if (body.getText() === '?') {
-              var msg = 'The current status as json: ' +
+              msg = 'The current status as json: ' +
                 JSON.stringify(state.get()) +
                 '\nIf you want to have a nice format, send me a patch.';
               reply(msg);
-            } else if (body.getText() == 'who') {
-              var msg = JSON.stringify(state.get().spaceDevices.people);
+            } else if (body.getText() === 'who') {
+              msg = JSON.stringify(state.get().spaceDevices.people);
               reply(msg);
             } else {
-              var msg = 'Available commands:\n' +
+              msg = 'Available commands:\n' +
                 '?   - Dump internal status object in JSON notation\n' +
                 'who - Dump list of people detected in space';
               reply(msg);
