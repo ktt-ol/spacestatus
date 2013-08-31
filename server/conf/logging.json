@@ -22,5 +22,11 @@
       "type": "console",
       "category": "DEV_app"
     }
-  ]
+  ],
+  "levels": {
+    "express_access": "INFO",
+    "DEV_express_access": "DEBUG",
+    "app": "INFO",
+    "DEV_app": "DEBUG"
+  }
 }
