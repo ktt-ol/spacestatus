@@ -97,8 +97,7 @@
             timestamps.spaceDevices = data.timestamp;
             $scope.spaceDevices.anonPeople = data.peopleCount - data.people.length;
             $scope.spaceDevices.devices = data.unknownDevicesCount;
-            var who = data.people.length > 0 ? data.people.join(', ') : 'Keiner sichtbar';
-            $scope.spaceDevices.who = who;
+            $scope.spaceDevices.who = data.people;
             $scope.spaceDevices.style = data.peopleCount > 0 ? 'success' : 'error';
           });
         });

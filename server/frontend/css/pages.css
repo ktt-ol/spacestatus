@@ -2,6 +2,10 @@
   display: none !important;
 }
 
+body {
+  font-size: 16px;
+}
+
 #headMenu .brand {
   margin-left: 25px;
 }
@@ -32,10 +36,22 @@ footer {
   margin-top: 10px;
   margin-bottom: 20px;
 }
-/*#status #fabolabLogo img {*/
-  /*margin-bottom: 20px;*/
-/*}*/
 
 #status td:first-child {
   width: 312px;
+}
+
+#status .person:after {
+  content: " • ";
+  font-size: 30px;
+  vertical-align: bottom;
+}
+#status .person:last-child:after {
+  content: "";
+}
+
+#status .key-true .name {
+  background: url('../img/witchlines_Simple_key.png') right center no-repeat;
+  padding-right: 44px;
+  text-decoration: underline;
 }

@@ -10,6 +10,12 @@ module.exports = {
     password: ''
   },
 
+  poisk: {
+    enabled: false,
+    apiEndpoint: '... some endpoint ...',
+    pollInterval: 5 * 60 * 1000 // in ms; how often is the poisk service called?
+  },
+
   spaceDevices: {
     clearEntriesAfter: 30 * 60 * 1000, // after this time in ms, all entries will be cleared
     dbUpdateTime: 15 * 60 * 1000, // after this time in ms, we update the state into the db (if changed)
@@ -21,6 +27,8 @@ module.exports = {
       },
       {
         name: 'Show Me',
+        // the id in our open id server ( id.kreativitaet-trifft-technik.de ). Optional.
+        id: 'someUser',
         mode: 'visible',
         devices: [ 'foo', 'bar']
       },

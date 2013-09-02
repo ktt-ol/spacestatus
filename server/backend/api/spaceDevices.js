@@ -15,7 +15,7 @@ module.exports = function (app, data, config, srv) {
 
   var resetTimeoutHandle;
   var dirtyState = false;
-  var deviceMap = createDeviceMap(config.spaceDevices.list);
+  var fastMaps = createMaps(config.spaceDevices.list);
 
   resetAfterTimeout();
   scheduleDbUpdate();
@@ -41,6 +41,7 @@ module.exports = function (app, data, config, srv) {
         }
 
         var result = countOnlineSpaceDevices(req.body.devices);
+        result.people = createPeopleWithPoiskData(result.people);
         updateSpaceDevices(result);
         resetAfterTimeout();
 
@@ -103,6 +104,29 @@ module.exports = function (app, data, config, srv) {
     LOG.debug('Updated current devices', spaceDevices);
   }
 
+  /**
+   * @param onlinePeopleList, e.g. [ 'holger', 'joe', ... ]
+   * @return  [ { name: 'holger', id: 'hplus', key: true }, ... ]
+   */
+  function createPeopleWithPoiskData(onlinePeopleList) {
+    var keyHolder = data.state.get().poisk.keyHolder;
+
+    var result = [];
+    onlinePeopleList.forEach(function (name) {
+      var id = fastMaps.nameToIdMap[name];
+      if (!id) {
+        return;
+      }
+      var hasKey = keyHolder.indexOf(id) !== -1;
+      result.push({
+        name: name,
+        id: id,
+        key: hasKey
+      });
+    });
+
+    return result;
+  }
 
   // compare two arrays
   function isArrayEquals(a, b) {
@@ -153,7 +177,7 @@ module.exports = function (app, data, config, srv) {
       deviceId = deviceId.toLowerCase();
 
       // console.log('-----' + deviceId);
-      var entry = deviceMap[deviceId];
+      var entry = fastMaps.deviceMap[deviceId];
 
       // is the device unknown?
       if (!entry) {
@@ -198,23 +222,33 @@ module.exports = function (app, data, config, srv) {
     };
   }
 
-  // builds a map from the configuration for a fast access
-  function createDeviceMap(devicesConfigList) {
-    var map = {};
+  // builds a maps from the configuration for a fast access
+  function createMaps(devicesConfigList) {
+    var device = {}, nameToId = {};
 
     for (var i = 0; i < devicesConfigList.length; i++) {
       var nameBlock = devicesConfigList[i];
+
+      if (nameBlock.id) {
+        nameToId[nameBlock.name] = nameBlock.id;
+      }
+
       for (var ii = 0; ii < nameBlock.devices.length; ii++) {
         var deviceId = nameBlock.devices[ii];
         deviceId = deviceId.toLowerCase();
-        map[deviceId] = {
+        device[deviceId] = {
+          // id may be undefined!
+          id: nameBlock.id,
           name: nameBlock.name,
           mode: nameBlock.mode
         };
       }
     }
 
-    return map;
+    return {
+      deviceMap: device,
+      nameToIdMap: nameToId
+    };
   }
 
 };

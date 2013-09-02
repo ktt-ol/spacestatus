@@ -33,7 +33,9 @@ StateHandler.DEFAULT_STATE = {
     'deviceCount': 0, // the pure number of devices (not reduced in any way)
     'peopleCount': 0, // the number of known people in the space
     'unknownDevicesCount': 0, // the unkown number of devices
-    'people': [], // a list of people currently in the space (detected by their devices and their permission is required)
+    // a list of people objects currently in the space (detected by their devices and their permission is required)
+    // e.g. [ { name: 'holger', id: 'hplus', key: true }, ... ]
+    'people': [],
     'timestamp': 0 // last update
   },
 
@@ -61,6 +63,11 @@ StateHandler.DEFAULT_STATE = {
     'enabled': true,
     'lastStateTwittered': null,
     'lastTweetSendAt': 0
+  },
+
+  'poisk': {
+    lastETag: '',
+    keyHolder: []
   }
 };
 
