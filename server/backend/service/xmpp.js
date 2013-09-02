@@ -53,7 +53,10 @@ module.exports = function (xmppConfig, state) {
                 '\nIf you want to have a nice format, send me a patch.';
               reply(msg);
             } else if (body.getText() === 'who') {
-              msg = JSON.stringify(state.get().spaceDevices.people);
+              // make a nice formatted string from the data
+              msg = state.get().spaceDevices.people.map(function (value) {
+                return value.name + '[' + (value.key ? 'X' : '') + ']';
+              }).join(', ');
               reply(msg);
             } else {
               msg = 'Available commands:\n' +
@@ -78,7 +81,7 @@ module.exports = function (xmppConfig, state) {
     }); // on stanza
   };
 
-  this.isConnected = function() {
+  this.isConnected = function () {
     return isConnected;
   };
 
