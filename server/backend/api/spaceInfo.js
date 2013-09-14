@@ -16,7 +16,9 @@ module.exports = function (app, data, config, srv) {
       'value': state.spaceDevices.peopleCount
     };
     if (state.spaceDevices.people.length > 0) {
-      value.names = state.spaceDevices.people;
+      value.names = state.spaceDevices.people.map(function (peopleObj) {
+        return peopleObj.name;
+      });
     }
 
     return [ value ];
