@@ -41,7 +41,6 @@ module.exports = function (app, data, config, srv) {
         }
 
         var result = countOnlineSpaceDevices(req.body.devices);
-        result.people = createPeopleWithPoiskData(result.people);
         updateSpaceDevices(result);
         resetAfterTimeout();
 
@@ -113,16 +112,17 @@ module.exports = function (app, data, config, srv) {
 
     var result = [];
     onlinePeopleList.forEach(function (name) {
-      var id = fastMaps.nameToIdMap[name];
-      if (!id) {
-        return;
-      }
-      var hasKey = keyHolder.indexOf(id) !== -1;
-      result.push({
+      var person = {
         name: name,
-        id: id,
-        key: hasKey
-      });
+        key: false
+      };
+
+      var id = fastMaps.nameToIdMap[name];
+      if (id) {
+        person.id = id;
+        person.key = keyHolder.indexOf(id) !== -1;
+      }
+      result.push(person);
     });
 
     return result;
@@ -213,6 +213,9 @@ module.exports = function (app, data, config, srv) {
         }
       }
     }
+
+
+    publicList = createPeopleWithPoiskData(publicList);
 
     return {
       deviceCount: rawDevicesCounter,
