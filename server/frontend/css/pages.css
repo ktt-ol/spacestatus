@@ -46,6 +46,7 @@ footer {
   font-size: 30px;
   vertical-align: bottom;
 }
+
 #status .person:last-child:after {
   content: "";
 }
@@ -54,4 +55,22 @@ footer {
   background: url('../img/witchlines_Simple_key_30.png') right center no-repeat;
   padding-right: 34px;
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  #headMenu .brand {
+    margin-left: 0px;
+  }
+
+  #inprintLink {
+    margin-right: 0px;
+  }
+
+  .navbar-inner {
+    padding: 0 5px;
+  }
+
+  #status td:first-child {
+    width: 175px;
+  }
 }
