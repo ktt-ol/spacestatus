@@ -58,18 +58,6 @@ footer {
 }
 
 @media (max-width: 600px) {
-  #headMenu .brand {
-    margin-left: 0px;
-  }
-
-  #inprintLink {
-    margin-right: 0px;
-  }
-
-  .navbar-inner {
-    padding: 0 5px;
-  }
-
   #status td:first-child {
     width: 175px;
   }

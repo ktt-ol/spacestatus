@@ -9,6 +9,21 @@
 
   var app = angular.module('status', []);
 
+  app.controller('NavMenuCtrl', [
+    '$scope',
+    function ($scope) {
+      $scope.data = {
+        open: false,
+        navStyle: {}
+      };
+
+      $scope.respButtonClick = function () {
+        $scope.data.open = ! $scope.data.open;
+        $scope.data.navStyle = $scope.data.open ? { 'height': 'auto' } : {};
+      };
+    }
+  ]);
+
   app.controller('StatusCtrl', [
     '$scope', '$log', '$timeout', 'SSE',
     function ($scope, $log, $timeout, SSE) {
@@ -30,7 +45,7 @@
         style: '',
         devices: '?',
         anonPeople: '?',
-        who: '?'
+        who: []
       };
       $scope.freifunk = {
         lastUpdate: '?',
