@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="status">
 <head>
     <meta charset="utf-8">
     <title>MainFrame Stats</title>
@@ -10,49 +10,54 @@
 </head>
 <body id="openStats">
 
-<div id="headMenu" class="navbar navbar-static-top">
+<div id="headMenu" class="navbar navbar-static-top" ng-controller="NavMenuCtrl">
     <div class="navbar-inner">
-        <a class="brand" href="//www.kreativitaet-trifft-technik.de/mainframe">MainFrame</a>
 
-        <ul class="nav">
-            <li><a href="index.html">Status</a></li>
-            <li class="active"><a href="stats.html">Öffnungsstatistiken</a></li>
-        </ul>
-        <p id="inprintLink" class="navbar-text pull-right">
-            <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
-        </p>
+        <button type="button" class="btn btn-navbar" ng-click="respButtonClick()" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        <a class="brand" href="//mainframe.io">MainFrame</a>
+
+        <div class="nav-collapse collaps" ng-class="{in: data.open}" ng-style="data.navStyle">
+            <ul class="nav">
+                <li><a href="index.html">Status</a></li>
+                <li class="active"><a href="stats.html">Öffnungsstatistiken</a></li>
+                <li><a href="//poisk.mainframe.io">Poisk</a></li>
+            </ul>
+            <ul id="inprintLink" class="nav navbar-text pull-right">
+                <li>
+                    <a href="//www.kreativitaet-trifft-technik.de/impressum" class="navbar-link">Impressum</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
+
 <div id="pageContent" class="container">
 
-    <div id="globalError" class="alert alert-error hidden" style="display:none"></div>
+    <div class="alert alert-error" ng-show="globalErrorMsg">
+        <div ng-repeat="msg in globalErrorMsg">
+            <strong>Error!</strong> {{msg}}
+        </div>
+    </div>
 
     <section id="graph">
         <h2>Graph!</h2>
         Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
         2012 zurück gucken!
-        <div id="chartdiv" style="width: 100%; height: 550px"></div>
+
+        <div chart style="width: 100%; height: 550px"></div>
     </section>
 
     <section id="stats">
         <h2>Letzte Woche</h2>
 
         <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
-        Anzeigen für die letzte
-        <select id="weeklyStatsDropdown">
-            <option value="1">Woche</option>
-        </select>
-        <table id="weeklyStatsTable" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Wochentag</th>
-                <th>Zeitdauer (h)</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <weekly-stats></weekly-stats>
     </section>
 
 </div>
@@ -63,9 +68,13 @@
     </div>
 </footer>
 
-<script src="lib/jquery/jquery-1.8.3.min.js"></script>
-<script src="lib/bootstrap/bootstrap.min.js"></script>
+<script src="lib/angular/angular.min.js"></script>
 <script src="lib/amcharts/amcharts.js"></script>
-<script src="js/statsPage.js"></script>
+<script src="js/statsPage/app.js"></script>
+<script src="js/NavMenuCtrl.js"></script>
+<script src="js/statsPage/openTimeData.js"></script>
+<script src="js/statsPage/chart.js"></script>
+<script src="js/statsPage/weeklyStats.js"></script>
+<script src="js/statsPage/timeUtils.js"></script>
 </body>
 </html>
