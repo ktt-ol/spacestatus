@@ -7,7 +7,7 @@
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
 
-  var app = angular.module('status', []);
+  var app = angular.module('status', ['status-extras']);
 
   app.controller('StatusCtrl', [
     '$scope', '$log', '$timeout', 'SSE',

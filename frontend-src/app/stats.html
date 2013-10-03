@@ -4,9 +4,11 @@
     <meta charset="utf-8">
     <title>MainFrame Stats</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- build:css(.tmp) styles/main.css -->
     <link href="styles/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="styles/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="styles/pages.css"/>
+    <!-- endbuild -->
 </head>
 <body id="openStats">
 
@@ -68,13 +70,19 @@
     </div>
 </footer>
 
+<!-- build:js({.tmp,app}) scripts/base_ng.js -->
 <script src="lib/angular/angular.min.js"></script>
+<script src="js/NavMenuCtrl.js"></script>
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/status.js -->
 <script src="lib/amcharts/amcharts.js"></script>
 <script src="js/statsPage/app.js"></script>
-<script src="js/NavMenuCtrl.js"></script>
 <script src="js/statsPage/openTimeData.js"></script>
 <script src="js/statsPage/chart.js"></script>
 <script src="js/statsPage/weeklyStats.js"></script>
 <script src="js/statsPage/timeUtils.js"></script>
+<!-- endbuild -->
+
 </body>
 </html>

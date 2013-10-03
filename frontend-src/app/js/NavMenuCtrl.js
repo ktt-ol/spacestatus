@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('status').controller('NavMenuCtrl', [
+  angular.module('status-extras', []).controller('NavMenuCtrl', [
     '$scope',
     function ($scope) {
       $scope.data = {
