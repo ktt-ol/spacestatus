@@ -7,3 +7,5 @@ server/state.json
 server/logs/*
 server/conf/devices.js
 syncDevicesToServer.sh
+frontend-src/.tmp/
+server/frontend/
