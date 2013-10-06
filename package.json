@@ -19,10 +19,11 @@
     "log4js": "0.6.x"
   },
   "devDependencies": {
-    "jasmine-node" : "~1.7.0",
+    "jasmine-node": "~1.7.0",
     "proxyquire": "0.4.x",
     "nodemock": "0.2.x",
-    "jsmockito": "1.0.x"
+    "jsmockito": "1.0.x",
+    "connect-livereload": "~0.3.0"
   },
   "engine": "node >= 1.0"
 }

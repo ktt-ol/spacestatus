@@ -59,13 +59,23 @@ function init(lastDbState) {
   if (config.app.behindProxy) {
     app.enable('trust proxy');
   }
+
   app.use(express.bodyParser());
   app.use(express.methodOverride());
 
   // this must before the other use
   LoggerFactory.addExpressLogger(app, config.app.logIp);
 
-  app.use(express.static(__dirname + '/../frontend'));
+  if (process.env.NODE_ENV !== 'production') {
+    LOG.info('Using frontend-src and connect-livereload!');
+    app.use(require('connect-livereload')({
+      port: 35729
+    }));
+    app.use(express.static(__dirname + '/../../frontend-src/app'));
+  }
+  else {
+    app.use(express.static(__dirname + '/../frontend'));
+  }
 
   api.init(app, data, config, srv);
 
