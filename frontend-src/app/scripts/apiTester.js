@@ -1,4 +1,5 @@
 /* global location*/
+/* exported MainCtrl*/
 
 'use strict';
 
@@ -38,7 +39,6 @@ var APIS = [
   {name: '/time', method: 'GET'}
 ];
 
-
 function MainCtrl($scope, $http, $window) {
   $scope.baseUrl = $window.location.origin + '/api';
   $scope.psk = location.search.length > 1 ? location.search.substr(1) : '';
@@ -48,10 +48,9 @@ function MainCtrl($scope, $http, $window) {
   $scope.propValues = {};
   $scope.urlValues = {};
   APIS.forEach(function (api) {
-    var key;
-
     var propValues = {};
-    for (key in api.properties) {
+
+    angular.forEach(api.properties, function (value, key) {
       switch (api.properties[key].type) {
       case 'boolean':
         propValues[key] = false;
@@ -66,7 +65,8 @@ function MainCtrl($scope, $http, $window) {
         propValues[key] = '';
         break;
       }
-    }
+    });
+
     $scope.propValues[api.name] = propValues;
 
     var urlValues = {};
@@ -113,11 +113,11 @@ function MainCtrl($scope, $http, $window) {
   function buildUrlParameter(params) {
     var query = '';
     var first = true;
-    for (var key in params) {
+    angular.forEach(params, function (value, key) {
       query += first ? '?' : '&';
-      query += key + '=' + params[key];
+      query += key + '=' + value;
       first = false;
-    }
+    });
 
     return query;
   }

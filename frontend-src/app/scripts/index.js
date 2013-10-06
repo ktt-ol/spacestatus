@@ -208,8 +208,9 @@
           } else {
             $http.get('../lib/eventsource.js').
               success(function (data) {
-                //noinspection JSHint
+                /*jshint evil:true */
                 var script = new Function(data);
+                /*jshint evil:false */
                 script();
                 deferred.resolve();
               }).
