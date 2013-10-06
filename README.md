@@ -15,6 +15,9 @@ Shows the status about our hackspace using nodejs and a mysql server.
 Checkout the repo, run
 ```
 npm install
+cd frontend-src
+npm install
+grunt build
 ```
 create a new config based on the template
 ```
@@ -37,19 +40,24 @@ The first parameter of the script is a log file for the console output of the ap
 
 
 ## Dev
+Start the status app in debug mode:
+```
+cd server
+node backend/app.js
+```
+In debug mode, the app will
+* use the `frontend-src/app` directory instead of `server/frontend/`
+* add `connect-livereload` to auto reload the current page (with help from the running grunt script)
+* log everything on debug level
+
+Addionally, you should start the grunt script to get the livereload feature on file change (in frontend-source):
+```
+cd frontend-src
+grunt live
+```
 
 ### ToDos
 - [ ] Calculate a proper Rain value by using the delta Value of the last X Minutes. (A delta of 1 means 0,3 mm rain.)
-- [x] better 'public' folder position,
-- [x] Legacy API for space switch
-- [ ] Documentation for REST api
-- [x] Show amount of people in space
-- [x] specify people in space
-- [x] finish the xmpp module
-- [x] run test with `npm test`
-- [x] spacegate script
-- [x] update README (authors, etc.)
-
 
 ### Unit testing
 Just run
