@@ -40,7 +40,7 @@
         }
 
         chart = new AmCharts.AmSerialChart();
-        chart.pathToImages = 'img/amstats/';
+        chart.pathToImages = 'images/amstats/';
         chart.autoMarginOffset = 3;
         chart.marginRight = 15;
         chart.zoomOutButton = {
