@@ -1,5 +1,5 @@
-/* global EventSource:false */
 (function () {
+  /* global EventSource:false */
   'use strict';
 
   var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
@@ -7,9 +7,7 @@
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
 
-  var app = angular.module('status', ['status-extras']);
-
-  app.controller('StatusCtrl', [
+  var app = angular.module('status').controller('StatusCtrl', [
     '$scope', '$log', '$timeout', 'SSE',
     function ($scope, $log, $timeout, SSE) {
       var lastkeepalive;
@@ -191,36 +189,4 @@
     return result;
   }
 
-  app.service('SSE', [
-    '$q', '$http', '$window',
-    function ($q, $http, $window) {
-
-      return {
-        /**
-         * @returns promise
-         */
-        getEventSource: function () {
-
-          var deferred = $q.defer();
-
-          if (typeof (EventSource) === 'function') {
-            deferred.resolve();
-          } else {
-            $http.get('../lib/eventsource.js').
-              success(function (data) {
-                /*jshint evil:true */
-                var script = new Function(data);
-                /*jshint evil:false */
-                script();
-                deferred.resolve();
-              }).
-              error(function () {
-                deferred.reject();
-              });
-          }
-          return deferred.promise;
-        }
-      };
-    }
-  ]);
-}());
+})();
