@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var app = angular.module('status', []);
+  var app = angular.module('status', ['status-extras']);
 
   app.factory('showGlobalError', [
     '$rootScope',
