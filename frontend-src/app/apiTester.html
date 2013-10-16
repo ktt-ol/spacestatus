@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="styles/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- build:css(.tmp) styles/bootstrap.css -->
+    <link href="styles/bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="styles/bootstrap-responsive.css"/>
+    <!-- endbuild -->
   <meta charset=utf-8/>
   <title>API Testing</title>
   <style>
@@ -100,7 +103,10 @@
   </ul>
   </p>
 </div>
-<script src="lib/angular/angular.min.js"></script>
-<script src="scripts/apiTester.js"></script>
+<!-- build:js({.tmp,app}) scripts/apiTestNg.js -->
+<script src="lib/angular/angular.js"></script>
+<script src="scripts/apiTester/app.js"></script>
+<!-- endbuild -->
+
 </body>
 </html>
