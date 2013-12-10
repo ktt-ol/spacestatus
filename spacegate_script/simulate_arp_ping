@@ -1,0 +1,17 @@
+#!/bin/sh
+
+sleep 2
+#if [ "$4" == "192.168.2.42" ]; then
+#  exit 1
+#fi
+
+if [ "$4" == "192.168.2.254" -o "$4" == "192.168.2.42" ]; then
+  echo "";
+  exit 0;
+fi
+
+echo "aa:aa:aa:$4"
+echo "aa:aa:aa:$4"
+echo "aa:aa:aa:$4"
+
+exit 0
