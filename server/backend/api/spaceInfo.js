@@ -43,7 +43,7 @@ module.exports = function (app, data, config, srv) {
       var currentStatus = {
         'api': '0.13',
         'space': 'Mainframe',
-        'logo': 'http://status.mainframe.io/img/logo.png',
+        'logo': 'http://status.mainframe.io/images/logo.png',
         'url': 'http://mainframe.io/',
         'location': {
           'address': 'Raiffeisenstrasse 27, 26122 Oldenburg, Germany',
@@ -63,8 +63,8 @@ module.exports = function (app, data, config, srv) {
           'lastchange': state.status.timestamp,
           'message': openStatusPublic[state.status.state],
           'icon': {
-            'open': 'http://status.mainframe.io/img/open.png',
-            'closed': 'http://status.mainframe.io/img/closed.png'
+            'open': 'http://status.mainframe.io/images/open.png',
+            'closed': 'http://status.mainframe.io/images/closed.png'
           }
         },
         'sensors': {
