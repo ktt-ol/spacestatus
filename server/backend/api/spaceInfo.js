@@ -47,8 +47,8 @@ module.exports = function (app, data, config, srv) {
         'url': 'http://mainframe.io/',
         'location': {
           'address': 'Bahnhofsplatz 10, 26122 Oldenburg, Germany',
-          'lat': 53.14495,
-          'lon': 8.21516
+          'lat': 53.14402,
+          'lon': 8.21988
         },
         'contact': {
           'irc': 'irc://freenode/#hsol',
