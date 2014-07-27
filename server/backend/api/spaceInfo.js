@@ -46,7 +46,7 @@ module.exports = function (app, data, config, srv) {
         'logo': 'http://status.mainframe.io/images/logo.png',
         'url': 'http://mainframe.io/',
         'location': {
-          'address': 'Raiffeisenstrasse 27, 26122 Oldenburg, Germany',
+          'address': 'Bahnhofsplatz 10, 26122 Oldenburg, Germany',
           'lat': 53.14495,
           'lon': 8.21516
         },
