@@ -3,11 +3,11 @@
   'use strict';
 
   var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
-  var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&freifunk=1&weather=1';
+  var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1';
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
 
-  var app = angular.module('status').controller('StatusCtrl', [
+  angular.module('status').controller('StatusCtrl', [
     '$scope', '$log', '$timeout', 'SSE',
     function ($scope, $log, $timeout, SSE) {
       var lastkeepalive;
@@ -29,6 +29,10 @@
         devices: '?',
         anonPeople: '?',
         who: []
+      };
+      $scope.powerUsage = {
+        lastUpdate: '?',
+        lastMinute: '?'
       };
       $scope.freifunk = {
         lastUpdate: '?',
@@ -100,6 +104,17 @@
           });
         });
 
+        source.addEventListener('powerUsage', function (e) {
+          $scope.$apply(function () {
+            var data = angular.fromJson(e.data);
+
+            timestamps.powerUsage = data.timestamp;
+            console.log('new powerUsage data', data);
+            $scope.powerUsage.lastMinute = data.lastMinute;
+          });
+        });
+
+
         source.addEventListener('freifunk', function (e) {
           $scope.$apply(function () {
             var data = angular.fromJson(e.data);
@@ -158,6 +173,7 @@
 
         makeTime('openStatus');
         makeTime('spaceDevices');
+        makeTime('powerUsage');
         makeTime('freifunk');
         makeTime('weather');
 
