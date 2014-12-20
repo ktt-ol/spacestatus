@@ -4,8 +4,6 @@
 
 'use strict';
 
-var apiUtils = require(('./apiUtils.js'));
-
 module.exports = function (app, data, config, srv) {
 
   app.namespace('/statusStream', function () {
@@ -43,6 +41,7 @@ module.exports = function (app, data, config, srv) {
       [
         [events.EVENT.SPACE_OPEN, 'status'],
         [events.EVENT.SPACE_DEVICES, 'spaceDevices'],
+        [events.EVENT.POWER_USAGE, 'powerUsage'],
         [events.EVENT.FREIFUNK, 'freifunk'],
         [events.EVENT.WEATHER, 'weather']
       ].forEach(function (event) {

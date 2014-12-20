@@ -39,6 +39,11 @@ StateHandler.DEFAULT_STATE = {
     'timestamp': 0 // last update
   },
 
+  'powerUsage': {
+    lastMinute: 0,
+    'timestamp': 0 // last update
+  },
+
   'freifunk': {
     'client_count': 0, // How many clients are connected to the Freifunk network at the space?
     'timestamp': 0

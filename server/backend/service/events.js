@@ -9,6 +9,7 @@ module.exports = function () {
     EVENT: {
       SPACE_OPEN: 'spaceOpen',
       SPACE_DEVICES: 'spaceDevices',
+      POWER_USAGE: 'powerUsage',
       FREIFUNK: 'freifunk',
       WEATHER: 'weather'
     },

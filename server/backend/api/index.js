@@ -12,6 +12,7 @@ module.exports = {
       require('./openState.js')(app, data, config, srv);
       require('./openStatistics.js')(app, data, config, srv);
       require('./spaceDevices.js')(app, data, config, srv);
+      require('./powerUsage.js')(app, data, config, srv);
       require('./spaceInfo.js')(app, data, config, srv);
       require('./statusStream.js')(app, data, config, srv);
       require('./time.js')(app);

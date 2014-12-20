@@ -15,6 +15,10 @@
       devices: { required: true, type: 'array', items: { type: 'string' } }
     }},
     {name: '/spaceDevices', method: 'GET', auth: true },
+    {name: '/powerUsage', method: 'PUT', properties: {
+      lastMinute: { required: true, type: 'integer' }
+    }},
+    {name: '/powerUsage', method: 'GET' },
     { name: '/twitterAnnouncement', method: 'PUT', properties: {
       enable: { required: true, type: 'boolean' }
     }},
