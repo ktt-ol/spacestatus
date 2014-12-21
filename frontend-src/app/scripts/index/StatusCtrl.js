@@ -32,6 +32,7 @@
       };
       $scope.powerUsage = {
         lastUpdate: '?',
+        now: '?',
         lastMinute: '?'
       };
       $scope.freifunk = {
@@ -109,7 +110,7 @@
             var data = angular.fromJson(e.data);
 
             timestamps.powerUsage = data.timestamp;
-            console.log('new powerUsage data', data);
+            $scope.powerUsage.now = data.now;
             $scope.powerUsage.lastMinute = data.lastMinute;
           });
         });

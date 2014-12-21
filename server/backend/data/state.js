@@ -40,6 +40,7 @@ StateHandler.DEFAULT_STATE = {
   },
 
   'powerUsage': {
+    now: 0,
     lastMinute: 0,
     'timestamp': 0 // last update
   },

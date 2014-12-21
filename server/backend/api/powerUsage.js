@@ -7,7 +7,8 @@ var SCHEME = {
   type: 'object',
   additionalProperties: 'false',
   properties: {
-    lastMinute: { required: true, type: 'integer' }
+    now: { required: true, type: 'integer' },
+    lastMinute: { required: false, type: 'integer' }
   }
 };
 
@@ -26,6 +27,7 @@ module.exports = function (app, data, config, srv) {
           }
 
           var powerUsageState = data.state.get().powerUsage;
+          powerUsageState.now = req.body.now;
           powerUsageState.lastMinute = req.body.lastMinute;
           powerUsageState.timestamp = Math.round(Date.now() / 1000);
 

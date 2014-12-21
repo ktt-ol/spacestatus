@@ -16,7 +16,8 @@
     }},
     {name: '/spaceDevices', method: 'GET', auth: true },
     {name: '/powerUsage', method: 'PUT', properties: {
-      lastMinute: { required: true, type: 'integer' }
+      now: { required: true, type: 'integer' },
+      lastMinute: { required: false, type: 'integer' }
     }},
     {name: '/powerUsage', method: 'GET' },
     { name: '/twitterAnnouncement', method: 'PUT', properties: {
