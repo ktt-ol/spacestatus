@@ -24,6 +24,13 @@ module.exports = function (app, data, config, srv) {
     return [ value ];
   }
 
+  /**
+   * @param {number} timespan in seconds
+   */
+  function formatTimespan(timespan) {
+    return timespan + ' sec';
+  }
+
   app.namespace('/spaceInfo', function () {
 
     app.get('/', function (req, res) {
@@ -39,6 +46,7 @@ module.exports = function (app, data, config, srv) {
       // [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ]
 //      var windDirectionTranslation = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 ];
 
+      var nowInSeconds = Math.round(Date.now() / 1000);
 
       var currentStatus = {
         'api': '0.13',
@@ -74,8 +82,17 @@ module.exports = function (app, data, config, srv) {
               'value': state.spaceDevices.deviceCount,
               'location': 'Inside'
             }
+          ],
+          'power_consumption': [
+            {
+              'name': 'current consumption',
+              'location': 'Hackspace',
+              'unit': 'W',
+              'value': state.powerUsage.now,
+              'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.timestamp) + ' ago.'
+            }
           ]
-/* Disabled, until the weather station is running again. 
+/* Disabled, until the weather station is running again.
           'temperature': [
             {
               'location': 'Inside',
