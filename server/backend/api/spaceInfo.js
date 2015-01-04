@@ -37,7 +37,7 @@ module.exports = function (app, data, config, srv) {
 
       // https://github.com/slopjong/OpenSpaceLint/issues/80
       // [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ]
-      var windDirectionTranslation = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 ];
+//      var windDirectionTranslation = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 ];
 
 
       var currentStatus = {
@@ -74,7 +74,8 @@ module.exports = function (app, data, config, srv) {
               'value': state.spaceDevices.deviceCount,
               'location': 'Inside'
             }
-          ],
+          ]
+/* Disabled, until the weather station is running again. 
           'temperature': [
             {
               'location': 'Inside',
@@ -133,6 +134,7 @@ module.exports = function (app, data, config, srv) {
               }
             }
           ]
+*/
         },
         'feeds': {
           'blog': {
