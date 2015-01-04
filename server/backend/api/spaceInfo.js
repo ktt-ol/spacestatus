@@ -71,8 +71,8 @@ module.exports = function (app, data, config, srv) {
           'lastchange': state.status.timestamp,
           'message': openStatusPublic[state.status.state],
           'icon': {
-            'open': 'http://status.mainframe.io/images/open.png',
-            'closed': 'http://status.mainframe.io/images/closed.png'
+            'open': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-open.svg',
+            'closed': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-closed.svg'
           }
         },
         'sensors': {
