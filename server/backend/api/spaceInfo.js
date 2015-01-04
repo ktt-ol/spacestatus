@@ -154,13 +154,14 @@ module.exports = function (app, data, config, srv) {
 */
         },
         'feeds': {
-          'blog': {
-            'type': 'application/rss+xml',
-            'url': 'http://www.kreativitaet-trifft-technik.de/news.xml'
-          },
+// No news feed anymore :(
+//          'blog': {
+//            'type': 'application/rss+xml',
+//            'url': 'http://www.kreativitaet-trifft-technik.de/news.xml'
+//          },
           'calendar': {
             'type': 'application/calendar',
-            'url': 'http://www.kreativitaet-trifft-technik.de/calendar/ical/2013-05/calendar.ics'
+            'url': 'https://www.kreativitaet-trifft-technik.de/calendar/ical/markusframer@gmail.com/public/basic.ics'
           }
         },
         'projects': [
