@@ -2,7 +2,7 @@
 
 #This script ensures that $APP is automatically restarting after an error happens
 
-NODE_APP=backend/app.js
+NODE_APP=app.js
 
 #Handling Errors
 # 0 silent
@@ -48,7 +48,7 @@ do
     exit 1
   fi
   #start the application
-  node backend/app.js >>$1 2>>$1
+  node $NODE_APP >>$1 2>>$1
   
   #Send email
   if [ $ERROR_HANDLING = 1 ]; then

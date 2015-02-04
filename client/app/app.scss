@@ -1,0 +1,40 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+
+//@import '../assets/styles/bootstrap.css';
+//@import '../assets/styles/bootstrap-responsive.css';
+
+/**
+ * App-wide Styles
+ */
+
+/*!
+ Custom styles.
+*/
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+body {
+  font-size: 16px;
+}
+
+.container {
+//  width: 95%;
+}
+
+section {
+  margin-bottom: 45px;
+}
+
+
+// Component styles are injected through grunt
+// injector
+@import 'apiTester/apiTester.scss';
+@import 'main/main.scss';
+@import 'openStats/openStats.scss';
+@import 'footer/footer.scss';
+@import 'navbar/navbar.scss';
+// endinjector

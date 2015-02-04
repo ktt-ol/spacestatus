@@ -1,0 +1,93 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container page-api-tester">
+    <h1>API Testing</h1>
+
+    <h2>Build request</h2>
+
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Base Url</label>
+
+            <div class="col-sm-8">
+                <input class="form-control" type="text" ng-model="baseUrl"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Password (for changes)</label>
+
+            <div class="col-sm-8">
+                <input class="form-control" type="password" ng-model="psk"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">API</label>
+
+            <div class="col-sm-8">
+                <select class="form-control" ng-model="selectedApi" ng-options="(i.method + ' ' + i.name) for i in apiCalls">
+                </select>
+            </div>
+        </div>
+        <ul class="fields list-unstyled">
+            <li ng-repeat="(key, value) in selectedApi.properties">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="{{key}}"><b>{{key}}</b> (required: {{value.required}})
+                        <span ng-show="value.enum">
+                          Values: {{value.enum.join(', ')}}
+                        </span>
+                    </label>
+
+                    <div class="col-sm-8">
+                        <div ng-switch on="value.type">
+                            <input ng-switch-when="boolean" id="{{key}}" class="form-control" type="checkbox" ng-model="propValues[selectedApi.name][key]"/>
+                            <input ng-switch-when="integer" id="{{key}}" class="form-control" type="number" ng-model="propValues[selectedApi.name][key]"/>
+                            <input ng-switch-when="array" id="{{key}}" class="form-control" ng-model="propValues[selectedApi.name][key]" ng-list=","/>
+                            <input ng-switch-default id="{{key}}" class="form-control" type="text" ng-model="propValues[selectedApi.name][key]"/>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+
+        <ul class="fields unstyled">
+            <li ng-repeat="param in selectedApi.urlParams">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="{{param}}"><b>{{param}}</b></label>
+
+                    <div class="col-sm-8">
+                        <input id="{{param}}" class="form-control" type="text" ng-model="urlValues[selectedApi.name][param]"/>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+
+        <div class="clearfix">
+            <button class="btn btn-primary pull-right" ng-click="makeRequest()">Send request</button>
+        </div>
+
+    </form>
+
+    <h2>Result</h2>
+    <legend>Request
+        <small><a href="#1">1</a></small>
+    </legend>
+    <pre>{{request}}</pre>
+
+    <legend>Response</legend>
+    <pre>{{response}}</pre>
+
+    <h2>Remarks</h2>
+
+    <div><a name="1">[1]</a> Don't forget to add the following headers:
+        <ul class="list-unstyled">
+            <li><code>Content-type: application/json</code> if you send data with a PUT/POST</li>
+            <li><code>Authorization: yourpassword</code> if you change something</li>
+        </ul>
+    </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

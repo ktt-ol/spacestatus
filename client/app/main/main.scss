@@ -1,0 +1,40 @@
+.page-status {
+
+  #mainframeLogo img,
+  #fabolabLogo img {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  td:first-child {
+    width: 312px;
+  }
+
+  .person:after {
+    content: " • ";
+    font-size: 30px;
+    vertical-align: middle;
+    line-height: 20px;
+  }
+
+  .person:last-child:after {
+    content: "";
+  }
+
+  .key-true .name {
+    background: url('../images/witchlines_Simple_key_30.png') right center no-repeat;
+    padding-right: 34px;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    td:first-child {
+      width: 175px;
+    }
+  }
+
+
+  .sidebar {
+    text-align: center;
+  }
+}

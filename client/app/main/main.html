@@ -1,0 +1,172 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid page-status">
+
+    <div class="row">
+        <div class="col-sm-8 col-md-offset-1 col-md-7 ng-cloak">
+
+            <h2>Status</h2>
+
+            <div class="alert alert-warning" ng-if="connectionError">
+                Ich habe die Verbindung zum Server verloren. :( <br/>
+                Aber ich versuche es gleich noch einmal!
+            </div>
+
+            <div class="alert alert-warning" ng-if="startupError">
+                <strong>Keine Verbindung</strong>
+                Ich konnte keine Verbindung zum Server herstellen.
+                <div class="https-hint" ng-if="isHttp">
+                    <strong>Tipp:</strong> Häufig hilft ein <a ng-href="{{::getHttpsUrl()}}">Wechsel auf https</a>
+                </div>
+            </div>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Mainframe Status [ <a href="//mainframe.io">Homepage</a> ]</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td>{{openStatus.lastUpdate}}</td>
+                </tr>
+                <tr ng-class="openStatus.style">
+                    <td>Status</td>
+                    <td>{{openStatus.status}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2"><a href="stats.html">Langfristige Statistiken</a></td>
+                </tr>
+                </tfoot>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Leute im Space</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td>{{spaceDevices.lastUpdate}}</td>
+                </tr>
+                <tr>
+                    <td>Wer ist da</td>
+                    <td>
+                        <div class="person-list">
+                            <span class="person" ng-repeat="p in spaceDevices.who" ng-class="'key-' + p.key"><span
+                                    class="name">{{ p.name }}</span></span>
+                        </div>
+                        <span ng-hide="spaceDevices.who.length > 0">Keiner sichtbar</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>+ anonyme Personen</td>
+                    <td>{{ spaceDevices.anonPeople }}</td>
+                </tr>
+                <tr>
+                    <td>+ unbekannte Geräte</td>
+                    <td>{{ spaceDevices.devices }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Stromverbrauch [ <a
+                            href="http://demo.volkszaehler.org/frontend/?uuid%5B%5D=57acbef0-88a9-11e4-934f-6b0f9ecd95a8&uuid%5B%5D=f2e145a0-84d5-11e4-86e3-3587832d7a7e&uuid%5B%5D=e700ce50-84d5-11e4-bb39-55d85e072f48">Live/Detail
+                        stats</a> ]
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td>{{powerUsage.lastUpdate}}</td>
+                </tr>
+                <tr>
+                    <td>Aktueller Verbrauch</td>
+                    <td>{{powerUsage.now}} Watt</td>
+                </tr>
+                <!--<tr>-->
+                <!--<td>Verbrauch in der letzen Minute</td>-->
+                <!--<td>{{powerUsage.lastMinute}} W/h</td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+
+            <!--
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Freifunk [ <a href="http://netmon.freifunk-ol.de/routerlist.php">RouterList</a> ]</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{ freifunk.lastUpdate }}</td>
+                </tr>
+                <tr>
+                    <td>Verbindungen</td>
+                    <td>{{ freifunk.client_count }}</td>
+                </tr>
+                </tbody>
+            </table>
+            -->
+
+            <!--
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Wetter</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letztes Update</td>
+                    <td>{{ weather.lastUpdate }}</td>
+                </tr>
+                <tr>
+                    <td>Drinnen</td>
+                    <td>{{ weather.Tin }}° {{ weather.Hin }}%</td>
+                </tr>
+                <tr>
+                    <td>Draußen</td>
+                    <td>{{ weather.Tout }}° {{ weather.Hout }}%</td>
+                </tr>
+                <tr>
+                    <td>Wind</td>
+                    <td>{{ weather.Wd }} @ {{ weather.Ws }} m/s // Böen: {{ weather.Wg }} m/s</td>
+                </tr>
+                <tr>
+                    <td>Luftdruck</td>
+                    <td>{{ weather.P }} hPa</td>
+                </tr>
+                <tr>
+                    <td>Regen</td>
+                    <td>{{ weather.R }}</td>
+                </tr>
+                </tbody>
+            </table>
+            -->
+        </div>
+        <div class="col-sm-4 sidebar">
+            <ul class="list-unstyled">
+                <li><a href="//mainframe.io" id="mainframeLogo"><img src="assets/images/logo.png" alt="Mainframe"/></a></li>
+                <li><a href="//ktt-ol.de" id="fabolabLogo"><img src="assets/images/fab-o-lab.png" alt="Fab-O-Lab"/></a><br/></li>
+                <li><a href="/api/spaceInfo">spaceInfo</a> (<a href="http://spaceapi.net/">Space API</a>)<br/></li>
+                <li><a href="https://twitter.com/#!/HackspaceOL">@HackspaceOL</a></li>
+                <li><a href="https://twitter.com/#!/KtT_OL">@KtT_OL</a></li>
+                <li><a href="xmpp://mainframe@jabber.ccc.de">mainframe@jabber.ccc.de</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

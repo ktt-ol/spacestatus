@@ -1,0 +1,27 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid page-open-stats">
+    <div class="alert alert-error" ng-show="globalErrorMsg">
+        <div ng-repeat="msg in globalErrorMsg">
+            <strong>Error!</strong> {{msg}}
+        </div>
+    </div>
+
+    <section id="graph">
+        <h2>Graph!</h2>
+        Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
+        2012 zurück gucken!
+
+        <div chart class="chart"></div>
+    </section>
+
+    <section id="stats">
+        <h2>Letzte Woche</h2>
+
+        <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
+        <weekly-stats></weekly-stats>
+    </section>
+
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>

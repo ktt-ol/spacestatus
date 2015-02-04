@@ -1,0 +1,25 @@
+<div class="container">
+    <form class="form-inline">
+        <div class="form-group">
+            <label>Anzeigen für die letzte </label>
+            <select class="form-control" ng-model="week" ng-options="w.v as w.l for w in weeks">
+            </select>
+        </div>
+    </form>
+
+
+    <table id="weeklyStatsTable" class="table table-hover">
+        <thead>
+        <tr>
+            <th>Wochentag</th>
+            <th>Zeitdauer (h)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="day in weekStats">
+            <td>{{day.name}}</td>
+            <td>{{day.stat}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

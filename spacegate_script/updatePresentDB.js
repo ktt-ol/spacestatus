@@ -21,13 +21,14 @@ var needle = require('needle');
 var CONFIG = {
   debug: false,
   device: '/proc/net/arp',
-//  device: 'sample_proc_net_arp',
-//  arping: '/Users/holger/Dropbox/Proj/ktt/status/spacegate_script/simulate_arp_ping',
   arping: '/usr/sbin/arping',
-  lanDevice: 'br0',
+  lanDevice: 'eth1',
+//  device: 'sample_proc_net_arp',
+//  arping: '/Users/holger/Seafile/devProjects/mainframe/status/spacegate_script/simulate_arp_ping',
+//  lanDevice: 'br0',
   pings: 3,
   endpointUrl: 'https://status.kreativitaet-trifft-technik.de/api/spaceDevices',
-//  endpointUrl: 'http://localhost:7996/api/spaceDevices',
+//  endpointUrl: 'http://localhost:9000/api/spaceDevices',
   endpointPw: 'test'
 };
 
@@ -81,17 +82,20 @@ function sendToStatusServer(statusData) {
     headers: {
       'Authorization': CONFIG.endpointPw,
       'Accept': 'application/json',
-      'Content-type': 'application/json'
+      'Content-Type': 'application/json'
     },
     rejectUnauthorized: false
   };
   debug('Sending to server. ', options, statusData);
-  needle.put(CONFIG.endpointUrl, statusData, options, function (err, response, body) {
+  needle.put(CONFIG.endpointUrl, JSON.stringify(statusData), options, function (err, response, body) {
     if (err) {
       console.log('error:', err);
       return;
     }
 
+    if (response.statusCode !== 200) {
+      console.error('Non 200 response from server: ', body);
+    }
     debug('Result from server', body);
   });
 }
