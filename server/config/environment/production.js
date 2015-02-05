@@ -15,7 +15,8 @@ module.exports = {
 
   twitter: {
     enabled: true,
-    mocking: false
+    mocking: false,
+    twitterdelay: 3 * 60 * 1000
   },
 
   xmpp: {
