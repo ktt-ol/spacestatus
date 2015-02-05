@@ -112,7 +112,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
         switch (data.state) {
         case 'off':
           $scope.openStatus.status = 'ZU!';
-          $scope.openStatus.style = 'error';
+          $scope.openStatus.style = 'danger';
           break;
         case 'on':
           $scope.openStatus.status = 'AUF!';
