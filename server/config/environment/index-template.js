@@ -24,6 +24,8 @@ var all = {
   stateFile: 'state.json',
 
   db: {
+    host: '',
+    database: '',
     user: '',
     password: ''
   },
