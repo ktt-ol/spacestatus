@@ -5,7 +5,7 @@ Shows the status about our hackspace using nodejs and a mysql server.
 ## Features
 * rest api
 * pushing new events with html server side events
-* Snows (rest or homepage)
+* Shows (rest or homepage)
     * open state (on/off/closing)
     * People/devices in the space
     * Freifunk status
@@ -36,11 +36,6 @@ cd server
 ```
 The first parameter of the script is a log file for the console output of the application. You find the normal logs in ```server/logs```.
 
-## Credits
-- Main author: Holger Cremer (HolgerCremer@gmail.com)
-- Old status app from Eike Frost 
-- Old Backend structure idea from André König (andre.koenig@gmail.com)
-
 
 ## Dev
 Start the status app in debug mode:
@@ -49,6 +44,7 @@ grunt serve
 ```
 
 ### ToDos
+- [ ] Using mqtt as backend
 - [ ] Calculate a proper Rain value by using the delta Value of the last X Minutes. (A delta of 1 means 0,3 mm rain.)
 
 
