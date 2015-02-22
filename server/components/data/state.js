@@ -4,7 +4,7 @@
 
 'use strict';
 
-var ce = require('cloneextend');
+var _ = require('lodash');
 var fs = require('fs');
 var LOG = require('../logger/loggerFactory.js').logger();
 
@@ -12,7 +12,7 @@ module.exports = StateHandler;
 
 function StateHandler(stateFile) {
   this._file = stateFile;
-  this._state = ce.clone(StateHandler.DEFAULT_STATE);
+  this._state = _.cloneDeep(StateHandler.DEFAULT_STATE);
 
   if (typeof this._file !== 'string' || this._file.length === 0) {
     throw new Error('Please setup a filename for the state file');
@@ -123,7 +123,7 @@ StateHandler.prototype.load = function () {
   });
   try {
     var stateFromFile = JSON.parse(file);
-    this._state = ce.replace(this._state, stateFromFile);
+    this._state = _.merge(this._state, stateFromFile);
   } catch (e) {
     throw new Error('Can´t parse the state file. Did the json content get damaged?\n' + e);
   }
