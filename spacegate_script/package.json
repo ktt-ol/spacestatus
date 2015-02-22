@@ -1,12 +1,12 @@
 {
-  "name": "SpaceStatus_updatePresentDb",
-  "version": "0.1.0",
+  "name": "updatePresentDbMqtt",
+  "version": "0.2.0",
   "author": "Holger Cremer (HolgerCremer@gmail.com)",
   "license": "BSD",
   "private": true,
   "engine": "node ~0.10.3",
   "dependencies": {
-    "q": "~0.9.7",
-    "needle": "~0.6.3"
+    "mqtt": "^1.0.8",
+    "q": "~0.9.7"
   }
 }

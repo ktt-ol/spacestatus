@@ -40,7 +40,7 @@ function shutdown() {
 }
 
 function next(lastDbState) {
-  var status = data.state.get().status;
+  var status = data.state.get().spaceOpen;
   if (lastDbState.state !== status.state) {
     status.state = lastDbState.state;
     // the state from the db contains Date objects, but we want to have a unix timestamp
@@ -57,6 +57,8 @@ function next(lastDbState) {
   var server = require('http').createServer(app);
   require('./config/express')(app);
   require('./routes')(app);
+
+  require('./components/mqtt').init();
 
 // Start server
   server.listen(config.port, config.ip, function () {

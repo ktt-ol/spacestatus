@@ -59,9 +59,9 @@ exports.index = function (req, res) {
     },
     'issue_report_channels': [ 'issue_mail'],
     'state': {
-      'open': state.status.state === 'on',
-      'lastchange': state.status.timestamp,
-      'message': openStatusPublic[state.status.state],
+      'open': state.spaceOpen.state === 'on',
+      'lastchange': state.spaceOpen.timestamp,
+      'message': openStatusPublic[state.spaceOpen.state],
       'icon': {
         'open': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-open.svg',
         'closed': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-closed.svg'

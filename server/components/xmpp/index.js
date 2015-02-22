@@ -22,7 +22,7 @@ var Xmpp = function (xmppConfig, state) {
       LOG.info('xmpp client is online!');
       isConnected = true;
 
-      self.updateForSpaceStatus(state.get().status.state);
+      self.updateForSpaceStatus(state.get().spaceOpen.state);
     });
     xmppClient.on('error', function (excp) {
       LOG.error('Error in xmpp client: ' + (excp.message || excp));

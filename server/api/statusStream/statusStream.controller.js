@@ -55,17 +55,11 @@ exports.index = function(req, res) {
 
   var listenerAdded = false;
 
-  [
-    [events.EVENT.SPACE_OPEN, 'status'],
-    [events.EVENT.SPACE_DEVICES, 'spaceDevices'],
-    [events.EVENT.POWER_USAGE, 'powerUsage'],
-    [events.EVENT.FREIFUNK, 'freifunk'],
-    [events.EVENT.WEATHER, 'weather']
-  ].forEach(function (event) {
-      var eventName = event[0];
-      var stateName = event[1];
+
+  Object.keys(events.EVENT).forEach(function(eventNameKey) {
+    var eventName = events.EVENT[eventNameKey];
       if (req.param(eventName) === '1') {
-        writeEvent(res, eventName, messageCount++, JSON.stringify(data.state.get()[stateName]));
+        writeEvent(res, eventName, messageCount++, JSON.stringify(data.state.get()[eventName]));
         events.on(eventName, callback);
         listenerAdded = true;
       }

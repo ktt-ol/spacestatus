@@ -7,6 +7,7 @@ var Events =  function () {
 
   var exportObj = {
     EVENT: {
+      MQTT: 'mqtt',
       SPACE_OPEN: 'spaceOpen',
       SPACE_DEVICES: 'spaceDevices',
       POWER_USAGE: 'powerUsage',

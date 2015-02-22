@@ -23,7 +23,10 @@ function StateHandler(stateFile) {
 // Please add every state key/value here for documentation
 StateHandler.DEFAULT_STATE = {
   // The following are sent JSONified as events
-  'status': {
+  'mqtt': {
+    'connected': false
+  },
+  'spaceOpen': {
     'state': 'off', // allowed: on, off, closing
     'until': 0, // Until when will it be open?
     'timestamp': 0 // When did the state last change?

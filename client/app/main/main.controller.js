@@ -22,7 +22,7 @@ function elapsedTime(t) {
 
 angular.module('status2App').controller('MainCtrl', function ($scope, $log, $timeout, $window, SSE, StartupChecker) {
   var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
-  var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1';
+  var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1&mqtt=1';
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
   var START_FAIL_AFTER = 3 * 1000;
@@ -38,6 +38,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
   $scope.connectionError = false;
   $scope.startupError = false;
   $scope.isHttp = $window.location.protocol === 'http:';
+  $scope.mqttConnected = false;
   $scope.openStatus = {
     lastUpdate: '?',
     style: '',
@@ -101,6 +102,13 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
       });
     };
 
+    source.addEventListener('mqtt', function (e) {
+      $scope.$apply(function () {
+        var data = angular.fromJson(e.data);
+        $scope.mqttConnected = data.connected;
+      });
+    });
+
     source.addEventListener('spaceOpen', function (e) {
       $scope.$apply(function () {
         startupCheck.cancel();
@@ -134,7 +142,6 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
         $scope.spaceDevices.anonPeople = data.peopleCount - data.people.length;
         $scope.spaceDevices.devices = data.unknownDevicesCount;
         $scope.spaceDevices.who = data.people;
-        $scope.spaceDevices.style = data.peopleCount > 0 ? 'success' : 'error';
       });
     });
 

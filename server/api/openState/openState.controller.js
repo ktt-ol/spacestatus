@@ -19,7 +19,7 @@ var SCHEME = {
 
 // Get list of openStates
 exports.index = function(req, res) {
-  apiUtils.sendJson(res, 200, data.state.get().status);
+  apiUtils.sendJson(res, 200, data.state.get().spaceOpen);
 };
 
 exports.update = function (req, res) {
@@ -39,7 +39,7 @@ exports.update = function (req, res) {
         return;
       }
 
-      var status = data.state.get().status;
+      var status = data.state.get().spaceOpen;
       status.state = newState;
       status.timestamp = Math.round(Date.now() / 1000);
 //          if (req.body.until > 0) {

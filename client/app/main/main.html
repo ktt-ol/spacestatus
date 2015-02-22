@@ -50,27 +50,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr ng-class="mqttConnected ? '' : 'danger'">
                     <td>Letzte Änderung</td>
-                    <td>{{spaceDevices.lastUpdate}}</td>
+                    <td ng-if="mqttConnected">{{spaceDevices.lastUpdate}}</td>
+                    <td ng-if="!mqttConnected">Keine Verbindung!</td>
                 </tr>
                 <tr>
                     <td>Wer ist da</td>
-                    <td>
+                    <td ng-if="mqttConnected">
                         <div class="person-list">
                             <span class="person" ng-repeat="p in spaceDevices.who" ng-class="'key-' + p.key"><span
                                     class="name">{{ p.name }}</span></span>
                         </div>
-                        <span ng-hide="spaceDevices.who.length > 0">Keiner sichtbar</span>
+                        <span ng-if="spaceDevices.who.length === 0">Keiner sichtbar</span>
+                    </td>
+                    <td ng-if="!mqttConnected">
+                        -
                     </td>
                 </tr>
                 <tr>
                     <td>+ anonyme Personen</td>
-                    <td>{{ spaceDevices.anonPeople }}</td>
+                    <td>{{ mqttConnected ? spaceDevices.anonPeople : '-'}}</td>
                 </tr>
                 <tr>
                     <td>+ unbekannte Geräte</td>
-                    <td>{{ spaceDevices.devices }}</td>
+                    <td>{{ mqttConnected ? spaceDevices.devices : '-'}}</td>
                 </tr>
                 </tbody>
             </table>

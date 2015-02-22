@@ -9,9 +9,6 @@ angular.module('status2App').controller('ApiTesterCtrl', function ($scope, $http
       until: { required: false, type: 'integer' }
     }},
     {name: '/openState', method: 'GET'},
-    {name: '/spaceDevices', method: 'PUT', properties: {
-      devices: { required: true, type: 'array', items: { type: 'string' } }
-    }},
     {name: '/spaceDevices', method: 'GET', auth: true },
     {name: '/powerUsage', method: 'PUT', properties: {
       now: { required: true, type: 'integer' },

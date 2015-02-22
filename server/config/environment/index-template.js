@@ -30,6 +30,13 @@ var all = {
     password: ''
   },
 
+  mqtt: {
+    enabled: false,
+    url: 'mqtt://your_server',
+    extras: {},
+    devicesTopic: '/net/devices'
+  },
+
   poisk: {
     enabled: false,
     apiEndpoint: '... some endpoint ...',
@@ -38,26 +45,7 @@ var all = {
 
   spaceDevices: {
     clearEntriesAfter: 30 * 60 * 1000, // after this time in ms, all entries will be cleared
-    dbUpdateTime: 15 * 60 * 1000, // after this time in ms, we update the state into the db (if changed)
-    list: [
-      {
-        name: 'I am shy',
-        mode: 'hidden',
-        devices: [ 'abc', '123' ]
-      },
-      {
-        name: 'Show Me',
-        // the id in our open id server ( id.kreativitaet-trifft-technik.de ). Optional.
-        id: 'someUser',
-        mode: 'visible',
-        devices: [ 'foo', 'bar']
-      },
-      {
-        name: 'internal devices',
-        mode: 'ignore',
-        devices: ['1', '2', '3']
-      }
-    ]
+    dbUpdateTime: 15 * 60 * 1000 // after this time in ms, we update the state into the db (if changed)
   },
 
   twitter: {
