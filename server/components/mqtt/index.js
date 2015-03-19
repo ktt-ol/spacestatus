@@ -83,7 +83,7 @@ function connect() {
     if (topic === config.mqtt.devicesTopic) {
       try {
         var data = JSON.parse(message);
-        LOG.info('new devices data!', data);
+        LOG.debug('new devices data!', data);
         addDummyKeyData(data);
         updateSpaceDevices(data);
         resetAfterTimeout();

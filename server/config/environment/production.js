@@ -42,7 +42,7 @@ module.exports = {
     ],
     'levels': {
       'express_access': 'DEBUG',
-      'app': 'DEBUG'
+      'app': 'INFO'
     }
   }
 
