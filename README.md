@@ -25,6 +25,10 @@ cp server/config/environment/index-template.js server/config/environment/index.j
 vim server/config/environment/index.js
 ```
 
+## People/Devices
+
+This part has been migrated (and upgraded) to a new project on github: [spaceDevices](https://github.com/smilix/spaceDevices)
+
 ## Run
 Copy the ```dist/``` folder to your server. Install and start the server with
 ```
@@ -44,7 +48,6 @@ grunt serve
 ```
 
 ### ToDos
-- [ ] Using mqtt as backend
 - [ ] Calculate a proper Rain value by using the delta Value of the last X Minutes. (A delta of 1 means 0,3 mm rain.)
 
 
