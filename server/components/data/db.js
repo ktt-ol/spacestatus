@@ -48,6 +48,9 @@ module.exports = function (config) {
     },
 
     updateOpenState: function (stateValue, callback) {
+      if (stateValue !== 'on' && stateValue !== 'off' && stateValue !== 'closing') {
+        throw new Error('Invalid state value: ' + stateValue);
+      }
       sqlclient.query('INSERT INTO spaceschalter.spacestate SET state = ?, timestamp = NOW()', [ stateValue ],
         function (err, results) {
           if (err) {

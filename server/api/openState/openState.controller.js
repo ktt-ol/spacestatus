@@ -3,9 +3,7 @@
 var apiUtils = require(('../apiUtils.js'));
 var config = require('../../config/environment');
 var data = require('../../components/data');
-var events = require('../../components/events');
-var twitter = require('../../components/twitter');
-var xmpp = require('../../components/xmpp');
+var mqtt = require('../../components/mqtt');
 var LOG = require('./../../components/logger/loggerFactory.js').logger();
 
 var SCHEME = {
@@ -18,7 +16,7 @@ var SCHEME = {
 };
 
 // Get list of openStates
-exports.index = function(req, res) {
+exports.index = function (req, res) {
   apiUtils.sendJson(res, 200, data.state.get().spaceOpen);
 };
 
@@ -33,28 +31,17 @@ exports.update = function (req, res) {
     }
 
     var newState = req.body.state;
-    data.db.updateOpenState(newState, function (err) {
+    mqtt.setNewStatus(newState, function (err) {
       if (err) {
-        apiUtils.sendJson(res, 500, { status: 'error', msg: 'Could not upate the open state status!' });
+        apiUtils.sendJson(res, 500, { status: 'error', msg: 'Could not update the open state status!' });
         return;
       }
-
-      var status = data.state.get().spaceOpen;
-      status.state = newState;
-      status.timestamp = Math.round(Date.now() / 1000);
-//          if (req.body.until > 0) {
-//            status.until = req.body.until;
-//          }
-      LOG.info('Change the status to: ' + newState);
-
-      twitter.sendTwitterForSpaceStatus(newState);
-      xmpp.updateForSpaceStatus(newState);
-
-      events.emit(events.EVENT.SPACE_OPEN, status);
 
       apiUtils.sendJson(res, 200, { status: 'ok' });
     });
 
+
   });
+
 
 };

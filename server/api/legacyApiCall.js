@@ -15,7 +15,6 @@ router.get('/status-stream', function (req, res, next) {
 });
 
 router.get('/status(.json)?$', function (req, res, next) {
-  console.log('in status!');
   req.url = '/api/spaceInfo';
   next();
 });

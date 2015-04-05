@@ -8,6 +8,8 @@ var config = require('../../config/environment');
 var data = require('../../components/data');
 var events = require('../../components/events');
 var LOG = require('../logger/loggerFactory.js').logger();
+var twitter = require('../../components/twitter');
+var xmpp = require('../../components/xmpp');
 
 var subscribed = false;
 var dirtyState = false;
@@ -28,12 +30,25 @@ module.exports = {
     }
 
     connect();
+  },
+
+  setNewStatus: function (newState, callback) {
+    updateInternalSpaceStatus(newState, function (err) {
+      if (err) {
+        callback(err);
+        return;
+      }
+
+      broadcastState();
+      callback();
+    });
   }
 };
 
 
 // creates the mqtt client, connects to the server and registers on essentials events
 function connect() {
+  LOG.debug('Try to connect to mqtt server...');
   var options = {
     username: config.mqtt.username,
     password: config.mqtt.password,
@@ -65,7 +80,8 @@ function connect() {
       return;
     }
     client.subscribe([
-        config.mqtt.devicesTopic
+        config.mqtt.devicesTopic,
+        config.mqtt.spaceStateTopic
       ],
       function (err, granted) {
         if (err) {
@@ -82,16 +98,30 @@ function connect() {
 
     if (topic === config.mqtt.devicesTopic) {
       try {
-        var data = JSON.parse(message);
-        LOG.debug('new devices data!', data);
-        addDummyKeyData(data);
-        updateSpaceDevices(data);
+        var parsedMessage = JSON.parse(message);
+        LOG.debug('new devices data!', parsedMessage);
+        addDummyKeyData(parsedMessage);
+        updateSpaceDevices(parsedMessage);
         resetAfterTimeout();
       } catch (e) {
         LOG.error('Invalid json as mqtt devices message: ' + message);
       }
+    } else if (topic === config.mqtt.spaceStateTopic) {
+      try {
+        LOG.debug('new status data!', message);
+        var dbStatus = mqtt2db(message);
+        if (dbStatus === data.state.get().spaceOpen.state) {
+          LOG.info('New mqtt state is same as current state -> No sql update.');
+          return;
+        }
+        updateInternalSpaceStatus(dbStatus);
+      } catch (e) {
+        LOG.error('Error during status update message: ' + e);
+      }
     }
   });
+
+
 }
 
 // updates the connected status in the state object and send an event
@@ -100,6 +130,13 @@ function updateMqttStatus(isConnected) {
   events.emit(events.EVENT.MQTT, {
     connected: isConnected
   });
+}
+
+function broadcastState() {
+  var stateNow = data.state.get().spaceOpen.state;
+  stateNow = db2mqtt(stateNow);
+  LOG.debug('sending new status ', stateNow, ' to mqtt server.');
+  client.publish(config.mqtt.spaceStateTopic, stateNow);
 }
 
 function addDummyKeyData(devicesData) {
@@ -134,6 +171,63 @@ function updateSpaceDevices(result) {
 
   dirtyState = true;
   LOG.debug('Updated current devices', spaceDevices);
+}
+
+
+function mqtt2db(mqttValue) {
+  switch (mqttValue) {
+  case 'closing':
+    return 'closing';
+  case 'closed':
+    return 'off';
+  case 'opened':
+    return 'on';
+  }
+  throw new Error('Unkown mqtt value: ' + mqttValue);
+}
+
+function db2mqtt(dbValue) {
+  switch (dbValue) {
+  case 'closing':
+    return 'closing';
+  case 'off':
+    return 'closed';
+  case 'on':
+    return 'opened';
+  }
+  throw new Error('Unkown db value: ' + dbValue);
+}
+
+/**
+ *
+ * @param {string} newState - expecting a db open state value
+ * @param {function} [callback] -
+ */
+function updateInternalSpaceStatus(newState, callback) {
+  data.db.updateOpenState(newState, function (err) {
+    if (err) {
+
+      LOG.error('Error during status db update: ', err);
+      if (callback) {
+        callback(err);
+      }
+      return;
+    }
+
+    var status = data.state.get().spaceOpen;
+    status.state = newState;
+    status.timestamp = Math.round(Date.now() / 1000);
+    LOG.info('Change the status to: ' + newState);
+
+    twitter.sendTwitterForSpaceStatus(newState);
+    xmpp.updateForSpaceStatus(newState);
+
+    events.emit(events.EVENT.SPACE_OPEN, status);
+
+    if (callback) {
+      callback(undefined, newState);
+    }
+  });
 }
 
 // resets the state of the space devices after a certain timeout
