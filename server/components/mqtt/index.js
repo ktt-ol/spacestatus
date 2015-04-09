@@ -136,7 +136,9 @@ function broadcastState() {
   var stateNow = data.state.get().spaceOpen.state;
   stateNow = db2mqtt(stateNow);
   LOG.debug('sending new status ', stateNow, ' to mqtt server.');
-  client.publish(config.mqtt.spaceStateTopic, stateNow);
+  client.publish(config.mqtt.spaceStateTopic, stateNow, {
+    retain: true
+  });
 }
 
 function addDummyKeyData(devicesData) {
