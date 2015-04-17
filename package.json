@@ -16,7 +16,8 @@
     "method-override": "~1.0.0",
     "mqtt": "^1.0.10",
     "mysql": "0.9.5",
-    "node-xmpp": "~0.4.5",
+    "node-xmpp-client": "1.0.0-alpha20",
+    "node-xmpp-core": "1.0.0-alpha14",
     "ntwitter": "~0.5",
     "serve-favicon": "~2.0.1"
   },

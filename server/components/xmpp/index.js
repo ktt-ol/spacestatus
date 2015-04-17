@@ -1,8 +1,8 @@
 'use strict';
 
-var xmpp = require('node-xmpp');
+var Client = require('node-xmpp-client');
+var ltx = require('node-xmpp-core').ltx;
 var LOG = require('../logger/loggerFactory.js').logger();
-var util = require('util');
 
 var Xmpp = function (xmppConfig, state) {
 
@@ -15,7 +15,7 @@ var Xmpp = function (xmppConfig, state) {
       return;
     }
 
-    xmppClient = new xmpp.Client(xmppConfig.client);
+    xmppClient = new Client(xmppConfig.client);
 
     var self = this;
     xmppClient.on('online', function () {
@@ -28,51 +28,54 @@ var Xmpp = function (xmppConfig, state) {
       LOG.error('Error in xmpp client: ' + (excp.message || excp));
     });
 
+    xmppClient.on('disconnect', function (e) {
+      LOG.error('Client is disconnected', xmppClient.connection.reconnect, e);
+    });
+
     xmppClient.on('stanza', function (stanza) {
-      switch (stanza.name) {
-      case 'presence':
-        if (stanza.attrs.type === 'subscribe') {
-          xmppClient.send(new xmpp.Element('presence', {
-            'from': stanza.attrs.to,
-            'to': stanza.attrs.from,
-            type: 'subscribed'
-          }));
-        }
-        break;
-      case 'message':
-        if (stanza.attrs.type === 'error') {
+      if (stanza.is('presence') && stanza.attrs.type === 'subscribe') {
+        // accept any auth requests!
+        LOG.info('Got (and accept) auth request from ', stanza.attrs.from);
+        xmppClient.send(new ltx.Element('presence', {
+          'from': stanza.attrs.to,
+          'to': stanza.attrs.from,
+          type: 'subscribed'
+        }));
+      } else if (stanza.is('message')) {
+        if (stanza.attrs.type !== 'chat') {
           return;
         }
-
-        if (stanza.attrs.type === 'chat') {
-          var body = stanza.getChild('body');
-          if (body !== undefined) {
-            var msg;
-            if (body.getText() === '?') {
-              msg = 'The current status as json: ' +
-                JSON.stringify(state.get()) +
-                '\nIf you want to have a nice format, send me a patch.';
-              reply(msg);
-            } else if (body.getText() === 'who') {
-              // make a nice formatted string from the data
-              msg = state.get().spaceDevices.people.map(function (value) {
-                return value.name + '[' + (value.key ? 'X' : '') + ']';
-              }).join(', ');
-              reply(msg);
-            } else {
-              msg = 'Available commands:\n' +
-                '?   - Dump internal status object in JSON notation\n' +
-                'who - Dump list of people detected in space';
-              reply(msg);
-            }
-          }
+        var body = stanza.getChild('body');
+        if (!body) {
+          return;
         }
-        break;
-      default:
+        var msg;
+        if (body.getText() === '?') {
+          msg = 'The current status as json: ' +
+            JSON.stringify(state.get()) +
+            '\nIf you want to have a nice format, send me a patch.';
+          reply(msg);
+        } else if (body.getText() === 'who') {
+          // make a nice formatted string from the data
+          var people = state.get().spaceDevices.people;
+          if (people.length === 0) {
+            msg = 'Niemand!';
+          } else {
+            msg = people.map(function (value) {
+              return value.name + '[' + (value.key ? 'X' : '') + ']';
+            }).join(', ');
+          }
+          reply(msg);
+        } else {
+          msg = 'Available commands:\n' +
+            '?   - Dump internal status object in JSON notation\n' +
+            'who - Dump list of people detected in space';
+          reply(msg);
+        }
       }
 
       function reply(msg) {
-        var msgElement = new xmpp.Element('message', {
+        var msgElement = new ltx.Element('message', {
           to: stanza.attrs.from,
           type: 'chat'
         }).c('body').t(msg, false, 3);
@@ -106,7 +109,7 @@ var Xmpp = function (xmppConfig, state) {
   };
 
   this._setPresence = function (show, status) {
-    xmppClient.send(new xmpp.Element('presence', {}).c('show').t(show).up().c('status').t(status));
+    xmppClient.send(new ltx.Element('presence', {}).c('show').t(show).up().c('status').t(status));
   };
 
   this._init();
