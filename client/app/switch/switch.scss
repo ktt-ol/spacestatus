@@ -1,0 +1,19 @@
+.page-switch {
+  .label.state {
+    font-size: 16px;
+    padding: 2px 5px;
+    margin: 0 10px;
+  }
+
+  .timestamp {
+    font-size: 14px;
+  }
+
+  .pw-input {
+    input {
+      display: inline;
+      width: 40%;
+      min-width: 200px;
+    }
+  }
+}

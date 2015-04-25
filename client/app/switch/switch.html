@@ -1,0 +1,57 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container page-switch">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h2>Switch</h2>
+
+            <div class="alert alert-danger" ng-if="error">
+                <span class="glyphicon glyphicon-remove"></span>
+                {{error}}
+            </div>
+            <div class="alert alert-success" ng-if="showOk">
+                <span class="glyphicon glyphicon-ok"></span>
+                Neuer status gesetzt!
+            </div>
+
+            <form>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div>
+                        <span class="label state" ng-class="state.clazz ">{{state.value}}</span>
+                        <span class="timestamp">[ seit  {{state.ts | date:'dd.MM.yyyy HH:mm:ss'}} ]</span>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="form.showPw">
+                    <label for="pw">Password</label>
+                    <div class="pw-input">
+                        <input type="password" class="form-control" id="pw" placeholder="Password" ng-model="form.psk">
+                        <button class="btn btn-default" ng-click="pwToUrl()"><span class="glyphicon glyphicon-flash"></span>Als URL</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                </div>
+
+                <div class="form-group">
+                    <label>Setze Status</label>
+                    <div>
+                        <button class="btn btn-success" ng-click="switchTo('on')">Öffnen!</button>
+                        <button class="btn btn-warning" ng-click="switchTo('closing')">"Schließt gleich"</button>
+                        <button class="btn btn-danger" ng-click="switchTo('off')">Schließen!</button>
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+<div ng-include="'components/footer/footer.html'"></div>
