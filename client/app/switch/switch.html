@@ -23,6 +23,9 @@
                     <div>
                         <span class="label state" ng-class="state.clazz ">{{state.value}}</span>
                         <span class="timestamp">[ seit  {{state.ts | date:'dd.MM.yyyy HH:mm:ss'}} ]</span>
+                        <button class="btn btn-default" ng-click="updateState()">
+                            <span class="glyphicon glyphicon-refresh"></span> Refresh
+                        </button>
                     </div>
                 </div>
 
@@ -30,7 +33,7 @@
                     <label for="pw">Password</label>
                     <div class="pw-input">
                         <input type="password" class="form-control" id="pw" placeholder="Password" ng-model="form.psk">
-                        <button class="btn btn-default" ng-click="pwToUrl()"><span class="glyphicon glyphicon-flash"></span>Als URL</button>
+                        <button class="btn btn-default" ng-click="pwToUrl()"><span class="glyphicon glyphicon-flash"></span> Als URL</button>
                     </div>
                 </div>
 

@@ -19,9 +19,11 @@ angular.module('status2App').controller('SwitchCtrl', function ($scope, $log, $h
     showPw: !$routeParams.psk
   };
 
-  function retrieveState() {
+  $scope.updateState = function () {
     $scope.error = false;
-    $scope.state = {};
+    $scope.state = {
+      value: '???'
+    };
     $http.get(ENDPOINT).then(function ok(resp) {
       switch (resp.data.state) {
       case 'on':
@@ -43,7 +45,7 @@ angular.module('status2App').controller('SwitchCtrl', function ($scope, $log, $h
       $log.error('error get:', err);
       $scope.error = 'Error getting current server state.';
     });
-  }
+  };
 
   $scope.switchTo = function (newState) {
     $scope.error = false;
@@ -59,7 +61,7 @@ angular.module('status2App').controller('SwitchCtrl', function ($scope, $log, $h
     }).then(function ok(resp) {
       $scope.showOk = true;
       // also get the new state
-      retrieveState();
+      $scope.updateState();
     }, function error(err) {
       $log.error('error put:', err);
       $scope.error = 'Error setting new space state! Answer: ' + (err.statusText || '??');
@@ -71,5 +73,5 @@ angular.module('status2App').controller('SwitchCtrl', function ($scope, $log, $h
   };
 
 
-  retrieveState();
+  $scope.updateState();
 });
