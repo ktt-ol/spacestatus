@@ -11,7 +11,6 @@ var LOG = require('../logger/loggerFactory.js').logger();
 var twitter = require('../../components/twitter');
 var xmpp = require('../../components/xmpp');
 
-var subscribed = false;
 var dirtyState = false;
 var client;
 var resetTimeoutHandle;
@@ -76,9 +75,6 @@ function connect() {
     LOG.info('mqtt connected.');
     updateMqttStatus(true);
 
-    if (subscribed) {
-      return;
-    }
     client.subscribe([
         config.mqtt.devicesTopic,
         config.mqtt.spaceStateTopic
@@ -89,7 +85,6 @@ function connect() {
           return;
         }
         LOG.info('mqtt topics subscribed', granted);
-        subscribed = true;
       });
   });
   client.on('message', function (topic, message) {
