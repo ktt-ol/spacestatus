@@ -68,16 +68,19 @@ function connect() {
   client.on('close', function () {
     if (data.state.get().mqtt.connected) {
       LOG.info('mqtt connection CLOSED.');
-      updateMqttStatus(false);
+      data.state.get().mqtt.connected = false;
+      broadcastMqtt();
     }
   });
   client.on('connect', function () {
     LOG.info('mqtt connected.');
-    updateMqttStatus(true);
+    data.state.get().mqtt.connected = true;
+    broadcastMqtt();
 
     client.subscribe([
         config.mqtt.devicesTopic,
-        config.mqtt.spaceStateTopic
+        config.mqtt.spaceStateTopic,
+        config.mqtt.spaceInternalBrokerTopic
       ],
       function (err, granted) {
         if (err) {
@@ -91,7 +94,13 @@ function connect() {
     message = message.toString();
     LOG.debug('mqtt message ' + message);
 
-    if (topic === config.mqtt.devicesTopic) {
+    switch (topic) {
+    case config.mqtt.spaceInternalBrokerTopic:
+      var connected = message === '1';
+      data.state.get().mqtt.spaceBrokerOnline = connected;
+      broadcastMqtt();
+      break;
+    case config.mqtt.devicesTopic:
       try {
         var parsedMessage = JSON.parse(message);
         LOG.debug('new devices data!', parsedMessage);
@@ -101,7 +110,8 @@ function connect() {
       } catch (e) {
         LOG.error('Invalid json as mqtt devices message: ' + message);
       }
-    } else if (topic === config.mqtt.spaceStateTopic) {
+      break;
+    case config.mqtt.spaceStateTopic:
       try {
         LOG.debug('new status data!', message);
         var dbStatus = mqtt2db(message);
@@ -113,6 +123,9 @@ function connect() {
       } catch (e) {
         LOG.error('Error during status update message: ' + e);
       }
+      break;
+    default:
+      LOG.warn('Unknown topic: ' + topic);
     }
   });
 
@@ -120,11 +133,9 @@ function connect() {
 }
 
 // updates the connected status in the state object and send an event
-function updateMqttStatus(isConnected) {
-  data.state.get().mqtt.connected = isConnected;
-  events.emit(events.EVENT.MQTT, {
-    connected: isConnected
-  });
+function broadcastMqtt() {
+  console.log('data.state.get().mqtt', data.state.get().mqtt);
+  events.emit(events.EVENT.MQTT, data.state.get().mqtt);
 }
 
 function broadcastState() {

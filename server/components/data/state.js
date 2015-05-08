@@ -24,7 +24,9 @@ function StateHandler(stateFile) {
 StateHandler.DEFAULT_STATE = {
   // The following are sent JSONified as events
   'mqtt': {
-    'connected': false
+    'connected': false,
+    // is the remote broker in the space online? If not, we have most likely an internet problem
+    'spaceBrokerOnline': false
   },
   'spaceOpen': {
     'state': 'off', // allowed: on, off, closing

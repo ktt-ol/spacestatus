@@ -35,11 +35,16 @@
                     <td>Status</td>
                     <td>{{openStatus.status}}</td>
                 </tr>
-                </tbody>
-                <tfoot>
                 <tr>
                     <td colspan="2"><a href="/openStats">Langfristige Statistiken</a></td>
                 </tr>
+                <tr ng-class="mqtt.spaceBrokerOnline ? '' : 'danger'">
+                    <td>Internet*</td>
+                    <td ng-if="mqtt.spaceBrokerOnline">Läuft</td>
+                    <td ng-if="!mqtt.spaceBrokerOnline">Offline!</td>
+                </tr>
+                </tbody>
+                <tfoot>
                 </tfoot>
             </table>
 
@@ -50,21 +55,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-class="mqttConnected ? '' : 'danger'">
+                <tr ng-class="mqtt.connected ? '' : 'danger'">
                     <td>Letzte Änderung</td>
-                    <td ng-if="mqttConnected">{{spaceDevices.lastUpdate}}</td>
-                    <td ng-if="!mqttConnected">Keine Verbindung!</td>
+                    <td ng-if="mqtt.connected">{{spaceDevices.lastUpdate}}</td>
+                    <td ng-if="!mqtt.connected">Keine Verbindung!</td>
                 </tr>
                 <tr>
                     <td>Wer ist da</td>
-                    <td ng-if="mqttConnected">
+                    <td ng-if="mqtt.connected">
                         <div class="person-list">
                             <span class="person" ng-repeat="p in spaceDevices.who" ng-class="'key-' + p.key"><span
                                     class="name">{{ p.name }}</span></span>
                         </div>
                         <span ng-if="spaceDevices.who.length === 0">Keiner sichtbar</span>
                     </td>
-                    <td ng-if="!mqttConnected">
+                    <td ng-if="!mqtt.connected">
                         -
                     </td>
                 </tr>
@@ -159,6 +164,8 @@
                 </tbody>
             </table>
             -->
+
+            <div class="status-legend">* Wir prüfen hier nur, ob der MQTT Server auf spacegate verfügbar ist. Das korreliert normalerweise sehr gut mit dem Internetstatus.</div>
         </div>
         <div class="col-sm-4 sidebar">
             <ul class="list-unstyled">

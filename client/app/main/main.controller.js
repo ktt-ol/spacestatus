@@ -38,7 +38,10 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
   $scope.connectionError = false;
   $scope.startupError = false;
   $scope.isHttp = $window.location.protocol === 'http:';
-  $scope.mqttConnected = false;
+  $scope.mqtt = {
+    connected: false,
+    spaceBrokerOnline: true
+  };
   $scope.openStatus = {
     lastUpdate: '?',
     style: '',
@@ -105,7 +108,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     source.addEventListener('mqtt', function (e) {
       $scope.$apply(function () {
         var data = angular.fromJson(e.data);
-        $scope.mqttConnected = data.connected;
+        $scope.mqtt = data;
       });
     });
 
