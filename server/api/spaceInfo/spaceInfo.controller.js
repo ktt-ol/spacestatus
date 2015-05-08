@@ -72,7 +72,12 @@ exports.index = function (req, res) {
       'network_connections': [
         {
           'value': state.spaceDevices.deviceCount,
+          'name': 'deviceCount',
           'location': 'Inside'
+        }, {
+          'value': state.mqtt.spaceBrokerOnline ? 1 : 0,
+          'name': 'internetStatus',
+          'description': '0: no internet connection, 1: everything is fine'
         }
       ],
       'power_consumption': [
