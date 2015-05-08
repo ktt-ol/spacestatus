@@ -134,7 +134,6 @@ function connect() {
 
 // updates the connected status in the state object and send an event
 function broadcastMqtt() {
-  console.log('data.state.get().mqtt', data.state.get().mqtt);
   events.emit(events.EVENT.MQTT, data.state.get().mqtt);
 }
 
