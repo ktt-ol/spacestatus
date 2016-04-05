@@ -1,6 +1,6 @@
 $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 
 //@import '../assets/styles/bootstrap.css';
 //@import '../assets/styles/bootstrap-responsive.css';
@@ -33,9 +33,9 @@ section {
 // Component styles are injected through grunt
 // injector
 @import 'apiTester/apiTester.scss';
+@import 'common/footer/footer.scss';
+@import 'common/navbar/navbar.scss';
 @import 'main/main.scss';
 @import 'openStats/openStats.scss';
 @import 'switch/switch.scss';
-@import 'footer/footer.scss';
-@import 'navbar/navbar.scss';
 // endinjector
