@@ -1,0 +1,22 @@
+<div class="yearly-stats">
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Jahr</th>
+      <th>Stunden insgesamt</th>
+      <th>Stunden pro Tag*</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="s in yearStats">
+      <td>{{s.year}}</td>
+      <td>{{s.hoursTotal}}</td>
+      <td>{{s.hoursPerDay}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  * Für das erste Jahr werden erst die Tage ab 23. Februar genommen und für das aktuelle Jahr nur die Tage bis heute. Sonst sind das immer 365.
+
+</div>

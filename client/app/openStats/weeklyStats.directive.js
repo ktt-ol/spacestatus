@@ -59,7 +59,7 @@ angular.module('status2App').directive('weeklyStats', function (OpenTimeData, Ti
         }
         // add total open time for this day
         dayOfWeeks[dayOfWeeksPointer] += chartData[i].durationMs;
-
+        
         // move the pointer to the previous day
         dayOfWeeksPointer = decrementDoWP(dayOfWeeksPointer);
         daysCount++;

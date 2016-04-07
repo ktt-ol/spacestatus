@@ -1,26 +1,39 @@
 <div ng-include="'app/common/navbar/navbar.html'"></div>
 
-<div class="container-fluid page-open-stats">
+<div class="page-open-stats">
+  <div class="container-fluid">
     <div class="alert alert-error" ng-show="globalErrorMsg">
-        <div ng-repeat="msg in globalErrorMsg">
-            <strong>Error!</strong> {{msg}}
-        </div>
+      <div ng-repeat="msg in globalErrorMsg">
+        <strong>Error!</strong> {{msg}}
+      </div>
     </div>
 
     <section id="graph">
-        <h2>Graph!</h2>
-        Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
-        2012 zurück gucken!
+      <h2>Graph!</h2>
+      Wann hatte der Mainframe wie lange auf? Ihr könnt bis zum 23. Februar
+      2012 zurück gucken!
 
-        <div chart class="chart"></div>
+      <div chart class="chart"></div>
     </section>
+  </div>
 
+  <div class="container">
     <section id="stats">
-        <h2>Letzte Woche</h2>
+      <h2>Letzte Woche</h2>
 
-        <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
-        <weekly-stats></weekly-stats>
+      <p>Wie lange hatte der Mainframe im Durchschnitt auf? Heute nicht mitgezählt.</p>
+      <weekly-stats></weekly-stats>
     </section>
+
+    <section>
+      <h2>Letzte Jahre</h2>
+
+      <p>Wie Lange hatten wir denn in den vergangen Jahren auf? </p>
+
+      <yearly-stats></yearly-stats>
+
+    </section>
+  </div>
 
 </div>
 
