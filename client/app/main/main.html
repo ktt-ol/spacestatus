@@ -74,12 +74,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>+ anonyme Personen</td>
-                    <td>{{ mqttConnected ? spaceDevices.anonPeople : '-'}}</td>
+                    <td>+ anonyme Personen </td>
+                    <td>{{ mqtt.connected ? spaceDevices.anonPeople : '-'}}</td>
                 </tr>
                 <tr>
                     <td>+ unbekannte Geräte</td>
-                    <td>{{ mqttConnected ? spaceDevices.devices : '-'}}</td>
+                    <td>{{ mqtt.connected ? spaceDevices.devices : '-'}}</td>
                 </tr>
                 </tbody>
             </table>
