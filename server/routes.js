@@ -13,7 +13,6 @@ module.exports = function(app) {
   // Insert routes below
   app.use('/api/weather', require('./api/weather'));
   app.use('/api/time', require('./api/time'));
-  app.use('/api/powerUsage', require('./api/powerUsage'));
   app.use('/api/statusStream', require('./api/statusStream'));
   app.use('/api/spaceInfo', require('./api/spaceInfo'));
   app.use('/api/twitterAnnouncement', require('./api/twitterAnnouncement'));

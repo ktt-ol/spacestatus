@@ -81,6 +81,8 @@ function connect() {
         config.mqtt.devicesTopic,
         config.mqtt.stateTopic.space,
         config.mqtt.stateTopic.radstelle,
+        config.mqtt.energyTopic.front,
+        config.mqtt.energyTopic.back,
         config.mqtt.spaceInternalBrokerTopic
       ],
       function (err, granted) {
@@ -118,6 +120,12 @@ function connect() {
     case config.mqtt.stateTopic.radstelle:
       updateOpenState('radstelle', message);
       break;
+    case config.mqtt.energyTopic.front:
+      updateEnergy('front', message);
+      break;
+    case config.mqtt.energyTopic.back:
+      updateEnergy('back', message);
+      break;
     default:
       LOG.warn('Unknown topic: ' + topic);
     }
@@ -136,6 +144,27 @@ function updateOpenState(place, message) {
   } catch (e) {
     LOG.error('Error during status update message: ' + e);
   }
+}
+
+/**
+ *
+ * @param {string} name - front or back
+ * @param message
+ */
+function updateEnergy(name, message) {
+  LOG.debug('new energy data', name, message);
+
+  var value = parseFloat(message);
+  if (isNaN(value)) {
+    LOG.warn('Invalid energy data for ', name, message);
+    return;
+  }
+
+  var powerUsageState = data.state.get().powerUsage;
+  powerUsageState[name].value = value;
+  powerUsageState[name].timestamp = Math.round(Date.now() / 1000);
+
+  events.emit(events.EVENT.POWER_USAGE, powerUsageState);
 }
 
 // updates the connected status in the state object and send an event

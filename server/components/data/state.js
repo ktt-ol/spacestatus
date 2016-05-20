@@ -53,9 +53,14 @@ StateHandler.DEFAULT_STATE = {
   },
 
   'powerUsage': {
-    now: 0,
-    lastMinute: 0,
-    'timestamp': 0 // last update
+    'front': {
+      'value': 0.0,
+      'timestamp': 0 // last update
+    },
+    'back': {
+      'value': 0.0,
+      'timestamp': 0 // last update
+    }
   },
 
   'freifunk': {

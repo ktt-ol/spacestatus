@@ -32,7 +32,9 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     spaceOpen: 0,
     spaceDevices: 0,
     freifunk: 0,
-    weather: 0
+    weather: 0,
+    energyFront: 0,
+    energyBack: 0
   };
 
   $scope.connectionError = false;
@@ -59,10 +61,13 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     anonPeople: '?',
     who: []
   };
-  $scope.powerUsage = {
-    lastUpdate: '?',
-    now: '?',
-    lastMinute: '?'
+  $scope.energyFront = {
+    value: '?',
+    lastUpdate: '?'
+  };
+  $scope.energyBack = {
+    value: '?',
+    lastUpdate: '?'
   };
   $scope.freifunk = {
     lastUpdate: '?',
@@ -163,9 +168,10 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
       $scope.$apply(function () {
         var data = angular.fromJson(e.data);
 
-        timestamps.powerUsage = data.timestamp;
-        $scope.powerUsage.now = data.now;
-        $scope.powerUsage.lastMinute = data.lastMinute;
+        timestamps.energyFront = data.front.timestamp;
+        timestamps.energyBack = data.back.timestamp;
+        $scope.energyFront.value = data.front.value;
+        $scope.energyBack.value = data.back.value;
       });
     });
 
@@ -229,9 +235,10 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     makeTime('spaceOpen');
     makeTime('radstelleOpen');
     makeTime('spaceDevices');
-    makeTime('powerUsage');
-    makeTime('freifunk');
-    makeTime('weather');
+    makeTime('energyFront');
+    makeTime('energyBack');
+    // makeTime('freifunk');
+    // makeTime('weather');
 
     $timeout(updateLastUpdates, 1000);
   }

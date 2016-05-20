@@ -82,11 +82,18 @@ exports.index = function (req, res) {
       ],
       'power_consumption': [
         {
-          'name': 'current consumption',
-          'location': 'Hackspace',
-          'unit': 'W',
-          'value': state.powerUsage.now,
-          'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.timestamp) + ' ago.'
+          'name': 'current consumption front',
+          'location': 'Hackspace, front',
+          'unit': 'KW',
+          'value': state.powerUsage.front.value,
+          'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.front.timestamp) + ' ago.'
+        },
+        {
+          'name': 'current consumption back',
+          'location': 'Hackspace, back',
+          'unit': 'KW',
+          'value': state.powerUsage.back.value,
+          'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.back.timestamp) + ' ago.'
         }
       ]
       /* Disabled, until the weather station is running again.
