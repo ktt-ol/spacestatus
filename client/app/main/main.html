@@ -29,11 +29,11 @@
                 <tbody>
                 <tr>
                     <td>Letzte Änderung</td>
-                    <td>{{openStatus.lastUpdate}}</td>
+                    <td>{{spaceOpen.lastUpdate}}</td>
                 </tr>
-                <tr ng-class="openStatus.style">
+                <tr ng-class="spaceOpen.style">
                     <td>Status</td>
-                    <td>{{openStatus.status}}</td>
+                    <td>{{spaceOpen.status}}</td>
                 </tr>
                 <tr>
                     <td colspan="2"><a href="/openStats">Langfristige Statistiken</a></td>
@@ -44,9 +44,26 @@
                     <td ng-if="!mqtt.spaceBrokerOnline">Offline!</td>
                 </tr>
                 </tbody>
-                <tfoot>
-                </tfoot>
             </table>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th colspan="2">Radstelle Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Letzte Änderung</td>
+                    <td>{{radstelleOpen.lastUpdate}}</td>
+                </tr>
+                <tr ng-class="radstelleOpen.style">
+                    <td>Status</td>
+                    <td>{{radstelleOpen.status}}</td>
+                </tr>
+                </tbody>
+            </table>
+
 
             <table class="table table-condensed">
                 <thead>

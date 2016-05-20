@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS `spacestate` (
   `until` datetime DEFAULT NULL,
   `lastupdate` datetime DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `place` varchar(20) NOT NULL DEFAULT 'space',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;

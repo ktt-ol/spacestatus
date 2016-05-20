@@ -4,7 +4,11 @@ angular.module('status2App').controller('ApiTesterCtrl', function ($scope, $http
 
   // every method !== 'GET' is using the Authorization. Use 'auth:true' if you want to have a GET with auth.
   var APIS = [
-    {name: '/openState', method: 'PUT', properties: {
+    {name: '/openState/space', method: 'PUT', properties: {
+      state: { required: true, type: 'string', enum: ['on', 'off', 'closing'] },
+      until: { required: false, type: 'integer' }
+    }},
+    {name: '/openState/radstelle', method: 'PUT', properties: {
       state: { required: true, type: 'string', enum: ['on', 'off', 'closing'] },
       until: { required: false, type: 'integer' }
     }},
@@ -36,7 +40,7 @@ angular.module('status2App').controller('ApiTesterCtrl', function ($scope, $http
     }},
     {name: '/weather', method: 'GET' },
     {name: '/spaceInfo', method: 'GET', properties: {}, urlParams: []},
-    {name: '/statusStream', method: 'GET', properties: {}, urlParams: ['spaceOpen', 'freifunk', 'weather']},
+    {name: '/statusStream', method: 'GET', properties: {}, urlParams: ['spaceOpen', 'radstelleOpen', 'spaceDevices', 'powerUsage', 'freifunk', 'weather']},
     {name: '/time', method: 'GET'}
   ];
 

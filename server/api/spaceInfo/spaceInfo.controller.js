@@ -39,7 +39,7 @@ exports.index = function (req, res) {
 //      var windDirectionTranslation = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5, 180, 202.5, 225, 247.5, 270, 292.5, 315, 337.5 ];
 
   var nowInSeconds = Math.round(Date.now() / 1000);
-
+  var spaceState = state.openState.space;
   var currentStatus = {
     'api': '0.13',
     'space': 'Mainframe',
@@ -59,9 +59,9 @@ exports.index = function (req, res) {
     },
     'issue_report_channels': [ 'issue_mail'],
     'state': {
-      'open': state.spaceOpen.state === 'on',
-      'lastchange': state.spaceOpen.timestamp,
-      'message': openStatusPublic[state.spaceOpen.state],
+      'open': spaceState.state === 'on',
+      'lastchange': spaceState.timestamp,
+      'message': openStatusPublic[spaceState.state],
       'icon': {
         'open': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-open.svg',
         'closed': 'https://www.kreativitaet-trifft-technik.de/media/img/mainframe-closed.svg'

@@ -22,14 +22,14 @@ function elapsedTime(t) {
 
 angular.module('status2App').controller('MainCtrl', function ($scope, $log, $timeout, $window, SSE, StartupChecker) {
   var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
-  var ENDPOINT = '/api/statusStream?spaceOpen=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1&mqtt=1';
+  var ENDPOINT = '/api/statusStream?spaceOpen=1&radstelleOpen=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1&mqtt=1';
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
   var START_FAIL_AFTER = 3 * 1000;
 
   var lastkeepalive;
   var timestamps = {
-    openStatus: 0,
+    spaceOpen: 0,
     spaceDevices: 0,
     freifunk: 0,
     weather: 0
@@ -42,7 +42,12 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     connected: false,
     spaceBrokerOnline: true
   };
-  $scope.openStatus = {
+  $scope.spaceOpen = {
+    lastUpdate: '?',
+    style: '',
+    status: '?'
+  };
+  $scope.radstelleOpen = {
     lastUpdate: '?',
     style: '',
     status: '?'
@@ -84,6 +89,33 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     $scope.startupError = true;
   }, START_FAIL_AFTER);
 
+  function addOpenListener(source, topic) {
+    source.addEventListener(topic, function (e) {
+      $scope.$apply(function () {
+        startupCheck.cancel();
+        $scope.startupError = false;
+
+        var data = angular.fromJson(e.data);
+
+        timestamps[topic] = data.timestamp;
+        switch (data.state) {
+        case 'off':
+          $scope[topic].status = 'ZU!';
+          $scope[topic].style = 'danger';
+          break;
+        case 'on':
+          $scope[topic].status = 'AUF!';
+          $scope[topic].style = 'success';
+          break;
+        case 'closing':
+          $scope[topic].status = 'GLEICH ZU!';
+          $scope[topic].style = 'warning';
+          break;
+        }
+      });
+    }, false);
+  }
+
   function init() {
     $log.info('init EventSource');
     var source = new EventSource(ENDPOINT);
@@ -112,30 +144,9 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
       });
     });
 
-    source.addEventListener('spaceOpen', function (e) {
-      $scope.$apply(function () {
-        startupCheck.cancel();
-        $scope.startupError = false;
+    addOpenListener(source, 'spaceOpen');
+    addOpenListener(source, 'radstelleOpen');
 
-        var data = angular.fromJson(e.data);
-
-        timestamps.openStatus = data.timestamp;
-        switch (data.state) {
-        case 'off':
-          $scope.openStatus.status = 'ZU!';
-          $scope.openStatus.style = 'danger';
-          break;
-        case 'on':
-          $scope.openStatus.status = 'AUF!';
-          $scope.openStatus.style = 'success';
-          break;
-        case 'closing':
-          $scope.openStatus.status = 'GLEICH ZU!';
-          $scope.openStatus.style = 'warning';
-          break;
-        }
-      });
-    }, false);
 
     source.addEventListener('spaceDevices', function (e) {
       $scope.$apply(function () {
@@ -215,7 +226,8 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
       }
     }
 
-    makeTime('openStatus');
+    makeTime('spaceOpen');
+    makeTime('radstelleOpen');
     makeTime('spaceDevices');
     makeTime('powerUsage');
     makeTime('freifunk');

@@ -9,6 +9,7 @@ var Events =  function () {
     EVENT: {
       MQTT: 'mqtt',
       SPACE_OPEN: 'spaceOpen',
+      RADSTELLE_OPEN: 'radstelleOpen',
       SPACE_DEVICES: 'spaceDevices',
       POWER_USAGE: 'powerUsage',
       FREIFUNK: 'freifunk',

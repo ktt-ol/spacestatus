@@ -211,7 +211,7 @@ function Slots() {
 
 
 exports.index = function(req, res) {
-  data.db.getAllOpenStates(function (err, results) {
+  data.db.getAllOpenStates('space', function (err, results) {
     if (err) {
       apiUtils.sendJson(res, 500, { status: 'error', msg: 'SQL problems'});
       return;

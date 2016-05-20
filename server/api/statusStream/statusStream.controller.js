@@ -58,16 +58,27 @@ exports.index = function(req, res) {
 
   Object.keys(events.EVENT).forEach(function(eventNameKey) {
     var eventName = events.EVENT[eventNameKey];
-      if (req.param(eventName) === '1') {
-        writeEvent(res, eventName, messageCount++, JSON.stringify(data.state.get()[eventName]));
-        events.on(eventName, callback);
-        listenerAdded = true;
+    if (req.param(eventName) === '1') {
+      var state;
+      if (eventName === events.EVENT.SPACE_OPEN) {
+        state = data.state.get().openState.space;
+      } else if (eventName === events.EVENT.RADSTELLE_OPEN) {
+        state = data.state.get().openState.radstelle;
+      } else {
+        state = data.state.get()[eventName];
       }
-    });
+      writeEvent(res, eventName, messageCount++, JSON.stringify(state));
+      events.on(eventName, callback);
+      listenerAdded = true;
+    }
+  });
 
   if (!listenerAdded) {
     clearInterval(keepAliveIntervalHandle);
-    res.write(JSON.stringify({ status: 'ok', message: 'You have no topics selected.'}));
+    var topics = Object.keys(events.EVENT).map(function (key) {
+      return events.EVENT[key];
+    }).join(', ');
+    res.write(JSON.stringify({ status: 'ok', message: 'You have no topics selected. Use one of ' +  topics}));
     res.end();
     return;
   }

@@ -28,11 +28,19 @@ StateHandler.DEFAULT_STATE = {
     // is the remote broker in the space online? If not, we have most likely an internet problem
     'spaceBrokerOnline': false
   },
-  'spaceOpen': {
-    'state': 'off', // allowed: on, off, closing
-    'until': 0, // Until when will it be open?
-    'timestamp': 0 // When did the state last change?
+  'openState': {
+    'space': {
+      'state': 'off', // allowed: on, off, closing
+      'until': 0, // Until when will it be open?
+      'timestamp': 0 // When did the state last change?
+    },
+    'radstelle': {
+      'state': 'off', // allowed: on, off, closing
+      'until': 0, // Until when will it be open?
+      'timestamp': 0 // When did the state last change?
+    }
   },
+  // 'spaceOpen': {
 
   'spaceDevices': {
     'deviceCount': 0, // the pure number of devices (not reduced in any way)

@@ -31,14 +31,14 @@ module.exports = {
     connect();
   },
 
-  setNewStatus: function (newState, callback) {
-    updateInternalSpaceStatus(newState, function (err) {
+  setNewStatus: function (newState, place, callback) {
+    updateInternalSpaceStatus(newState, place, function (err) {
       if (err) {
         callback(err);
         return;
       }
 
-      broadcastState();
+      broadcastState(place);
       callback();
     });
   }
@@ -79,7 +79,8 @@ function connect() {
 
     client.subscribe([
         config.mqtt.devicesTopic,
-        config.mqtt.spaceStateTopic,
+        config.mqtt.stateTopic.space,
+        config.mqtt.stateTopic.radstelle,
         config.mqtt.spaceInternalBrokerTopic
       ],
       function (err, granted) {
@@ -111,25 +112,30 @@ function connect() {
         LOG.error('Invalid json as mqtt devices message: ' + message);
       }
       break;
-    case config.mqtt.spaceStateTopic:
-      try {
-        LOG.debug('new status data!', message);
-        var dbStatus = mqtt2db(message);
-        if (dbStatus === data.state.get().spaceOpen.state) {
-          LOG.info('New mqtt state is same as current state -> No sql update.');
-          return;
-        }
-        updateInternalSpaceStatus(dbStatus);
-      } catch (e) {
-        LOG.error('Error during status update message: ' + e);
-      }
+    case config.mqtt.stateTopic.space:
+      updateOpenState('space', message);
+      break;
+    case config.mqtt.stateTopic.radstelle:
+      updateOpenState('radstelle', message);
       break;
     default:
       LOG.warn('Unknown topic: ' + topic);
     }
   });
+}
 
-
+function updateOpenState(place, message) {
+  try {
+    LOG.debug('new status data!', place, message);
+    var dbStatus = mqtt2db(message);
+    if (dbStatus === data.state.get().openState[place].state) {
+      LOG.info('New mqtt state for "' + place + '" is same as current state -> No update.');
+      return;
+    }
+    updateInternalSpaceStatus(dbStatus, place);
+  } catch (e) {
+    LOG.error('Error during status update message: ' + e);
+  }
 }
 
 // updates the connected status in the state object and send an event
@@ -137,11 +143,15 @@ function broadcastMqtt() {
   events.emit(events.EVENT.MQTT, data.state.get().mqtt);
 }
 
-function broadcastState() {
-  var stateNow = data.state.get().spaceOpen.state;
+function broadcastState(place) {
+  var stateNow = data.state.get().openState[place].state;
   stateNow = db2mqtt(stateNow);
-  LOG.debug('sending new status ', stateNow, ' to mqtt server.');
-  client.publish(config.mqtt.spaceStateTopic, stateNow, {
+  LOG.debug('sending new status for "', place, '" ', stateNow, ' to mqtt server.');
+  if (!config.mqtt.stateTopic[place]) {
+    LOG.warn('No topic defined for place ' + place);
+    return;
+  }
+  client.publish(config.mqtt.stateTopic[place], stateNow, {
     retain: true
   });
 }
@@ -202,16 +212,17 @@ function db2mqtt(dbValue) {
   case 'on':
     return 'opened';
   }
-  throw new Error('Unkown db value: ' + dbValue);
+  throw new Error('Unknown db value: ' + dbValue);
 }
 
 /**
  *
  * @param {string} newState - expecting a db open state value
+ * @param {string} place - what place is updated?
  * @param {function} [callback] -
  */
-function updateInternalSpaceStatus(newState, callback) {
-  data.db.updateOpenState(newState, function (err) {
+function updateInternalSpaceStatus(newState, place, callback) {
+  data.db.updateOpenState(newState, place, function (err) {
     if (err) {
 
       LOG.error('Error during status db update: ', err);
@@ -221,15 +232,16 @@ function updateInternalSpaceStatus(newState, callback) {
       return;
     }
 
-    var status = data.state.get().spaceOpen;
+    var status = data.state.get().openState[place];
     status.state = newState;
     status.timestamp = Math.round(Date.now() / 1000);
-    LOG.info('Change the status to: ' + newState);
+    LOG.info('Change the status of "' + place + '" to: ' + newState);
 
     twitter.sendTwitterForSpaceStatus(newState);
     xmpp.updateForSpaceStatus(newState);
 
-    events.emit(events.EVENT.SPACE_OPEN, status);
+    var eventName = place === 'space' ? events.EVENT.SPACE_OPEN : events.EVENT.RADSTELLE_OPEN;
+    events.emit(eventName, status);
 
     if (callback) {
       callback(undefined, newState);

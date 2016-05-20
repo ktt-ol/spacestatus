@@ -2,59 +2,60 @@
 
 <div class="container page-switch">
 
-    <div class="row">
-        <div class="col-sm-12">
+  <h1>Switch</h1>
+  <div class="form-group" ng-if="form.showPw">
+    <label for="pw">Password</label>
+    <div class="pw-input">
+      <input type="password" class="form-control" id="pw" placeholder="Password" ng-model="form.psk">
+      <button class="btn btn-default" ng-click="pwToUrl()"><span class="glyphicon glyphicon-flash"></span> Als URL</button>
+    </div>
+  </div>
 
-            <h2>Switch</h2>
+  <div class="alert alert-danger" ng-if="error">
+    <span class="glyphicon glyphicon-remove"></span>
+    {{error}}
+  </div>
 
-            <div class="alert alert-danger" ng-if="error">
-                <span class="glyphicon glyphicon-remove"></span>
-                {{error}}
+  <div class="row">
+    <div class="col-sm-12">
+
+      <form>
+        <div class="place-block" ng-repeat="place in placesList">
+          <h2>{{place}}</h2>
+
+          <div class="alert alert-success" ng-if="state[place].showOk">
+            <span class="glyphicon glyphicon-ok"></span>
+            Neuer status gesetzt!
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+            <div>
+              <span class="label state" ng-class="state[place].clazz ">{{state[place].value}}</span>
+              <span class="timestamp">[ seit  {{state[place].ts | date:'dd.MM.yyyy HH:mm:ss'}} ]</span>
+              <button class="btn btn-default" ng-click="updateState()">
+                <span class="glyphicon glyphicon-refresh"></span> Refresh
+              </button>
             </div>
-            <div class="alert alert-success" ng-if="showOk">
-                <span class="glyphicon glyphicon-ok"></span>
-                Neuer status gesetzt!
+          </div>
+
+          <div class="form-group">
+            <label>Setze Status</label>
+            <div>
+              <button class="btn btn-success" ng-click="switchTo(place, 'on')">Öffnen!</button>
+              <button class="btn btn-warning" ng-click="switchTo(place, 'closing')">"Schließt gleich"</button>
+              <button class="btn btn-danger" ng-click="switchTo(place, 'off')">Schließen!</button>
             </div>
-
-            <form>
-
-                <div class="form-group">
-                    <label>Status</label>
-                    <div>
-                        <span class="label state" ng-class="state.clazz ">{{state.value}}</span>
-                        <span class="timestamp">[ seit  {{state.ts | date:'dd.MM.yyyy HH:mm:ss'}} ]</span>
-                        <button class="btn btn-default" ng-click="updateState()">
-                            <span class="glyphicon glyphicon-refresh"></span> Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-if="form.showPw">
-                    <label for="pw">Password</label>
-                    <div class="pw-input">
-                        <input type="password" class="form-control" id="pw" placeholder="Password" ng-model="form.psk">
-                        <button class="btn btn-default" ng-click="pwToUrl()"><span class="glyphicon glyphicon-flash"></span> Als URL</button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                </div>
-
-                <div class="form-group">
-                    <label>Setze Status</label>
-                    <div>
-                        <button class="btn btn-success" ng-click="switchTo('on')">Öffnen!</button>
-                        <button class="btn btn-warning" ng-click="switchTo('closing')">"Schließt gleich"</button>
-                        <button class="btn btn-danger" ng-click="switchTo('off')">Schließen!</button>
-                    </div>
-                </div>
-
-            </form>
-
+          </div>
 
         </div>
+
+
+      </form>
+
+
     </div>
+  </div>
 </div>
 
 <div ng-include="'app/common/footer/footer.html'"></div>
