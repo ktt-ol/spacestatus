@@ -34,7 +34,18 @@ var all = {
     enabled: false,
     url: 'mqtt://your_server',
     extras: {},
-    devicesTopic: '/net/devices'
+    devicesTopic: '/net/devices',
+    stateTopic: {
+      space: '/access-control-system/space-state',
+      radstelle: '/access-control-system/radstelle-state'
+    },
+    energyTopic: {
+      front: '/sensor/energy/front',
+      back: '/sensor/energy/back'
+    },
+    spaceInternalBrokerTopic: '$SYS/broker/connection/spacegate.mainframe.lan/state',
+    username: '...',
+    password: '...'
   },
 
   poisk: {
