@@ -84,15 +84,15 @@ exports.index = function (req, res) {
         {
           'name': 'current consumption front',
           'location': 'Hackspace, front',
-          'unit': 'KW',
-          'value': state.powerUsage.front.value,
+          'unit': 'W',
+          'value': state.powerUsage.front.value * 1000,
           'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.front.timestamp) + ' ago.'
         },
         {
           'name': 'current consumption back',
           'location': 'Hackspace, back',
-          'unit': 'KW',
-          'value': state.powerUsage.back.value,
+          'unit': 'W',
+          'value': state.powerUsage.back.value * 1000,
           'description': 'Value changed ' + formatTimespan(nowInSeconds - state.powerUsage.back.timestamp) + ' ago.'
         }
       ]
