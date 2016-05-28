@@ -1,7 +1,7 @@
 /**
  * Helps finding new/unknown devices in the hackspace.
  * Using:
- *    sudo nmap -O -F IP_RANGE > nmap_report.log
+ *    sudo nmap -sP IP_RANGE | grep MAC | awk '{print $3}' > nmap_report.log
  *    node findNewDevices.js nmap_report.log
  */
 
