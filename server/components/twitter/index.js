@@ -24,6 +24,11 @@ function Twitter(twitterConfig, stateHandler) {
 
   /* functions */
 
+  // from underscore
+  function isObject(obj) {
+    return obj === Object(obj);
+  }
+
   this._init = function () {
     // validate config
     twitterConfig.enabled = !!twitterConfig.enabled;
@@ -31,7 +36,7 @@ function Twitter(twitterConfig, stateHandler) {
 
     // validate last state
     var state = this._getTwitterState();
-    if (!util.isObject(state.lastStateTwittered)) {
+    if (!isObject(state.lastStateTwittered)) {
       state.lastStateTwittered = {};
     }
     state.enabled = !!state.enabled;
