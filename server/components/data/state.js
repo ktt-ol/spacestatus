@@ -85,8 +85,7 @@ StateHandler.DEFAULT_STATE = {
 
   'twitter': {
     'enabled': true,
-    'lastStateTwittered': null,
-    'lastTweetSendAt': 0
+    'lastStateTwittered': {}
   },
 
   'poisk': {

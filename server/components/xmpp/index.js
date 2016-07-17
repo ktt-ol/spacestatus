@@ -3,6 +3,7 @@
 var Client = require('node-xmpp-client');
 var ltx = require('node-xmpp-core').ltx;
 var LOG = require('../logger/loggerFactory.js').logger();
+var C = require('../../common/constants');
 
 var Xmpp = function (xmppConfig, state) {
 
@@ -89,7 +90,7 @@ var Xmpp = function (xmppConfig, state) {
     return isConnected;
   };
 
-  this.updateForSpaceStatus = function (spaceStatus) {
+  this.updateForSpaceStatus = function (spaceStatus, place) {
     if (spaceStatus !== 'on' && spaceStatus !== 'off' && spaceStatus !== 'closing') {
       throw new Error('Unknown newState. Please use on/off/closing.');
     }
@@ -98,13 +99,15 @@ var Xmpp = function (xmppConfig, state) {
       return;
     }
 
+    var placeLabel = place === C.PLACE_RADSTELLE ? 'Radstelle' : 'Mainframe';
+
     if (spaceStatus === 'on') {
-      this._setPresence('chat', 'Mainframe ist geoeffnet, kommt vorbei!');
+      this._setPresence('chat', placeLabel + ' ist geoeffnet, kommt vorbei!');
     } else if (spaceStatus === 'closing') {
-      this._setPresence('away', 'Mainframe schließt gleich!');
+      this._setPresence('away', placeLabel + ' schließt gleich!');
     } else {
       // xa = "eXtended Away"
-      this._setPresence('xa', 'Mainframe ist leider geschlossen. Bis zum naechsten Mal!');
+      this._setPresence('xa', placeLabel + ' ist leider geschlossen. Bis zum naechsten Mal!');
     }
   };
 

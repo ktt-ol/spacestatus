@@ -266,8 +266,8 @@ function updateInternalSpaceStatus(newState, place, callback) {
     status.timestamp = Math.round(Date.now() / 1000);
     LOG.info('Change the status of "' + place + '" to: ' + newState);
 
-    twitter.sendTwitterForSpaceStatus(newState);
-    xmpp.updateForSpaceStatus(newState);
+    twitter.sendTwitterForSpaceStatus(newState, place);
+    xmpp.updateForSpaceStatus(newState, place);
 
     var eventName = place === 'space' ? events.EVENT.SPACE_OPEN : events.EVENT.RADSTELLE_OPEN;
     events.emit(eventName, status);

@@ -3,12 +3,15 @@
 var ntwitter = require('ntwitter');
 var util = require('util');
 var LOG = require('../logger/loggerFactory.js').logger();
+var C = require('../../common/constants');
 
-
+var PLACE_TPL = {};
+PLACE_TPL[C.PLACE_SPACE] = 'Der Mainframe';
+PLACE_TPL[C.PLACE_RADSTELLE] = 'Die Radstelle';
 var TWEET_TEMPLATES = {
-  'on': 'Der Mainframe ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
-  'off': 'Der Mainframe ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
-  'closing': 'Der Mainframe schließt gleich! Details unter http://goo.gl/MhDwp.'
+  'on': '%s ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
+  'off': '%s ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
+  'closing': '%s schließt gleich! Details unter http://goo.gl/MhDwp.'
 };
 
 /**
@@ -28,8 +31,9 @@ function Twitter(twitterConfig, stateHandler) {
 
     // validate last state
     var state = this._getTwitterState();
-    state.lastStateTwittered = state.lastStateTwittered || null;
-    state.lastTweetSendAt = state.lastTweetSendAt || 0;
+    if (!util.isObject(state.lastStateTwittered)) {
+      state.lastStateTwittered = {};
+    }
     state.enabled = !!state.enabled;
 
     if (!twitterConfig.enabled || !state.enabled) {
@@ -80,7 +84,7 @@ function Twitter(twitterConfig, stateHandler) {
     LOG.info('Twitter is disabled.');
   };
 
-  this.sendTwitterForSpaceStatus = function (newState) {
+  this.sendTwitterForSpaceStatus = function (newState, place) {
     if (newState !== 'on' && newState !== 'off' && newState !== 'closing') {
       throw new Error('Unknown newState. Please use on/off/closing.');
     }
@@ -98,12 +102,7 @@ function Twitter(twitterConfig, stateHandler) {
         return;
       }
 
-      if (state.lastTweetSendAt + twitterConfig.twitterdelay > Date.now()) {
-        LOG.debug('I don´t tweet, because I´ve just sent another tweet.');
-        return;
-      }
-
-      if (state.lastStateTwittered === newState) {
+      if (state.lastStateTwittered[place] === newState) {
         LOG.debug('I don´t twitter the same status twice!');
         return;
       }
@@ -111,7 +110,7 @@ function Twitter(twitterConfig, stateHandler) {
       var current = new Date();
       var formattedTime = current.getHours() + ':' + (current.getMinutes() < 10 ? '0' : '') + current.getMinutes();
       var msg = TWEET_TEMPLATES[newState];
-      var tweet = util.format(msg, formattedTime);
+      var tweet = util.format(msg, PLACE_TPL[place], formattedTime);
       LOG.debug('Sending tweet for state ' + newState);
 
       var session = self._twitter.verifyCredentials(function (err, data) {
@@ -129,8 +128,7 @@ function Twitter(twitterConfig, stateHandler) {
         });
       }
 
-      state.lastStateTwittered = newState;
-      state.lastTweetSendAt = Date.now();
+      state.lastStateTwittered[place] = newState;
 
 
     }, twitterConfig.twitterdelay);
