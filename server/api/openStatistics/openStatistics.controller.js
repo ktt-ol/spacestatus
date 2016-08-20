@@ -116,7 +116,7 @@ function normalizeResults(sqlResults) {
   var lastEntry = {};
   for (var i = 0; i < sqlResults.length; i++) {
     // closing is also true
-    var state = ( sqlResults[i].state === 'on' || sqlResults[i].state === 'closing');
+    var state = isOpenState(sqlResults[i].state);
     if (lastState === state) {
       // util.log('double state, ignoring id ' + sqlResults[i].id);
       continue;
@@ -138,6 +138,11 @@ function normalizeResults(sqlResults) {
   }
 
   return normalizedEntries;
+}
+
+function isOpenState(strState) {
+  // new and open states
+  return strState === 'on' || strState === 'closing' || strState === 'open+' || strState === 'open';
 }
 
 function Slots() {

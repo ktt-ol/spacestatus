@@ -86,24 +86,40 @@ var Xmpp = function (xmppConfig, state) {
     }); // on stanza
   };
 
+
+  this._toInternalState = function (newState) {
+    switch (newState) {
+    case 'none':
+    case 'keyholder':
+    case 'member':
+      return 'isClosed';
+    case 'open':
+    case 'open+':
+      return 'isOpen';
+    case 'closing':
+      return 'isClosing';
+    }
+
+    throw new Error('Unknown newState "' + newState + '" Please use the new states + closing.');
+  };
+
+
   this.isConnected = function () {
     return isConnected;
   };
 
   this.updateForSpaceStatus = function (spaceStatus, place) {
-    if (spaceStatus !== 'on' && spaceStatus !== 'off' && spaceStatus !== 'closing') {
-      throw new Error('Unknown newState. Please use on/off/closing.');
-    }
-
+    var internalState = this._toInternalState(spaceStatus);
+    
     if (!xmppConfig.enabled || !isConnected) {
       return;
     }
 
     var placeLabel = place === C.PLACE_RADSTELLE ? 'Radstelle' : 'Mainframe';
 
-    if (spaceStatus === 'on') {
+    if (internalState === 'isOpen') {
       this._setPresence('chat', placeLabel + ' ist geoeffnet, kommt vorbei!');
-    } else if (spaceStatus === 'closing') {
+    } else if (internalState === 'closing') {
       this._setPresence('away', placeLabel + ' schließt gleich!');
     } else {
       // xa = "eXtended Away"

@@ -104,13 +104,25 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
 
         timestamps[topic] = data.timestamp;
         switch (data.state) {
-        case 'off':
+        case 'none':
           $scope[topic].status = 'ZU!';
           $scope[topic].style = 'danger';
           break;
-        case 'on':
+        case 'open':
           $scope[topic].status = 'AUF!';
           $scope[topic].style = 'success';
+          break;
+        case 'open+':
+          $scope[topic].status = 'AUF+!';
+          $scope[topic].style = 'success';
+          break;
+        case 'keyholder':
+          $scope[topic].status = 'AUF (Keyholder only!)';
+          $scope[topic].style = 'danger';
+          break;
+        case 'member':
+          $scope[topic].status = 'AUF (Member only!)';
+          $scope[topic].style = 'danger';
           break;
         case 'closing':
           $scope[topic].status = 'GLEICH ZU!';

@@ -10,6 +10,7 @@ var events = require('../../components/events');
 var LOG = require('../logger/loggerFactory.js').logger();
 var twitter = require('../../components/twitter');
 var xmpp = require('../../components/xmpp');
+var CONST = require('../../common/constants');
 
 var dirtyState = false;
 var client;
@@ -80,6 +81,7 @@ function connect() {
     client.subscribe([
         config.mqtt.devicesTopic,
         config.mqtt.stateTopic.space,
+        config.mqtt.stateTopic.spaceNext,
         config.mqtt.stateTopic.radstelle,
         config.mqtt.energyTopic.front,
         config.mqtt.energyTopic.back,
@@ -117,6 +119,18 @@ function connect() {
     case config.mqtt.stateTopic.space:
       updateOpenState('space', message);
       break;
+    case config.mqtt.stateTopic.spaceNext:
+      // we try to emulate the old closing state
+
+      // 1. is the space open?
+      var spaceState = data.state.get().openState[CONST.PLACE_SPACE].state;
+      if (spaceState === 'open+' || spaceState === 'open') {
+        // 2. is the next state close?
+        if (message === 'member' || message === 'keyholder' || message === 'none') {
+          updateOpenState('space', 'closing');
+        }
+      }
+      break;
     case config.mqtt.stateTopic.radstelle:
       updateOpenState('radstelle', message);
       break;
@@ -135,7 +149,7 @@ function connect() {
 function updateOpenState(place, message) {
   try {
     LOG.debug('new status data!', place, message);
-    var dbStatus = mqtt2db(message);
+    var dbStatus = message;
     if (dbStatus === data.state.get().openState[place].state) {
       LOG.info('New mqtt state for "' + place + '" is same as current state -> No update.');
       return;
@@ -174,7 +188,7 @@ function broadcastMqtt() {
 
 function broadcastState(place) {
   var stateNow = data.state.get().openState[place].state;
-  stateNow = db2mqtt(stateNow);
+  // stateNow = db2mqtt(stateNow);
   LOG.debug('sending new status for "', place, '" ', stateNow, ' to mqtt server.');
   if (!config.mqtt.stateTopic[place]) {
     LOG.warn('No topic defined for place ' + place);
@@ -219,29 +233,15 @@ function updateSpaceDevices(result) {
   LOG.debug('Updated current devices', spaceDevices);
 }
 
-
-function mqtt2db(mqttValue) {
-  switch (mqttValue) {
-  case 'closing':
-    return 'closing';
+function oldMqtt2New(oldValue) {
+  switch (oldValue) {
   case 'closed':
-    return 'off';
+    return 'none';
   case 'opened':
-    return 'on';
+    return 'open';
+  default:
+    return oldValue;
   }
-  throw new Error('Unkown mqtt value: ' + mqttValue);
-}
-
-function db2mqtt(dbValue) {
-  switch (dbValue) {
-  case 'closing':
-    return 'closing';
-  case 'off':
-    return 'closed';
-  case 'on':
-    return 'opened';
-  }
-  throw new Error('Unknown db value: ' + dbValue);
 }
 
 /**
@@ -251,6 +251,8 @@ function db2mqtt(dbValue) {
  * @param {function} [callback] -
  */
 function updateInternalSpaceStatus(newState, place, callback) {
+  newState = oldMqtt2New(newState);
+
   data.db.updateOpenState(newState, place, function (err) {
     if (err) {
 
@@ -266,10 +268,18 @@ function updateInternalSpaceStatus(newState, place, callback) {
     status.timestamp = Math.round(Date.now() / 1000);
     LOG.info('Change the status of "' + place + '" to: ' + newState);
 
+    var eventName;
+    if (place === CONST.PLACE_SPACE) {
+      eventName = events.EVENT.SPACE_OPEN;
+    } else if (place === CONST.PLACE_RADSTELLE) {
+      eventName = events.EVENT.RADSTELLE_OPEN;
+    } else {
+      throw new Error('Unknown place: ' + place);
+    }
+
     twitter.sendTwitterForSpaceStatus(newState, place);
     xmpp.updateForSpaceStatus(newState, place);
 
-    var eventName = place === 'space' ? events.EVENT.SPACE_OPEN : events.EVENT.RADSTELLE_OPEN;
     events.emit(eventName, status);
 
     if (callback) {

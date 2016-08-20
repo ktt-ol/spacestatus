@@ -5,11 +5,11 @@ angular.module('status2App').controller('ApiTesterCtrl', function ($scope, $http
   // every method !== 'GET' is using the Authorization. Use 'auth:true' if you want to have a GET with auth.
   var APIS = [
     {name: '/openState/space', method: 'PUT', properties: {
-      state: { required: true, type: 'string', enum: ['on', 'off', 'closing'] },
+      state: { required: true, type: 'string', enum: ['none', 'keyholder', 'member', 'open', 'open+'] },
       until: { required: false, type: 'integer' }
     }},
     {name: '/openState/radstelle', method: 'PUT', properties: {
-      state: { required: true, type: 'string', enum: ['on', 'off', 'closing'] },
+      state: { required: true, type: 'string', enum: ['none', 'open'] },
       until: { required: false, type: 'integer' }
     }},
     {name: '/openState', method: 'GET'},

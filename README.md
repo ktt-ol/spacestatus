@@ -47,6 +47,15 @@ Start the status app in debug mode:
 grunt serve
 ```
 
+## MQTT
+Used to get space status updates and publishes changes. For the main door or the Space in general we have the following states:
+* none      - space is closed, nobody must be inside
+* keyholder - space is closed, keyholder is inside
+* member    - space is open, but only for members
+* open      - space is open, guests may ring the bell
+* open+     - space is open, everyone can open the door
+
+
 ### ToDos
 - [ ] Calculate a proper Rain value by using the delta Value of the last X Minutes. (A delta of 1 means 0,3 mm rain.)
 

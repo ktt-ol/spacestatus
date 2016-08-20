@@ -7,9 +7,10 @@ var PLACES = require('../../common/constants').PLACES;
 module.exports = function (config) {
 
   var sqlclient = mysql.createClient(config.db);
-
+  
   function checkState(stateValue) {
-    if (['on', 'off', 'closing'].indexOf(stateValue) === -1) {
+    // was previously on, off, closing
+    if (['none', 'keyholder', 'member', 'open', 'open+', 'closing'].indexOf(stateValue) === -1) {
       throw new Error('Invalid state value: ' + stateValue);
     }
   }
@@ -40,7 +41,7 @@ module.exports = function (config) {
         var dbState = {};
         PLACES.forEach(function (place) {
           dbState[place] = {
-            state: 'off',
+            state: 'none',
             timestamp: 0,
             until: 0
           };

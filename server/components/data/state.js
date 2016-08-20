@@ -30,12 +30,12 @@ StateHandler.DEFAULT_STATE = {
   },
   'openState': {
     'space': {
-      'state': 'off', // allowed: on, off, closing
+      'state': 'none', // allowed: on, off, closing
       'until': 0, // Until when will it be open?
       'timestamp': 0 // When did the state last change?
     },
     'radstelle': {
-      'state': 'off', // allowed: on, off, closing
+      'state': 'none', // allowed: on, off, closing
       'until': 0, // Until when will it be open?
       'timestamp': 0 // When did the state last change?
     }

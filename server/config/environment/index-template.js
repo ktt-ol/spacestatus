@@ -37,6 +37,7 @@ var all = {
     devicesTopic: '/net/devices',
     stateTopic: {
       space: '/access-control-system/space-state',
+      spaceNext: '/access-control-system/space-state-next',
       radstelle: '/access-control-system/radstelle-state'
     },
     energyTopic: {

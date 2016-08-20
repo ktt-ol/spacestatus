@@ -9,9 +9,9 @@ var PLACE_TPL = {};
 PLACE_TPL[C.PLACE_SPACE] = 'Der Mainframe';
 PLACE_TPL[C.PLACE_RADSTELLE] = 'Die Radstelle';
 var TWEET_TEMPLATES = {
-  'on': '%s ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
-  'off': '%s ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
-  'closing': '%s schließt gleich! Details unter http://goo.gl/MhDwp.'
+  'isOpen': '%s ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
+  'isClosed': '%s ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
+  'isClosing': '%s schließt gleich! Details unter http://goo.gl/MhDwp.'
 };
 
 /**
@@ -55,6 +55,22 @@ function Twitter(twitterConfig, stateHandler) {
     LOG.info('Twitter is enabled and initialized.');
   };
 
+  this._toInternalState = function (newState) {
+    switch (newState) {
+    case 'none':
+    case 'keyholder':
+    case 'member':
+      return 'isClosed';
+    case 'open':
+    case 'open+':
+      return 'isOpen';
+    case 'closing':
+      return 'isClosing';
+    }
+
+    throw new Error('Unknown newState "' + newState + '" Please use the new states + closing.');
+  };
+
   this._getTwitterState = function () {
     return stateHandler.get().twitter;
   };
@@ -90,9 +106,7 @@ function Twitter(twitterConfig, stateHandler) {
   };
 
   this.sendTwitterForSpaceStatus = function (newState, place) {
-    if (newState !== 'on' && newState !== 'off' && newState !== 'closing') {
-      throw new Error('Unknown newState. Please use on/off/closing.');
-    }
+    var internalState = this._toInternalState(newState);
 
     if (this._callbackHandle) {
       clearTimeout(this._callbackHandle);
@@ -107,16 +121,16 @@ function Twitter(twitterConfig, stateHandler) {
         return;
       }
 
-      if (state.lastStateTwittered[place] === newState) {
+      if (state.lastStateTwittered[place] === internalState) {
         LOG.debug('I don´t twitter the same status twice!');
         return;
       }
 
       var current = new Date();
       var formattedTime = current.getHours() + ':' + (current.getMinutes() < 10 ? '0' : '') + current.getMinutes();
-      var msg = TWEET_TEMPLATES[newState];
+      var msg = TWEET_TEMPLATES[internalState];
       var tweet = util.format(msg, PLACE_TPL[place], formattedTime);
-      LOG.debug('Sending tweet for state ' + newState);
+      LOG.debug('Sending tweet for state ' + internalState);
 
       var session = self._twitter.verifyCredentials(function (err, data) {
         if (err) {
@@ -133,7 +147,7 @@ function Twitter(twitterConfig, stateHandler) {
         });
       }
 
-      state.lastStateTwittered[place] = newState;
+      state.lastStateTwittered[place] = internalState;
 
 
     }, twitterConfig.twitterdelay);

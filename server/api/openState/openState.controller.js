@@ -5,13 +5,14 @@ var config = require('../../config/environment');
 var data = require('../../components/data');
 var mqtt = require('../../components/mqtt');
 var LOG = require('./../../components/logger/loggerFactory.js').logger();
+
 var PLACES = require('../../common/constants').PLACES;
 
 var SCHEME = {
   type: 'object',
   additionalProperties: 'false',
   properties: {
-    state: { required: true, type: 'string', enum: ['on', 'off', 'closing'] },
+    state: { required: true, type: 'string', enum: ['none', 'keyholder', 'member', 'open', 'open+'] },
     until: { required: false, type: 'integer' }
   }
 };
