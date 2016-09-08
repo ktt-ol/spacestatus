@@ -115,15 +115,17 @@ var Xmpp = function (xmppConfig, state) {
       return;
     }
 
-    var placeLabel = place === C.PLACE_RADSTELLE ? 'Radstelle' : 'Mainframe';
+    if (place !== C.PLACE_SPACE) {
+      return;
+    }
 
     if (internalState === 'isOpen') {
-      this._setPresence('chat', placeLabel + ' ist geoeffnet, kommt vorbei!');
+      this._setPresence('chat', 'Mainframe ist geoeffnet, kommt vorbei!');
     } else if (internalState === 'closing') {
-      this._setPresence('away', placeLabel + ' schließt gleich!');
+      this._setPresence('away', 'Mainframe schließt gleich!');
     } else {
       // xa = "eXtended Away"
-      this._setPresence('xa', placeLabel + ' ist leider geschlossen. Bis zum naechsten Mal!');
+      this._setPresence('xa', 'Mainframe ist leider geschlossen. Bis zum naechsten Mal!');
     }
   };
 
