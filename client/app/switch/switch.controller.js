@@ -28,11 +28,11 @@ angular.module('status2App').controller('SwitchCtrl', function ($scope, $log, $h
     $http.get(ENDPOINT).then(function ok(resp) {
       $scope.placesList.forEach(function (place) {
         switch (resp.data[place].state) {
-        case 'on':
+        case 'open':
           $scope.state[place].clazz = 'label-success';
           $scope.state[place].value = 'Offen';
           break;
-        case 'off':
+        case 'none':
           $scope.state[place].clazz = 'label-danger';
           $scope.state[place].value = 'Geschlossen';
           break;
