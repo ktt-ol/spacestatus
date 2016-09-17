@@ -59,7 +59,7 @@ exports.index = function (req, res) {
     },
     'issue_report_channels': [ 'issue_mail'],
     'state': {
-      'open': spaceState.state === 'on',
+      'open': spaceState.state === 'open' || spaceState.state === 'open+',
       'lastchange': spaceState.timestamp,
       'message': openStatusPublic[spaceState.state],
       'icon': {

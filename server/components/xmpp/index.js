@@ -121,7 +121,7 @@ var Xmpp = function (xmppConfig, state) {
 
     if (internalState === 'isOpen') {
       this._setPresence('chat', 'Mainframe ist geoeffnet, kommt vorbei!');
-    } else if (internalState === 'closing') {
+    } else if (internalState === 'isClosing') {
       this._setPresence('away', 'Mainframe schließt gleich!');
     } else {
       // xa = "eXtended Away"
