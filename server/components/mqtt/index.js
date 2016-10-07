@@ -16,11 +16,15 @@ var dirtyState = false;
 var client;
 var resetTimeoutHandle;
 
+var spaceLast = null;
+var spaceNextLast = null;
+
 // event if this module is not active
 resetAfterTimeout();
 scheduleDbUpdate();
 
 module.exports = {
+
   init: function () {
     data.state.get().mqtt.connected = false;
 
@@ -45,6 +49,27 @@ module.exports = {
   }
 };
 
+
+// the debounce helps us for the case that state and state-next are both changed
+var triggerNewOpenState = _.debounce(function () {
+  if (spaceLast === null) {
+    LOG.warn('spaceLast is null!');
+    return;
+  }
+  LOG.debug('triggerNewOpenState - spaceLast: ' + spaceLast + ", spaceNextLast: " + spaceNextLast);
+  if (spaceLast !== 'open+' && spaceLast !== 'open') {
+    updateOpenState('space', spaceLast);
+    return;
+  }
+
+  // is the next state close for guests?
+  if (spaceNextLast === 'member' || spaceNextLast === 'keyholder' || spaceNextLast === 'none') {
+    updateOpenState('space', 'closing');
+  } else {
+    // no special closing state
+    updateOpenState('space', spaceLast);
+  }
+}, 500);
 
 // creates the mqtt client, connects to the server and registers on essentials events
 function connect() {
@@ -117,19 +142,12 @@ function connect() {
       }
       break;
     case config.mqtt.stateTopic.space:
-      updateOpenState('space', message);
+      spaceLast = message;
+      triggerNewOpenState();
       break;
     case config.mqtt.stateTopic.spaceNext:
-      // we try to emulate the old closing state
-
-      // 1. is the space open?
-      var spaceState = data.state.get().openState[CONST.PLACE_SPACE].state;
-      if (spaceState === 'open+' || spaceState === 'open') {
-        // 2. is the next state close?
-        if (message === 'member' || message === 'keyholder' || message === 'none') {
-          updateOpenState('space', 'closing');
-        }
-      }
+      spaceNextLast = message;
+      triggerNewOpenState();
       break;
     case config.mqtt.stateTopic.radstelle:
       updateOpenState('radstelle', message);
