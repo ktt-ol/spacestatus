@@ -8,6 +8,7 @@ var C = require('../../common/constants');
 var PLACE_TPL = {};
 PLACE_TPL[C.PLACE_SPACE] = 'Der Mainframe';
 PLACE_TPL[C.PLACE_RADSTELLE] = 'Die Radstelle';
+PLACE_TPL[C.PLACE_3D_LAB] = 'Das 3DLab';
 var TWEET_TEMPLATES = {
   'isOpen': '%s ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
   'isClosed': '%s ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
