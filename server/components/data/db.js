@@ -26,9 +26,10 @@ module.exports = function (config) {
      * The callback is called with an err obj (is undefined for no error) and a dbState parameter.
      */
     getLastOpenState: function (callback) {
-      var sql = 'SELECT place, state, timestamp, until FROM spacestate where id in (' +
-        '	SELECT max(id) FROM spacestate group by place' +
-        ')';
+      // was previously a sub query, but https://stackoverflow.com/questions/10883908/why-is-this-sql-query-with-subquery-very-slow
+      var sql = 'SELECT place, state, timestamp, until FROM spacestate a ' +
+        'inner join (SELECT max(id) as id FROM spacestate group by place) m ' +
+        'on a.id = m.id ';
 
       sqlclient.query(sql, function (err, results) {
         if (err) {
