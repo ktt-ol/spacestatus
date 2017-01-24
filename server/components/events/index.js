@@ -10,6 +10,7 @@ var Events =  function () {
       MQTT: 'mqtt',
       SPACE_OPEN: 'spaceOpen',
       RADSTELLE_OPEN: 'radstelleOpen',
+      LAB_3D_OPEN: 'lab3dOpen',
       SPACE_DEVICES: 'spaceDevices',
       POWER_USAGE: 'powerUsage',
       FREIFUNK: 'freifunk',

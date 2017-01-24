@@ -64,6 +64,8 @@ exports.index = function(req, res) {
         state = data.state.get().openState.space;
       } else if (eventName === events.EVENT.RADSTELLE_OPEN) {
         state = data.state.get().openState.radstelle;
+      } else if (eventName === events.EVENT.LAB_3D_OPEN) {
+        state = data.state.get().openState.lab3d;
       } else {
         state = data.state.get()[eventName];
       }
