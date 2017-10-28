@@ -13,17 +13,23 @@ Shows the status about our hackspace using nodejs and a mysql server.
 
 
 ## Install
+
 Checkout the repo, run
 ```
 npm install
 bower install
 grunt build
 ```
+
 create a new config based on the template
 ```
 cp server/config/environment/index-template.js server/config/environment/index.js
 vim server/config/environment/index.js
 ```
+
+## Docker
+
+See the readme in the docker directory for more information.
 
 ## People/Devices
 
