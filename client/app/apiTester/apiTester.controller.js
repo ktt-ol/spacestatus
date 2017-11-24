@@ -41,7 +41,8 @@ angular.module('status2App').controller('ApiTesterCtrl', function ($scope, $http
     {name: '/weather', method: 'GET' },
     {name: '/spaceInfo', method: 'GET', properties: {}, urlParams: []},
     {name: '/statusStream', method: 'GET', properties: {}, urlParams: ['spaceOpen', 'radstelleOpen', 'spaceDevices', 'powerUsage', 'freifunk', 'weather']},
-    {name: '/time', method: 'GET'}
+    {name: '/time', method: 'GET'},
+    {name: '/alexa/status', method: 'GET'}
   ];
 
 

@@ -20,6 +20,7 @@ module.exports = function(app) {
   app.use('/api/openState', require('./api/openState'));
   app.use('/api/freifunk', require('./api/freifunk'));
   app.use('/api/spaceDevices', require('./api/spaceDevice'));
+  app.use('/api/alexa', require('./api/alexa'));
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
