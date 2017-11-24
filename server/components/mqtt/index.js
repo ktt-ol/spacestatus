@@ -123,7 +123,6 @@ function connect() {
   });
   client.on('message', function (topic, message) {
     message = message.toString();
-    LOG.debug('mqtt message ' + message);
 
     switch (topic) {
     case config.mqtt.spaceInternalBrokerTopic:
@@ -134,12 +133,12 @@ function connect() {
     case config.mqtt.devicesTopic:
       try {
         var parsedMessage = JSON.parse(message);
-        LOG.debug('new devices data!', parsedMessage);
+        // LOG.debug('new devices data!', parsedMessage);
         addDummyKeyData(parsedMessage);
         updateSpaceDevices(parsedMessage);
         resetAfterTimeout();
       } catch (e) {
-        LOG.error('Invalid json as mqtt devices message: ' + message);
+        LOG.error('Invalid json as mqtt devices message: ' + message.substring(0, 20) + '\n' + e.message);
       }
       break;
     case config.mqtt.stateTopic.space:
