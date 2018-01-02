@@ -99,8 +99,9 @@
                     <td>Wer ist da</td>
                     <td ng-if="mqtt.connected">
                         <div class="person-list">
-                            <span class="person" ng-repeat="p in spaceDevices.who" ng-class="'key-' + p.key"><span
-                                    class="name">{{ p.name }}</span></span>
+                            <span class="person" ng-repeat="p in spaceDevices.who" ng-class="'key-' + p.key">
+                                <person p="p"></person>
+                            </span>
                         </div>
                         <span ng-if="spaceDevices.who.length === 0">Keiner sichtbar</span>
                     </td>

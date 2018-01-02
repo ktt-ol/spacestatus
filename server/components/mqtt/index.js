@@ -134,7 +134,7 @@ function connect() {
       try {
         var parsedMessage = JSON.parse(message);
         // LOG.debug('new devices data!', parsedMessage);
-        addDummyKeyData(parsedMessage);
+        toPersonObj(parsedMessage);
         updateSpaceDevices(parsedMessage);
         resetAfterTimeout();
       } catch (e) {
@@ -220,11 +220,13 @@ function broadcastState(place) {
   });
 }
 
-function addDummyKeyData(devicesData) {
-  devicesData.people = devicesData.people.map(function (name) {
+function toPersonObj(devicesData) {
+  devicesData.people = devicesData.people.map(function (person) {
+    if (person.name) {
+      return person;
+    }
     return {
-      name: name,
-      key: false
+      name: person
     }
   });
 }
