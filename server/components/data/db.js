@@ -43,8 +43,8 @@ module.exports = function (config) {
         PLACES.forEach(function (place) {
           dbState[place] = {
             state: 'none',
-            timestamp: 0,
-            until: 0
+            timestamp: new Date(),
+            until: new Date()
           };
         });
 
