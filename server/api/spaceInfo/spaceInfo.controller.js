@@ -43,7 +43,7 @@ exports.index = function (req, res) {
   var currentStatus = {
     'api': '0.13',
     'space': 'Mainframe',
-    'logo': 'http://status.mainframe.io/images/logo.png',
+    'logo': 'http://status.mainframe.io/assets/static/logo.png',
     'url': 'http://mainframe.io/',
     'location': {
       'address': 'Bahnhofsplatz 10, 26122 Oldenburg, Germany',
