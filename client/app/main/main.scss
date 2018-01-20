@@ -21,6 +21,32 @@
     content: "";
   }
 
+
+  $loc-space: #008000;
+  $loc_radstelle: #9696fd;
+  $loc-fraese: #fdca96;
+
+
+  .location {
+    &.Space {
+      color: $loc-space;
+    }
+    &.Radstelle {
+      color: $loc-radstelle;
+    }
+    &.Fräse {
+      color: $loc-fraese;
+    }
+  }
+
+  .location:after {
+    content: ", ";
+  }
+
+  .location:last-child:after {
+    content: "";
+  }
+
   .key-true .name {
     background: url('../images/witchlines_Simple_key_30.png') right center no-repeat;
     padding-right: 34px;
