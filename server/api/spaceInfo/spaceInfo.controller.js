@@ -23,6 +23,17 @@ function formatTimespan(timespan) {
   return timespan + ' sec';
 }
 
+// very simple response for our asterisk server
+exports.asterisk = function (req, res) {
+  var state = data.state.get();
+  var spacePart = state.openState.space.state === 'none' ? '0' : '1';
+  var radstellePart = state.openState.radstelle.state === 'none' ? '0' : '1';
+
+  res.set({
+    'Cache-Control': 'no-cache'
+  });
+  res.send(spacePart + '-' + radstellePart);
+};
 
 // Get list of spaceInfos
 exports.index = function (req, res) {
