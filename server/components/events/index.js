@@ -53,7 +53,7 @@ var Events =  function () {
     },
 
     emit: function (eventName, data) {
-      LOG.debug('Event: ' + eventName);
+      LOG.trace('Event: ' + eventName);
 
       this._validateEventName(eventName);
       this._events.emit(eventName, eventName, data);

@@ -133,7 +133,7 @@ function connect() {
     case config.mqtt.devicesTopic:
       try {
         var parsedMessage = JSON.parse(message);
-        // LOG.debug('new devices data!', parsedMessage);
+        LOG.trace('new devices data!', parsedMessage);
         toPersonObj(parsedMessage);
         updateSpaceDevices(parsedMessage);
         resetAfterTimeout();
