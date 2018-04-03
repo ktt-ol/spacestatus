@@ -20,7 +20,6 @@ var spaceLast = null;
 var spaceNextLast = null;
 
 // event if this module is not active
-resetAfterTimeout();
 scheduleDbUpdate();
 
 module.exports = {
@@ -136,7 +135,6 @@ function connect() {
         LOG.trace('new devices data!', parsedMessage);
         toPersonObj(parsedMessage);
         updateSpaceDevices(parsedMessage);
-        resetAfterTimeout();
       } catch (e) {
         LOG.error('Invalid json as mqtt devices message: ' + message.substring(0, 20) + '\n' + e.message);
       }
@@ -311,23 +309,6 @@ function updateInternalSpaceStatus(newState, place, callback) {
       callback(undefined, newState);
     }
   });
-}
-
-// resets the state of the space devices after a certain timeout
-function resetAfterTimeout() {
-  if (resetTimeoutHandle) {
-    clearTimeout(resetTimeoutHandle);
-  }
-
-  resetTimeoutHandle = setTimeout(function () {
-    LOG.debug('Clear space devices.');
-    updateSpaceDevices({
-      deviceCount: 0,
-      unknownDevicesCount: 0,
-      peopleCount: 0,
-      people: []
-    });
-  }, config.spaceDevices.clearEntriesAfter);
 }
 
 function scheduleDbUpdate() {
