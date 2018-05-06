@@ -16,3 +16,7 @@ RUN npm install -g grunt-cli
 RUN npm install -g bower
 
 EXPOSE 5858 9000 3306
+
+ADD init.sh /bin/init.sh
+
+ENTRYPOINT /bin/init.sh
