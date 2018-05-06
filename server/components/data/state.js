@@ -43,6 +43,10 @@ StateHandler.DEFAULT_STATE = {
       'state': 'none', // allowed: on, off, closing
       'until': 0, // Until when will it be open?
       'timestamp': 0 // When did the state last change?
+    },
+    'machining': {
+      'state': 'none',
+      'timestamp': 0
     }
   },
   // 'spaceOpen': {

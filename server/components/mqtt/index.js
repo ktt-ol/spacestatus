@@ -108,6 +108,7 @@ function connect() {
         config.mqtt.stateTopic.spaceNext,
         config.mqtt.stateTopic.radstelle,
         config.mqtt.stateTopic.lab3d,
+        config.mqtt.stateTopic.machining,
         config.mqtt.energyTopic.front,
         config.mqtt.energyTopic.back,
         config.mqtt.spaceInternalBrokerTopic
@@ -152,6 +153,9 @@ function connect() {
       break;
     case config.mqtt.stateTopic.lab3d:
       updateOpenState('lab3d', message);
+      break;
+    case config.mqtt.stateTopic.machining:
+      updateOpenState('machining', message);
       break;
     case config.mqtt.energyTopic.front:
       updateEnergy('front', message);
@@ -296,6 +300,8 @@ function updateInternalSpaceStatus(newState, place, callback) {
       eventName = events.EVENT.RADSTELLE_OPEN;
     } else if (place === CONST.PLACE_3D_LAB) {
       eventName = events.EVENT.LAB_3D_OPEN;
+    } else if (place === CONST.PLACE_MACHINING) {
+      eventName = events.EVENT.MACHINING;
     } else {
       throw new Error('Unknown place: ' + place);
     }

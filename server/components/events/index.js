@@ -11,6 +11,7 @@ var Events =  function () {
       SPACE_OPEN: 'spaceOpen',
       RADSTELLE_OPEN: 'radstelleOpen',
       LAB_3D_OPEN: 'lab3dOpen',
+      MACHINING: 'machining',
       SPACE_DEVICES: 'spaceDevices',
       POWER_USAGE: 'powerUsage',
       FREIFUNK: 'freifunk',
