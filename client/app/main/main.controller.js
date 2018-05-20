@@ -1,4 +1,5 @@
 'use strict';
+
 /* global EventSource:false */
 
 function elapsedTime(t) {
@@ -21,8 +22,8 @@ function elapsedTime(t) {
 }
 
 angular.module('status2App').controller('MainCtrl', function ($scope, $log, $timeout, $window, SSE, StartupChecker) {
-  var WIND_DIRECTION = [ 'N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
-  var ENDPOINT = '/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&freifunk=1&weather=1&mqtt=1';
+  var WIND_DIRECTION = ['N', 'NNO', 'NO', 'ONO', 'O', 'OSO', 'SO', 'SSO', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+  var ENDPOINT = '/api/statusStream?spaceOpen=1&radstelleOpen=1&machining=1&spaceDevices=1&powerUsage=1&lab3dOpen=1&mqtt=1';
 
   var CHECK_INTERVAL = 5 * 60 * 1000;
   var START_FAIL_AFTER = 3 * 1000;
@@ -31,6 +32,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
   var timestamps = {
     spaceOpen: 0,
     spaceDevices: 0,
+    lab3dOpen: 0,
     machining: 0,
     freifunk: 0,
     weather: 0,
@@ -51,6 +53,11 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     status: '?'
   };
   $scope.radstelleOpen = {
+    lastUpdate: '?',
+    style: '',
+    status: '?'
+  };
+  $scope.lab3dOpen = {
     lastUpdate: '?',
     style: '',
     status: '?'
@@ -169,6 +176,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
 
     addOpenListener(source, 'spaceOpen');
     addOpenListener(source, 'radstelleOpen');
+    addOpenListener(source, 'lab3dOpen');
     addOpenListener(source, 'machining');
 
 
@@ -257,6 +265,7 @@ angular.module('status2App').controller('MainCtrl', function ($scope, $log, $tim
     makeTime('energyFront');
     makeTime('energyBack');
     makeTime('machining');
+    makeTime('lab3dOpen');
 
     $timeout(updateLastUpdates, 1000);
   }
