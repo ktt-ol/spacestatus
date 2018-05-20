@@ -9,6 +9,7 @@ var PLACE_TPL = {};
 PLACE_TPL[C.PLACE_SPACE] = 'Der Mainframe';
 PLACE_TPL[C.PLACE_RADSTELLE] = 'Die Radstelle';
 PLACE_TPL[C.PLACE_3D_LAB] = 'Das 3DLab';
+PLACE_TPL[C.PLACE_MACHINING] = 'Machining';
 var TWEET_TEMPLATES = {
   'isOpen': '%s ist seit %s Uhr geöffnet, kommt vorbei! Details unter http://goo.gl/MhDwp.',
   'isClosed': '%s ist leider seit %s Uhr geschlossen. Details unter http://goo.gl/MhDwp.',
@@ -130,7 +131,11 @@ function Twitter(twitterConfig, stateHandler) {
       var current = new Date();
       var formattedTime = current.getHours() + ':' + (current.getMinutes() < 10 ? '0' : '') + current.getMinutes();
       var msg = TWEET_TEMPLATES[internalState];
-      var tweet = util.format(msg, PLACE_TPL[place], formattedTime);
+      var tpl = PLACE_TPL[place];
+      if (!tpl) {
+        LOG.warn('No twitter template for place: ' + place);
+      }
+      var tweet = util.format(msg, tpl, formattedTime);
       LOG.debug('Sending tweet for state ' + internalState);
 
       var session = self._twitter.verifyCredentials(function (err, data) {
