@@ -1,5 +1,7 @@
 # Space Status
 
+*Decrepated, please use https://github.com/ktt-ol/spacestatus2 instead.*
+
 Shows the status about our hackspace using nodejs and a mysql server.
 
 ## Features
